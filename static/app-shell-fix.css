@@ -1,1 +1,117 @@
-PLACEHOLDER
+/* v50 — lifted full-width tab bar above Safari chrome, no wallpaper leak */
+html, body {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow-x: hidden !important;
+  background: #07140f !important;
+}
+.space-bg, .warp-img, .warp, #leagueFx, .league-fx, #particleCanvas,
+img[src*="space-wallpaper"], img[src*="ucl-bg"], .bg-space, .wallpaper {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+#mainApp:not(.hidden) {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 8px) !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 100% !important;
+  height: auto !important;
+  margin: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  background: #07140f !important;
+  z-index: 20 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+}
+#mainApp > header,
+#mainApp > main.content,
+#mainApp .page {
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  padding-left: 14px !important;
+  padding-right: 14px !important;
+  box-sizing: border-box !important;
+}
+#mainApp .page { display: none !important; }
+#mainApp .page.active { display: block !important; }
+
+/* Bottom nav: solid full-width bar, buttons lifted above Safari search / home indicator */
+nav.bottom {
+  position: fixed !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  top: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
+  margin: 0 !important;
+  padding: 6px 0 calc(env(safe-area-inset-bottom, 0px) + 10px) 0 !important;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important;
+  grid-template-rows: 50px !important;
+  align-items: stretch !important;
+  justify-items: stretch !important;
+  background: #0b0d10 !important;
+  border-top: 1px solid #1a3348 !important;
+  border-radius: 0 !important;
+  z-index: 2147483000 !important;
+  transform: none !important;
+  gap: 0 !important;
+  box-sizing: border-box !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.35) !important;
+}
+nav.bottom .nav {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: 100% !important;
+  height: 50px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  border: 0 !important;
+  color: #8aa0b4 !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  position: static !important;
+  transform: none !important;
+  translate: none !important;
+  float: none !important;
+  line-height: 1.15 !important;
+}
+nav.bottom .nav.active { color: #1ebcff !important; }
+nav.bottom .nav.nav-center,
+nav.bottom .nav-center,
+nav.bottom .nav-center-btn {
+  position: static !important;
+  top: auto !important;
+  transform: none !important;
+  margin: 0 !important;
+  box-shadow: none !important;
+}
+nav.bottom .nav-center-btn {
+  width: 26px !important;
+  height: 26px !important;
+  border-radius: 50% !important;
+  background: #00c853 !important;
+}
+#marketList, .mkt-list { display: block !important; min-height: 180px !important; }
+
+/* Extra guard: any residual full-bleed wallpaper behind content */
+body > .space-bg, body > img.bg, #appBg, .app-bg {
+  display: none !important;
+}
