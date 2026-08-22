@@ -1,1 +1,253 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Own Club Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--p:#440099;--ps:#f3e9ff;--bg:#f5f6f8;--c:#fff;--b:#e8eaed;--t:#2E2D2C;--m:#6b7280;--side:248px}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--t)}
+button,input,select,textarea{font:inherit}
+.login-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#2a0670,#440099 50%,#78C4DD);padding:24px}
+.login-card{width:min(400px,100%);background:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.login-logo{width:48px;height:48px;border-radius:12px;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin-bottom:16px}
+.login-card h1{margin:0 0 4px;font-size:22px;font-weight:800}.login-card .sub{margin:0 0 22px;color:var(--m);font-size:13px}
+.login-card label{display:block;font-size:12px;font-weight:600;color:#4b5563;margin-bottom:6px}
+.login-card input{width:100%;padding:12px 14px;border:1px solid var(--b);border-radius:10px;margin-bottom:14px;outline:none}
+.login-card input:focus{border-color:var(--p);box-shadow:0 0 0 3px rgba(68,0,153,.12)}
+.btn-primary{width:100%;border:0;background:var(--p);color:#fff;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
+.shell{display:flex;min-height:100vh}.sidebar{width:var(--side);background:#fff;border-right:1px solid var(--b);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-head{padding:18px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:12px}
+.side-head .mark{width:36px;height:36px;border-radius:10px;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.side-nav{padding:12px 10px;flex:1;overflow:auto}.side-nav .sec{font-size:10px;text-transform:uppercase;color:#9ca3af;padding:10px 12px 6px;font-weight:700}
+.side-nav button{width:100%;text-align:left;border:0;background:transparent;padding:10px 12px;border-radius:10px;color:#374151;font-size:13px;cursor:pointer;margin:2px 0}
+.side-nav button.on,.side-nav button:hover{background:var(--ps);color:var(--p);font-weight:700}
+.side-foot{padding:12px;border-top:1px solid var(--b);font-size:12px;color:var(--m)}
+.content{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:56px;background:#fff;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:10}
+.topbar .actions{display:flex;gap:8px;align-items:center}
+.chip{border:1px solid var(--b);background:#fff;border-radius:8px;padding:7px 10px;font-size:12px;cursor:pointer}
+.chip-p{background:var(--p);color:#fff;border-color:var(--p)}
+.page{padding:20px;max-width:1280px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.kpi{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:16px}
+.kpi .lbl{font-size:12px;color:var(--m);font-weight:600}.kpi .val{font-size:22px;font-weight:800;margin-top:8px}
+.card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:14px}
+.card h3{margin:0 0 14px;font-size:15px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.04em;color:var(--m);padding:10px 8px;border-bottom:1px solid var(--b);font-weight:700}
+td{padding:12px 8px;border-bottom:1px solid var(--b);vertical-align:middle}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.badge-ok{background:#dcfce7;color:#166534}.badge-bad{background:#fee2e2;color:#991b1b}.badge-wait{background:#fef3c7;color:#92400e}
+.badge-l1{background:#ede9fe;color:#5b21b6}.badge-l2{background:#e0f2fe;color:#075985}.badge-l3{background:#fce7f3;color:#9d174d}.badge-root{background:#fef3c7;color:#92400e}
+.row-actions{display:flex;gap:6px;flex-wrap:wrap}
+.row-actions button{border:0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer}
+.btn-ok{background:#16a34a;color:#fff}.btn-bad{background:#dc2626;color:#fff}
+.hidden{display:none!important}
+.toast{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:11px 14px;border-radius:10px;display:none;z-index:50;font-size:13px}
+.empty{color:var(--m);font-size:13px;padding:18px 0}
+.tree-node{border:1px solid var(--b);border-radius:12px;padding:12px;margin:8px 0;background:#fafafa}
+.tree-node .meta{font-size:12px;color:var(--m);margin-top:4px}
+.tree-children{margin-left:18px;border-left:2px solid #e9d5ff;padding-left:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}
+.field input,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--b);border-radius:8px}
+.table-wrap{overflow:auto}
+.mono{font-family:ui-monospace,Menlo,monospace;font-size:11px}
+.pos{color:#166534;font-weight:700}.neg{color:#991b1b;font-weight:700}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.filters input,.filters select{padding:8px 10px;border:1px solid var(--b);border-radius:8px}
+.bulk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 0 14px;margin-bottom:8px;border-bottom:1px solid var(--b)}
+.bulk-bar input[type=number]{width:130px;padding:9px 12px;border:1px solid var(--b);border-radius:8px}
+.bulk-bar .chip-p{padding:9px 16px}
+.bulk-bar .sel-count{font-size:12px;color:var(--m);font-weight:600}
+table th.chk,table td.chk{width:36px;text-align:center}
+table input.row-chk{width:16px;height:16px;cursor:pointer}
+@media(max-width:960px){.sidebar{display:none}.kpis{grid-template-columns:1fr 1fr}.grid2{grid-template-columns:1fr}}
+</style></head><body>
+<div id="app">
+  <div class="login-shell" id="loginView">
+    <div class="login-card">
+      <div class="login-logo">OC</div>
+      <h1>Console</h1>
+      <p class="sub">Own Club — Share Market · KMK Holding Co.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" placeholder="you@email.com">
+      <label for="pass">Password</label>
+      <input id="pass" type="password" autocomplete="current-password" placeholder="Password">
+      <button class="btn-primary" type="button" onclick="doLogin()">Sign in</button>
+    </div>
+  </div>
+  <div class="shell hidden" id="shellView">
+    <aside class="sidebar">
+      <div class="side-head"><div class="mark">OC</div><div><b>Own Club</b><small>Share Market</small></div></div>
+      <nav class="side-nav">
+        <div class="sec">Main</div>
+        <button type="button" class="on" data-page="dashboard" onclick="goPage('dashboard',this)">Dashboard</button>
+        <button type="button" data-page="deposits" onclick="goPage('deposits',this)">Deposits</button>
+        <button type="button" data-page="withdrawals" onclick="goPage('withdrawals',this)">Withdrawals</button>
+        <button type="button" data-page="logs" onclick="goPage('logs',this)">Transaction log</button>
+        <div class="sec">Inventory</div>
+        <button type="button" data-page="pool" onclick="goPage('pool',this)">Company pool</button>
+        <button type="button" data-page="credit" onclick="goPage('credit',this)">Credit wallet</button>
+        <div class="sec">People</div>
+        <button type="button" data-page="members" onclick="goPage('members',this)">Members</button>
+        <button type="button" data-page="referrals" onclick="goPage('referrals',this)">Referrals / Levels</button>
+        <div class="sec">Support</div>
+        <button type="button" onclick="location.href='/'">Member app</button>
+        <button type="button" onclick="logout()">Logout</button>
+      </nav>
+      <div class="side-foot">KMK Holding · Est. 2018</div>
+    </aside>
+    <div class="content">
+      <header class="topbar">
+        <div id="crumb"><b>Dashboard</b></div>
+        <div class="actions">
+          <button class="chip" type="button" onclick="refreshAll()">Refresh</button>
+          <button class="chip chip-p" type="button" onclick="logout()">Logout</button>
+        </div>
+      </header>
+      <main class="page">
+        <section id="page-dashboard">
+          <div class="kpis">
+            <div class="kpi"><div class="lbl">Members</div><div class="val" id="kUsers">0</div></div>
+            <div class="kpi"><div class="lbl">Net deposits</div><div class="val" id="kInv">UGX 0</div></div>
+            <div class="kpi"><div class="lbl">Pending withdrawals</div><div class="val" id="kPwd">0</div></div>
+            <div class="kpi"><div class="lbl">Level 1 referrals</div><div class="val" id="kL1">0</div></div>
+          </div>
+          <div class="card"><h3>Operations</h3><p class="empty" style="padding-top:0">Approve deposits after TxID check. Withdrawals: Under Review → Reviewed → Disbursed. Use Members page to credit wallets with checkboxes.</p></div>
+        </section>
+<section id="page-deposits" class="hidden"><div class="card"><h3>Deposits</h3><div id="depTable"></div></div></section>
+<section id="page-withdrawals" class="hidden"><div class="card"><h3>Withdrawals</h3><div id="wdTable"></div></div></section>
+<section id="page-logs" class="hidden">
+<div class="kpis">
+<div class="kpi"><div class="lbl">Log rows</div><div class="val" id="logN">0</div></div>
+<div class="kpi"><div class="lbl">Pool</div><div class="val" id="logPool">$0</div></div>
+<div class="kpi"><div class="lbl">Deposits</div><div class="val" id="logDep">0</div></div>
+<div class="kpi"><div class="lbl">Withdrawals</div><div class="val" id="logWd">0</div></div>
+</div>
+<div class="card">
+<h3>Transaction log</h3>
+<div class="filters">
+<select id="logSrc" onchange="renderLogs()"><option value="all">All sources</option><option value="pool">Company pool</option><option value="deposit">Deposits</option><option value="withdraw">Withdrawals</option><option value="credit">Credits</option><option value="member">Member wallet</option></select>
+<input id="logQ" placeholder="Search name, email, TxID, note, id" oninput="renderLogs()">
+</div>
+<div class="table-wrap" id="logTable"></div>
+</div>
+</section>
+<section id="page-pool" class="hidden">
+<div class="kpis"><div class="kpi"><div class="lbl">Pool balance</div><div class="val" id="poolBal">0</div></div>
+<div class="kpi"><div class="lbl">Ledger rows</div><div class="val" id="poolN">0</div></div>
+<div class="kpi"><div class="lbl">Updated</div><div class="val" id="poolAt" style="font-size:13px">—</div></div>
+<div class="kpi"><div class="lbl">Currency</div><div class="val" id="poolCur">USD</div></div></div>
+<div class="card grid2"><div><h3>Set balance</h3>
+<div class="field"><label>Balance</label><input id="poolSetBal" type="number" step="0.01"></div>
+<div class="field"><label>Note</label><input id="poolSetNote"></div>
+<button class="chip chip-p" onclick="setPool()">Save</button></div>
+<div><h3>Adjust (+/−)</h3>
+<div class="field"><label>Amount</label><input id="poolAdjAmt" type="number" step="0.01"></div>
+<div class="field"><label>Note</label><input id="poolAdjNote"></div>
+<button class="chip chip-p" onclick="adjPool()">Post</button></div></div>
+<div class="card"><h3>Inventory ledger</h3><div class="table-wrap" id="poolLedger"></div></div>
+</section>
+<section id="page-credit" class="hidden"><div class="grid2">
+<div class="card"><h3>Credit one client</h3>
+<div class="field"><label>Email / phone / id</label><input id="crId"></div>
+<div class="field"><label>Amount</label><input id="crAmt" type="number" step="0.01"></div>
+<div class="field"><label>Note</label><input id="crNote"></div>
+<button class="chip chip-p" onclick="creditOne()">Credit</button></div>
+<div class="card"><h3>Bulk credit</h3>
+<p class="empty" style="padding:0 0 8px">Lines: <code>email,amount,note</code></p>
+<textarea id="crBulk" rows="8" style="width:100%;padding:10px;border:1px solid #e8eaed;border-radius:8px"></textarea>
+<button class="chip chip-p" style="margin-top:10px" onclick="creditBulk()">Run bulk</button>
+<div id="crBulkOut" class="empty" style="margin-top:10px"></div></div></div></section>
+<section id="page-members" class="hidden"><div class="card"><h3>Members</h3>
+<div class="bulk-bar" id="bulkBar">
+<label style="display:flex;align-items:center;gap:6px;font-size:13px;font-weight:600;cursor:pointer"><input type="checkbox" id="chkAllMembers" onclick="toggleAllMembers(this)"> Select all</label>
+<input type="number" id="bulkAmt" min="1" step="1" placeholder="Amount (UGX)">
+<input type="text" id="bulkNote" placeholder="Note (optional)" style="flex:1;min-width:140px;padding:9px 12px;border:1px solid var(--b);border-radius:8px">
+<button class="chip chip-p" type="button" onclick="creditSelected()">Credit selected</button>
+<span class="sel-count" id="selCount">0 selected</span>
+</div>
+<div id="memTable"></div></div></section>
+<section id="page-referrals" class="hidden"><div class="card">
+<h3>Who invited who</h3>
+<p class="empty" style="padding:0 0 12px">Root code <code>IMXT2Y0M8D</code> → Level 1. Their codes → Level 2, etc.</p>
+<div class="kpis" style="margin-bottom:12px">
+<div class="kpi"><div class="lbl">Level 1</div><div class="val" id="refL1">0</div></div>
+<div class="kpi"><div class="lbl">Level 2</div><div class="val" id="refL2">0</div></div>
+<div class="kpi"><div class="lbl">Level 3+</div><div class="val" id="refL3">0</div></div>
+<div class="kpi"><div class="lbl">With shares</div><div class="val" id="refBuy">0</div></div>
+</div>
+<div id="refTable"></div>
+<h3 style="margin-top:20px">Tree</h3>
+<div id="refTree"></div>
+</div></section>
+      </main>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+var TOKEN=localStorage.getItem("oc_sys_token")||"";var DEPOSITS=[],WITHDRAWALS=[],USERS=[],POOL={balance:0,ledger:[]};var ROOT_CODE="IMXT2Y0M8D";var PAGES=["dashboard","deposits","withdrawals","logs","pool","credit","members","referrals"];
+function toast(m){var t=document.getElementById("toast");t.textContent=m;t.style.display="block";setTimeout(function(){t.style.display="none"},2600)}
+function money(n){return"UGX "+Number(n||0).toLocaleString()}
+function api(path,method,body){var o={method:method||"GET",headers:{"Content-Type":"application/json"}};if(TOKEN)o.headers.Authorization="Bearer "+TOKEN;if(body)o.body=JSON.stringify(body);return fetch(path,o).then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||("HTTP "+r.status));return j})})}
+function doLogin(){var email=document.getElementById("email").value.trim();var pass=document.getElementById("pass").value;api("/api/login","POST",{identifier:email,password:pass}).then(function(r){if(!(r.user&&(r.user.is_admin||r.user.is_support)))throw new Error("System access only");TOKEN=r.token;localStorage.setItem("oc_sys_token",TOKEN);showShell()}).catch(function(e){toast(e.message)})}
+function logout(){TOKEN="";localStorage.removeItem("oc_sys_token");location.reload()}
+function showShell(){document.getElementById("loginView").classList.add("hidden");document.getElementById("shellView").classList.remove("hidden");refreshAll()}
+function goPage(name,btn){PAGES.forEach(function(p){var el=document.getElementById("page-"+p);if(el)el.classList.toggle("hidden",p!==name)});document.querySelectorAll(".side-nav button[data-page]").forEach(function(b){b.classList.remove("on")});if(btn)btn.classList.add("on");document.getElementById("crumb").innerHTML="<b>"+name+"</b>";if(name==="pool")loadPool();if(name==="logs")renderLogs()}
+function badge(st){st=String(st||"").toLowerCase();if(/confirm|disburse|approv|ok|paid|opening/.test(st))return"badge-ok";if(/reject|fail|cancel/.test(st))return"badge-bad";return"badge-wait"}
+function normCode(c){return String(c||"").trim().toUpperCase()}
+function userCode(u){return normCode(u.inviteCode||u.invite_code||u.referralCode||u.code)}
+function usedCode(u){return normCode(u.referredBy||u.referred_by||u.invitedBy||u.invited_by||u.parentCode||u.usedInvite||u.signup_invite||u.inviteUsed)}
+function sharesCount(u){return (u.machines&&u.machines.length)||u.shares||0}
+function findUser(id){id=String(id||"");return USERS.find(function(u){return String(u.id||"")===id||String(u.email||"")===id||String(u.phone||"")===id})}
+function memberLabel(id,fallback){var u=findUser(id);if(u)return (u.name||"Member")+" · "+(u.phone||u.email||"");return fallback||id||"—"}
+function classifyLevels(users){var byCode={},levelOf={};users.forEach(function(u){var c=userCode(u);if(c)byCode[c]=u});function levelFor(u,d){if(d>20)return 99;var id=u.id||u.email||userCode(u);if(levelOf[id]!=null)return levelOf[id];if(u.is_admin||(u.email||"").toLowerCase()==="k_hmed@yahoo.com"){levelOf[id]=0;return 0}var used=usedCode(u);if(!used||used===ROOT_CODE){levelOf[id]=1;return 1}var parent=byCode[used];if(!parent){levelOf[id]=1;return 1}levelOf[id]=levelFor(parent,d+1)+1;return levelOf[id]}users.forEach(function(u){levelFor(u,0)});return{levelOf:levelOf,byCode:byCode}}
+function buildLog(){
+  var rows=[];
+  (POOL.ledger||[]).forEach(function(e){
+    var m=e.meta||{};
+    rows.push({at:e.at||"",src:"pool",id:e.id||"",type:e.type||"ledger",member:memberLabel(m.user_id),amount:e.amount,before:e.balance_before,after:e.balance_after,txid:m.txid||m.tx_id||"",ref:m.deposit_id||m.withdrawal_id||"",status:e.type||"",note:e.note||"",raw:e});
+  });
+  DEPOSITS.forEach(function(d){rows.push({at:d.date||d.created_at||"",src:"deposit",id:d.id||"",type:"deposit",member:(d.name||d.user||"")+" · "+(d.phone||""),amount:d.amount,before:"",after:"",txid:d.txid||d.tx_id||"",ref:d.id||"",status:d.status||"",note:"",raw:d})});
+  WITHDRAWALS.forEach(function(w){rows.push({at:w.date||w.created_at||"",src:"withdraw",id:w.id||"",type:"withdraw",member:(w.name||w.user||""),amount:w.amount,before:"",after:"",txid:w.txid||w.system_txid||"",ref:w.id||"",status:w.status||"",note:"",raw:w})});
+  rows.sort(function(a,b){return String(b.at).localeCompare(String(a.at))});
+  return rows;
+}
+function renderLogs(){
+  var rows=buildLog();
+  document.getElementById("logN").textContent=rows.length;
+  document.getElementById("logPool").textContent="$"+(POOL.balance||0);
+  document.getElementById("logDep").textContent=DEPOSITS.length;
+  document.getElementById("logWd").textContent=WITHDRAWALS.length;
+  var src=document.getElementById("logSrc").value;
+  var q=(document.getElementById("logQ").value||"").toLowerCase();
+  if(src!=="all")rows=rows.filter(function(r){return r.src===src||(src==="credit"&&/credit/i.test(r.note||r.type))});
+  if(q)rows=rows.filter(function(r){return JSON.stringify(r).toLowerCase().indexOf(q)>=0});
+  var h="<table><thead><tr><th>When</th><th>Src</th><th>Member</th><th>Amount</th><th>TxID</th><th>Status</th><th>Note</th></tr></thead><tbody>";
+  rows.slice(0,200).forEach(function(r){h+="<tr><td class='mono'>"+(r.at||"—")+"</td><td>"+r.src+"</td><td>"+r.member+"</td><td>"+money(r.amount)+"</td><td class='mono'>"+(r.txid||"—")+"</td><td><span class='badge "+badge(r.status)+"'>"+(r.status||"—")+"</span></td><td>"+(r.note||"")+"</td></tr>"});
+  document.getElementById("logTable").innerHTML=h+"</tbody></table>"+(rows.length>200?"<p class='empty'>Showing first 200</p>":"");
+}
+function loadPool(){api("/api/admin/pool").then(function(r){POOL=r;document.getElementById("poolBal").textContent=r.balance||0;document.getElementById("poolN").textContent=(r.ledger||[]).length;document.getElementById("poolAt").textContent=r.updated_at||"—";document.getElementById("poolCur").textContent=r.currency||"USD";var h="<table><thead><tr><th>When</th><th>Type</th><th>Amount</th><th>Before</th><th>After</th><th>Note</th></tr></thead><tbody>";(r.ledger||[]).slice().reverse().forEach(function(e){h+="<tr><td class='mono'>"+(e.at||"")+"</td><td>"+(e.type||"")+"</td><td>"+(e.amount||0)+"</td><td>"+(e.balance_before||"")+"</td><td>"+(e.balance_after||"")+"</td><td>"+(e.note||"")+"</td></tr>"});document.getElementById("poolLedger").innerHTML=h+"</tbody></table>"}).catch(function(e){toast(e.message)})}
+function setPool(){api("/api/admin/pool","POST",{balance:Number(document.getElementById("poolSetBal").value),note:document.getElementById("poolSetNote").value}).then(function(){toast("Pool saved");loadPool()}).catch(function(e){toast(e.message)})}
+function adjPool(){api("/api/admin/pool/adjust","POST",{amount:Number(document.getElementById("poolAdjAmt").value),note:document.getElementById("poolAdjNote").value}).then(function(){toast("Adjusted");loadPool()}).catch(function(e){toast(e.message)})}
+function creditOne(){api("/api/admin/credit","POST",{identifier:document.getElementById("crId").value.trim(),amount:Number(document.getElementById("crAmt").value),note:document.getElementById("crNote").value}).then(function(){toast("Credited");refreshAll()}).catch(function(e){toast(e.message)})}
+function creditBulk(){api("/api/admin/credit/bulk","POST",{lines:document.getElementById("crBulk").value}).then(function(r){var ok=(r.results||[]).filter(function(x){return x.ok}).length;var bad=(r.results||[]).filter(function(x){return!x.ok});document.getElementById("crBulkOut").innerHTML="<b>"+ok+" ok</b>, "+bad.length+" failed<br>"+bad.map(function(x){return(x.identifier||"")+" — "+x.error}).join("<br>");toast("Bulk done");refreshAll()}).catch(function(e){toast(e.message)})}
+function refreshAll(){api("/api/admin/stats").then(function(s){document.getElementById("kUsers").textContent=s.users||s.total_users||0;document.getElementById("kInv").textContent=money(s.invested||s.total_invested||0);document.getElementById("kPwd").textContent=s.pending_withdrawals||0}).catch(function(){});loadPool();api("/api/admin/deposits").then(function(r){DEPOSITS=r.deposits||[];renderDeposits();renderLogs()}).catch(function(e){document.getElementById("depTable").innerHTML="<div class='empty'>"+e.message+"</div>"});api("/api/admin/withdrawals").then(function(r){WITHDRAWALS=r.withdrawals||[];renderWithdrawals();renderLogs()}).catch(function(e){document.getElementById("wdTable").innerHTML="<div class='empty'>"+e.message+"</div>"});api("/api/admin/users").then(function(r){USERS=r.users||[];renderMembers();renderReferrals();renderLogs()}).catch(function(e){document.getElementById("memTable").innerHTML="<div class='empty'>"+e.message+"</div>"})}
+function renderDeposits(){if(!DEPOSITS.length){document.getElementById("depTable").innerHTML="<div class='empty'>No deposit requests.</div>";return}var h="<table><thead><tr><th>Date</th><th>Member</th><th>Phone</th><th>Amount</th><th>TxID</th><th>Status</th><th></th></tr></thead><tbody>";DEPOSITS.forEach(function(d){var tx=d.txid||d.tx_id||d.reference||"—";var st=d.status||"pending";var id=d.id||d.deposit_id||"";h+="<tr><td>"+(d.date||d.created_at||"—")+"</td><td>"+(d.name||d.user||"—")+"</td><td>"+(d.phone||"—")+"</td><td>"+money(d.amount)+"</td><td>"+tx+"</td><td><span class='badge "+badge(st)+"'>"+st+"</span></td><td class='row-actions'>";if(/pend|submit/i.test(st)){h+="<button class='btn-ok' type='button' onclick='depAct(\""+id+"\",\"confirm\")'>Approve</button><button class='btn-bad' type='button' onclick='depAct(\""+id+"\",\"reject\")'>Reject</button>"}h+="</td></tr>"});document.getElementById("depTable").innerHTML=h+"</tbody></table>"}
+function renderWithdrawals(){if(!WITHDRAWALS.length){document.getElementById("wdTable").innerHTML="<div class='empty'>No withdrawal requests.</div>";return}var h="<table><thead><tr><th>Date</th><th>Member</th><th>Amount</th><th>TxID</th><th>Status</th><th></th></tr></thead><tbody>";WITHDRAWALS.forEach(function(w){var st=w.status||"under_review";var id=w.id||w.withdrawal_id||"";h+="<tr><td>"+(w.date||w.created_at||"—")+"</td><td>"+(w.name||w.user||"—")+"</td><td>"+money(w.amount)+"</td><td>"+(w.txid||w.system_txid||"—")+"</td><td><span class='badge "+badge(st)+"'>"+st+"</span></td><td class='row-actions'>";if(/review|pend/i.test(st)&&!/reviewed/i.test(st)){h+="<button class='btn-ok' type='button' onclick='wdAct(\""+id+"\",\"review\")'>Review</button><button class='btn-bad' type='button' onclick='wdAct(\""+id+"\",\"reject\")'>Reject</button>"}else if(/reviewed/i.test(st)){h+="<button class='btn-ok' type='button' onclick='wdAct(\""+id+"\",\"disburse\")'>Disburse</button>"}h+="</td></tr>"});document.getElementById("wdTable").innerHTML=h+"</tbody></table>"}
+function renderMembers(){if(!USERS.length){document.getElementById("memTable").innerHTML="<div class='empty'>No members</div>";return}var cls=classifyLevels(USERS);var h="<table><thead><tr><th class='chk'><input type='checkbox' id='chkAllHead' onclick='toggleAllMembers(this)' title='Select all'></th><th>Level</th><th>Name</th><th>Phone</th><th>Email</th><th>Balance</th><th>Shares</th><th>Code</th><th>Invited by</th><th></th></tr></thead><tbody>";USERS.forEach(function(u){var id=String(u.id||u.email||userCode(u)||"").replace(/"/g,"");var lv=cls.levelOf[id]==null?1:cls.levelOf[id],used=usedCode(u);var ident=(u.email||u.phone||u.id||"");h+="<tr><td class='chk'><input type='checkbox' class='row-chk' data-id='"+id+"' data-ident='"+String(ident).replace(/'/g,"&#39;")+
+"' onchange='updateSelCount()'></td><td><span class='badge "+(lv===0?"badge-root":lv===1?"badge-l1":lv===2?"badge-l2":"badge-l3")+"'>"+(lv===0?"ROOT":"L"+lv)+"</span></td><td>"+(u.name||"—")+"</td><td>"+(u.phone||"—")+"</td><td>"+(u.email||"—")+"</td><td>"+money(u.balance)+"</td><td>"+sharesCount(u)+"</td><td><code>"+(userCode(u)||"—")+"</code></td><td>"+(used===ROOT_CODE?"ROOT":(used||"—"))+"</td><td class='row-actions'><button class='btn-ok' type='button' onclick='creditOneRow(\""+id+"\",\""+String(u.name||"").replace(/"/g,"")+"\",\""+String(ident).replace(/"/g,"")+"\")'>Credit</button></td></tr>"});document.getElementById("memTable").innerHTML=h+"</tbody></table>";updateSelCount()}
+function toggleAllMembers(src){var on=!!src.checked;document.querySelectorAll(".row-chk").forEach(function(c){c.checked=on});var a=document.getElementById("chkAllMembers");var b=document.getElementById("chkAllHead");if(a)a.checked=on;if(b)b.checked=on;updateSelCount()}
+function updateSelCount(){var n=document.querySelectorAll(".row-chk:checked").length;var el=document.getElementById("selCount");if(el)el.textContent=n+" selected"}
+function creditOneRow(uid,name,ident){var raw=prompt("Credit amount (UGX) for "+(name||ident||uid));if(raw===null)return;var amount=Number(String(raw).replace(/[^0-9.]/g,""));if(!amount||amount<=0){toast("Enter a valid amount");return}var note=prompt("Note (optional):","Admin credit")||"Admin credit";api("/api/admin/credit","POST",{identifier:ident||uid,user_id:uid,amount:amount,note:note}).then(function(r){toast("Credited "+money(amount));refreshAll()}).catch(function(e){toast(e.message||"Credit failed")})}
+function creditSelected(){var boxes=Array.prototype.slice.call(document.querySelectorAll(".row-chk:checked"));if(!boxes.length){toast("Select at least one member");return}var amount=Number(document.getElementById("bulkAmt").value);if(!amount||amount<=0){toast("Enter amount in the bulk field");return}var note=(document.getElementById("bulkNote").value||"Bulk admin credit").trim();if(!confirm("Credit "+money(amount)+" to "+boxes.length+" selected member(s)?"))return;var done=0,fail=0;var chain=Promise.resolve();boxes.forEach(function(box){var ident=box.getAttribute("data-ident")||box.getAttribute("data-id");var uid=box.getAttribute("data-id");chain=chain.then(function(){return api("/api/admin/credit","POST",{identifier:ident,user_id:uid,amount:amount,note:note}).then(function(){done++}).catch(function(){fail++})})});chain.then(function(){toast("Done: "+done+" credited"+(fail?", "+fail+" failed":""));refreshAll()}).catch(function(e){toast(e.message||"Bulk failed")})}
+function renderReferrals(){var cls=classifyLevels(USERS);var rows=USERS.map(function(u){var id=u.id||u.email||userCode(u);var lv=cls.levelOf[id];if(lv==null)lv=1;return{u:u,level:lv,code:userCode(u),used:usedCode(u),shares:sharesCount(u)}}).sort(function(a,b){return a.level-b.level||String(a.u.name||"").localeCompare(String(b.u.name||""))});var c1=0,c2=0,c3=0,cb=0;rows.forEach(function(r){if(r.level===0)return;if(r.level===1)c1++;else if(r.level===2)c2++;else c3++;if(r.shares>0)cb++});document.getElementById("refL1").textContent=c1;document.getElementById("refL2").textContent=c2;document.getElementById("refL3").textContent=c3;document.getElementById("refBuy").textContent=cb;document.getElementById("kL1").textContent=c1;var h="<table><thead><tr><th>Level</th><th>Name</th><th>Phone</th><th>Email</th><th>Their invite code</th><th>Joined via</th><th>Shares</th></tr></thead><tbody>";rows.forEach(function(r){var lv=r.level;var badgeCls=lv===0?"badge-root":lv===1?"badge-l1":lv===2?"badge-l2":"badge-l3";var label=lv===0?"ROOT":("L"+lv);var inviter=r.used||"—";if(r.used===ROOT_CODE)inviter=ROOT_CODE+" (system)";else if(cls.byCode[r.used])inviter=(cls.byCode[r.used].name||r.used)+" · "+r.used;h+="<tr><td><span class='badge "+badgeCls+"'>"+label+"</span></td><td>"+(r.u.name||"—")+"</td><td>"+(r.u.phone||"—")+"</td><td>"+(r.u.email||"—")+"</td><td><code>"+(r.code||"—")+"</code></td><td>"+inviter+"</td><td>"+r.shares+"</td></tr>"});document.getElementById("refTable").innerHTML=h+"</tbody></table>";var children={};rows.forEach(function(r){if(r.level===0)return;var parentKey=r.used||ROOT_CODE;if(!children[parentKey])children[parentKey]=[];children[parentKey].push(r)});function renderNode(code,depth){var list=children[code]||[];if(!list.length)return depth===0?"<div class='empty'>No referrals yet under "+code+"</div>":"";var out="";list.forEach(function(r){out+="<div class='tree-node'><b>"+(r.u.name||"Member")+"</b> <span class='badge "+(r.level===1?"badge-l1":r.level===2?"badge-l2":"badge-l3")+"'>L"+r.level+"</span><div class='meta'>"+(r.u.phone||"")+" · "+(r.u.email||"")+" · code <code>"+(r.code||"—")+"</code> · shares "+r.shares+"</div>";if(r.code&&children[r.code])out+="<div class='tree-children'>"+renderNode(r.code,depth+1)+"</div>";out+="</div>"});return out}document.getElementById("refTree").innerHTML=renderNode(ROOT_CODE,0)}
+function depAct(id,action){api("/api/admin/deposits/action","POST",{id:id,action:action}).then(function(){toast("Deposit updated");refreshAll()}).catch(function(e){toast(e.message)})}
+function wdAct(id,action){api("/api/admin/withdrawals/action","POST",{id:id,action:action}).then(function(){toast("Withdrawal updated");refreshAll()}).catch(function(e){toast(e.message)})}
+setInterval(function(){if(TOKEN)try{refreshAll()}catch(e){}},8000);
+if(TOKEN){api("/api/me").then(function(r){if(r.user&&(r.user.is_admin||r.user.is_support))showShell()}).catch(function(){TOKEN="";localStorage.removeItem("oc_sys_token")})}
+</script>
+</body>
+</html>
