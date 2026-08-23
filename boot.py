@@ -61,8 +61,8 @@ except Exception as e:
 for script in ("patch_serve_index.py", "patch_login_guard.py", "patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
     run(script)
 
-HEAD = '<link rel="stylesheet" href="/static/kill-pitch.css?v=70">\n<script src="/static/login-tight.js?v=70"></script>\n'
-TAIL = '\n<link rel="stylesheet" href="/static/app-shell-fix.css?v=70">\n<script src="/static/app-shell-fix.js?v=70"></script>\n<script src="/static/market-data.js?v=70"></script>\n'
+HEAD = '<link rel="stylesheet" href="/static/kill-pitch.css?v=71">\n<script src="/static/login-tight.js?v=71"></script>\n'
+TAIL = '\n<link rel="stylesheet" href="/static/app-shell-fix.css?v=71">\n<script src="/static/app-shell-fix.js?v=71"></script>\n<script src="/static/market-data.js?v=71"></script>\n'
 p = root / "frontend.html"
 if p.exists():
     t = p.read_text(encoding="utf-8", errors="replace")
@@ -76,7 +76,7 @@ if p.exists():
     if "</body>" in t: t = t.replace("</body>", TAIL + "</body>", 1)
     else: t += TAIL
     p.write_text(t, encoding="utf-8")
-    print("injected v70 frontend")
+    print("injected v71 frontend")
 
-print("boot starting — pitch deleted from source")
+print("boot starting — market live after login")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
