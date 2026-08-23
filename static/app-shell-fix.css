@@ -1,140 +1,86 @@
-/* v52 — pure dark edge-to-edge, locked full-width nav above Safari indicator, zero pitch/green bleed */
-html, body {
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 100% !important;
-  height: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden !important;
-  background: #0a0a0c !important;
-  background-color: #0a0a0c !important;
+/* v59 dashboard flex shell */
+:root {
+  --bg-deep: #0b0c10;
+  --card-charcoal: #141923;
+  --accent-gold: #d4af37;
+  --accent-green: #00c853;
+  --text-main: #ffffff;
+  --text-muted: #85929e;
+  --border-line: rgba(212, 175, 55, 0.15);
 }
-
-/* Kill every pitch / wallpaper / green field element */
+* { -webkit-tap-highlight-color: transparent; }
+html, body {
+  height: 100% !important; width: 100% !important; max-width: 100% !important;
+  margin: 0 !important; padding: 0 !important; overflow: hidden !important;
+  background: #0b0c10 !important; color: #fff !important;
+}
 .space-bg, .warp-img, .warp, .warp2, .warp-stars, #leagueFx, .league-fx, #particleCanvas,
 img[src*="space-wallpaper"], img[src*="ucl-bg"], .bg-space, .wallpaper, #appBg, .app-bg,
-.pitch, .pitch-lines, .pitch-midline, .league-fx .pitch, .auth-sport-fx, .auth-sport-fx .pitch-lines,
-body > .space-bg, body > img.bg, #homeBgUcl, .glow {
-  display: none !important;
-  visibility: hidden !important;
-  opacity: 0 !important;
-  pointer-events: none !important;
-  background: transparent !important;
-  background-image: none !important;
+.pitch, .pitch-lines, .pitch-midline, #homeBgUcl, .glow, .home-banner, .home-banner-inner {
+  display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
 }
-
 #mainApp:not(.hidden) {
-  position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 6px) !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  min-width: 100% !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
-  background: #0a0a0c !important;
-  background-color: #0a0a0c !important;
-  z-index: 20 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  transform: none !important;
-  -webkit-overflow-scrolling: touch !important;
+  position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important;
+  margin: 0 !important; padding: 0 !important; display: flex !important; flex-direction: column !important;
+  overflow: hidden !important; background: #0b0c10 !important; z-index: 20 !important; transform: none !important;
 }
-
-#mainApp > header,
-#mainApp > main.content,
-#mainApp .page {
-  width: 100% !important;
-  max-width: 100% !important;
-  margin: 0 !important;
-  padding-left: max(12px, env(safe-area-inset-left, 0px)) !important;
-  padding-right: max(12px, env(safe-area-inset-right, 0px)) !important;
-  box-sizing: border-box !important;
-  background: transparent !important;
+#mainApp > header {
+  flex: 0 0 auto !important; width: 100% !important; max-width: 480px !important; margin: 0 auto !important;
+  padding: 14px 16px !important; padding-top: calc(14px + env(safe-area-inset-top, 0px)) !important;
+  display: flex !important; justify-content: space-between !important; align-items: center !important;
+  border-bottom: 1px solid rgba(212,175,55,.15) !important; background: #141923 !important; box-sizing: border-box !important;
 }
-
-#mainApp .page { display: none !important; }
+#mainApp > header .logo { font-size: 1.15rem !important; font-weight: 700 !important; color: #fff !important; }
+#mainApp > header .logo small { display: block !important; font-size: .75rem !important; color: #d4af37 !important; text-transform: uppercase !important; letter-spacing: 1px !important; }
+#mainApp > header .menu-item { display: none !important; }
+#mainApp > main.content {
+  flex: 1 1 auto !important; width: 100% !important; max-width: 480px !important; margin: 0 auto !important;
+  overflow-y: auto !important; overflow-x: hidden !important; padding: 16px !important;
+  padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)) !important;
+  -webkit-overflow-scrolling: touch !important; box-sizing: border-box !important; background: transparent !important;
+}
+#mainApp .page { display: none !important; width: 100% !important; }
 #mainApp .page.active { display: block !important; }
-
-/* Bottom nav: solid locked full-width bar, buttons above Safari search / home indicator */
+#dashWallet, .wallet-card, #my .wallet-bar {
+  background: #141923 !important; border-radius: 16px !important; padding: 20px !important;
+  border: 1px solid rgba(212,175,55,.15) !important; margin-bottom: 18px !important;
+}
+.wallet-label { font-size: .85rem; color: #85929e; text-transform: uppercase; letter-spacing: .5px; }
+.wallet-main-balance { font-size: 1.8rem; font-weight: 800; color: #fff; margin: 6px 0 2px; }
+.wallet-conversion { font-size: .9rem; color: #d4af37; font-weight: 500; }
+.wallet-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 18px; }
+.action-btn { padding: 12px; border: none; border-radius: 10px; font-size: .95rem; font-weight: 700; }
+.btn-deposit { background: #00c853; color: #fff; }
+.btn-withdraw { background: #242b35; color: #fff; border: 1px solid rgba(255,255,255,.1); }
+.quick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 22px; }
+.grid-item { background: #141923; border: 1px solid rgba(212,175,55,.15); border-radius: 12px; padding: 12px 6px; display: flex; flex-direction: column; align-items: center; justify-content: center; color: inherit; }
+.grid-icon { font-size: 1.35rem; margin-bottom: 6px; }
+.grid-label { font-size: .75rem; font-weight: 600; color: #85929e; }
+.stats-grid, .stats-grid3 { display: grid !important; gap: 10px !important; margin-bottom: 22px !important; }
+.stats-grid { grid-template-columns: 1fr 1fr !important; }
+.stats-grid3 { grid-template-columns: 1fr 1fr 1fr !important; }
+.stat-box, .card, .kpi { background: #141923 !important; padding: 14px !important; border-radius: 10px !important; border: 1px solid rgba(212,175,55,.15) !important; color: #fff !important; }
+.stat-box .val { font-size: 1.1rem !important; font-weight: 700 !important; }
+.stat-box .lbl { font-size: .75rem !important; color: #85929e !important; }
+.msg-panel { background: #141923 !important; border-radius: 12px !important; border-left: 4px solid #d4af37 !important; padding: 16px !important; margin-bottom: 20px !important; }
 nav.bottom {
-  position: fixed !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  top: auto !important;
-  width: 100% !important;
-  max-width: 100% !important;
-  height: auto !important;
+  position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; top: auto !important;
+  width: 100% !important; max-width: 100% !important; height: auto !important;
   min-height: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
-  margin: 0 !important;
-  padding: 6px 0 calc(env(safe-area-inset-bottom, 0px) + 10px) 0 !important;
-  display: grid !important;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr !important;
-  grid-template-rows: 50px !important;
-  align-items: stretch !important;
-  justify-items: stretch !important;
-  background: #0b0d10 !important;
-  background-color: #0b0d10 !important;
-  border-top: 1px solid #1a3348 !important;
-  border-radius: 0 !important;
-  z-index: 2147483000 !important;
-  transform: none !important;
-  gap: 0 !important;
-  box-sizing: border-box !important;
-  box-shadow: 0 -4px 20px rgba(0,0,0,.4) !important;
+  margin: 0 !important; padding: 8px 0 calc(env(safe-area-inset-bottom, 0px) + 8px) 0 !important;
+  display: grid !important; grid-template-columns: repeat(5, 1fr) !important;
+  background: #141923 !important; border-top: 1px solid rgba(212,175,55,.15) !important;
+  z-index: 2147483000 !important; transform: none !important; gap: 0 !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.5) !important; border-radius: 0 !important;
 }
-
 nav.bottom .nav {
-  display: flex !important;
-  flex-direction: column !important;
-  align-items: center !important;
-  justify-content: center !important;
-  width: 100% !important;
-  height: 50px !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-  border: 0 !important;
-  color: #8aa0b4 !important;
-  font-size: 10px !important;
-  font-weight: 700 !important;
-  position: static !important;
-  transform: none !important;
-  translate: none !important;
-  float: none !important;
-  line-height: 1.15 !important;
+  display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important;
+  width: 100% !important; height: 50px !important; margin: 0 !important; padding: 0 !important;
+  background: transparent !important; border: 0 !important; color: #85929e !important;
+  font-size: .7rem !important; font-weight: 600 !important; position: static !important; transform: none !important; gap: 3px !important;
 }
-
-nav.bottom .nav.active { color: #1ebcff !important; }
-
-nav.bottom .nav.nav-center,
-nav.bottom .nav-center,
-nav.bottom .nav-center-btn {
-  position: static !important;
-  top: auto !important;
-  transform: none !important;
-  margin: 0 !important;
-  box-shadow: none !important;
-}
-
-nav.bottom .nav-center-btn {
-  width: 26px !important;
-  height: 26px !important;
-  border-radius: 50% !important;
-  background: #00c853 !important;
-}
-
+nav.bottom .nav.active { color: #d4af37 !important; }
+nav.bottom .nav-center, nav.bottom .nav-center-btn { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; }
+nav.bottom .nav-center-btn svg { stroke: currentColor !important; }
+body.auth-open nav.bottom { display: none !important; }
 #marketList, .mkt-list { display: block !important; min-height: 180px !important; }
-
-/* Force no green anywhere on chrome */
-html, body, #mainApp, .page, .content, header, nav.bottom {
-  --bg: #0a0a0c;
-  background-image: none !important;
-}
