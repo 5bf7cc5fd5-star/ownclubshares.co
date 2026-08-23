@@ -1,33 +1,24 @@
-/* v67 no green anywhere */
 html, body {
   height: 100% !important; width: 100% !important;
   margin: 0 !important; padding: 0 !important; overflow: hidden !important;
-  background: #000 !important; color: #fff !important;
+  background: #0b0c10 !important; color: #fff !important;
 }
-.space-bg, .warp, .pitch, .pitch-lines, #homeBgUcl, img[src*="ucl-bg"], img[src*="space-wallpaper"] {
+.space-bg, .warp, .pitch, .pitch-lines, #homeBgUcl, img[src*="ucl-bg"], img[src*="space-wallpaper"], .auth-sport-fx, .league-fx {
   display: none !important;
 }
 nav.bottom {
   position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
   width: 100% !important;
-  min-height: calc(56px + env(safe-area-inset-bottom, 0px)) !important;
-  display: grid !important; grid-template-columns: repeat(5, 1fr) !important;
-  background: #000 !important; border-top: 1px solid #262626 !important;
+  min-height: calc(52px + env(safe-area-inset-bottom, 0px)) !important;
+  display: grid !important; grid-template-columns: repeat(4, 1fr) !important;
+  background: #0b0c10 !important; border-top: 1px solid #262626 !important;
   z-index: 2147483000 !important; transform: none !important;
+  padding-bottom: env(safe-area-inset-bottom, 0px) !important;
 }
 nav.bottom .nav { color: #a8a8a8 !important; transform: none !important; position: static !important; background: transparent !important; }
-nav.bottom .nav.active { color: #fff !important; }
+nav.bottom .nav.active { color: #d4af37 !important; }
 body.auth-open nav.bottom { display: none !important; }
 #mainApp:not(.hidden) {
-  position: fixed !important; inset: 0 !important; background: #000 !important; display: flex !important; flex-direction: column !important;
+  position: fixed !important; inset: 0 !important; background: #0b0c10 !important; display: flex !important; flex-direction: column !important;
 }
-.btn-deposit, .btn-ok, .badge-ok, .pos, .up, .mkt-chg.up,
-button[style*="green"], .chip-ok {
-  background: #0095f6 !important;
-  color: #fff !important;
-  border-color: #0095f6 !important;
-}
-.mkt-chg.up { background: transparent !important; color: #d4af37 !important; }
-svg polyline[stroke="#2ee56a"], svg polyline[stroke="#00c853"], svg polyline[stroke="#16a34a"] {
-  stroke: #d4af37 !important;
-}
+.btn-deposit, .btn-ok, .badge-ok { background: #d4af37 !important; color: #000 !important; }
