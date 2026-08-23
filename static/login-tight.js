@@ -1,5 +1,5 @@
 (function(){
-  var LOGO = "/static/own-club-logo.jpg?v=55";
+  var LOGO = "/static/own-club-logo.jpg?v=56";
   var CSS = [
     '#ocGoldLogin{position:fixed;inset:0;z-index:2147483646;background:#0b0c10;color:#ffffff;',
     "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
@@ -8,11 +8,8 @@
     'padding:0 16px calc(24px + env(safe-area-inset-bottom,0px)) 16px;box-sizing:border-box;',
     '-webkit-tap-highlight-color:transparent;pointer-events:auto;}',
     '#ocGoldLogin *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;pointer-events:auto;}',
-    '#ocGoldLogin .top-banner{width:calc(100% + 32px);margin-left:-16px;margin-right:-16px;',
-    'background-color:#1f2833;padding:12px 16px;padding-top:calc(12px + env(safe-area-inset-top,0px));',
-    'font-size:0.85rem;color:#c5a880;text-align:center;border-bottom:1px solid rgba(212,175,55,0.2);}',
-    '#ocGoldLogin .top-banner a{color:#d4af37;text-decoration:none;font-weight:600;margin-left:4px;}',
-    '#ocGoldLogin .language-text{color:#85929E;font-size:0.85rem;margin-top:14px;width:100%;text-align:center;}',
+    '#ocGoldLogin .language-text{color:#85929E;font-size:0.85rem;margin-top:0;width:100%;text-align:center;',
+    'padding-top:calc(18px + env(safe-area-inset-top,0px));}',
     '#ocGoldLogin .main-content{width:100%;max-width:380px;display:flex;flex-direction:column;',
     'align-items:center;justify-content:center;flex-grow:1;padding:10px 0;}',
     '#ocGoldLogin .logo-container{width:110px;height:110px;margin-bottom:20px;border-radius:50%;overflow:hidden;',
@@ -144,28 +141,19 @@
     var creds = copyLogin();
     if(!creds.id){ showErr("Enter mobile number or email"); return; }
     if(!creds.pass){ showErr("Enter password"); return; }
-
     var oldAlert = window.alert;
     var captured = "";
     window.alert = function(m){ captured = String(m||""); };
     try{
-      if(typeof doLogin === "function"){
-        doLogin();
-      } else if(typeof window.doLogin === "function"){
-        window.doLogin();
-      } else {
-        captured = "Login engine not loaded. Refresh the page.";
-      }
+      if(typeof doLogin === "function") doLogin();
+      else if(typeof window.doLogin === "function") window.doLogin();
+      else captured = "Login engine not loaded. Refresh the page.";
     }catch(err){
       captured = (err && err.message) ? err.message : String(err);
     }
     window.alert = oldAlert;
-
     setTimeout(function(){
-      if(finishIfIn()){
-        showOk("Welcome");
-        return;
-      }
+      if(finishIfIn()){ showOk("Welcome"); return; }
       if(captured) showErr(captured.replace(/\n/g," — "));
       else showErr("Login did not complete. Check details and try again.");
     }, 60);
@@ -184,7 +172,6 @@
       return;
     }
     if(pass !== pass2){ showErr("Passwords do not match"); return; }
-
     var oldAlert = window.alert;
     var captured = "";
     window.alert = function(m){ captured = String(m||""); };
@@ -196,12 +183,8 @@
       captured = (err && err.message) ? err.message : String(err);
     }
     window.alert = oldAlert;
-
     setTimeout(function(){
-      if(finishIfIn()){
-        showOk("Account created");
-        return;
-      }
+      if(finishIfIn()){ showOk("Account created"); return; }
       if(captured) showErr(captured.replace(/\n/g," — "));
       else showErr("Could not create account. Check the invite code and try again.");
     }, 80);
@@ -238,36 +221,20 @@
     var forgotBtn = document.getElementById("ocForgotBtn");
     var backBtn = document.getElementById("ocBackLogin");
     var pass = document.getElementById("ocPass");
-    if(loginBtn){
-      loginBtn.onclick = function(e){ if(e) e.preventDefault(); runLogin(); };
-    }
-    if(signupGo){
-      signupGo.onclick = function(e){ if(e) e.preventDefault(); runSignup(); };
-    }
-    if(createBtn){
-      createBtn.onclick = function(e){
-        if(e) e.preventDefault();
-        showPane("signup");
-        try{ if(typeof switchAuth === "function") switchAuth("signup"); }catch(err){}
-      };
-    }
-    if(backBtn){
-      backBtn.onclick = function(e){ if(e) e.preventDefault(); showPane("login"); };
-    }
-    if(forgotBtn){
-      forgotBtn.onclick = function(e){
-        if(e) e.preventDefault();
-        try{ if(typeof openForgotPassword === "function") openForgotPassword(); }
-        catch(err){ showErr("Open forgot password from the original form."); }
-      };
-    }
-    if(pass){
-      pass.addEventListener("keydown", function(e){
-        if(e.key === "Enter") runLogin();
-      });
-    }
-    var dl = document.getElementById("ocDl");
-    if(dl) dl.onclick = function(e){ e.preventDefault(); };
+    if(loginBtn) loginBtn.onclick = function(e){ if(e) e.preventDefault(); runLogin(); };
+    if(signupGo) signupGo.onclick = function(e){ if(e) e.preventDefault(); runSignup(); };
+    if(createBtn) createBtn.onclick = function(e){
+      if(e) e.preventDefault();
+      showPane("signup");
+      try{ if(typeof switchAuth === "function") switchAuth("signup"); }catch(err){}
+    };
+    if(backBtn) backBtn.onclick = function(e){ if(e) e.preventDefault(); showPane("login"); };
+    if(forgotBtn) forgotBtn.onclick = function(e){
+      if(e) e.preventDefault();
+      try{ if(typeof openForgotPassword === "function") openForgotPassword(); }
+      catch(err){ showErr("Open forgot password from the original form."); }
+    };
+    if(pass) pass.addEventListener("keydown", function(e){ if(e.key === "Enter") runLogin(); });
   }
 
   function mount(){
@@ -284,10 +251,9 @@
     var box = document.createElement("div");
     box.id = "ocGoldLogin";
     box.innerHTML =
-      '<div class="top-banner"><span>Experience modern networking. <a href="#" id="ocDl">Download App</a></span></div>'+
       '<div class="language-text">English (UK)</div>'+
       '<div class="main-content">'+
-        '<div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=55\'"></div>'+
+        '<div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=56\'"></div>'+
         '<div class="form-container">'+loginHTML()+signupHTML()+'<div id="ocErr" class="oc-err"></div></div>'+
       '</div>'+
       '<div class="bottom-actions">'+
@@ -296,7 +262,6 @@
       '</div>';
     document.body.appendChild(box);
     bind();
-
     var _show = window.showApp;
     if(typeof _show === "function" && !_show._goldWrapped){
       window.showApp = function(){
