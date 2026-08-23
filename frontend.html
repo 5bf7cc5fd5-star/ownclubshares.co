@@ -1,24 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Own Club — Closed</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>Own Club — Share Market</title>
+<link rel="stylesheet" href="/static/app-shell-fix.css?v=72">
 <style>
-  html,body{margin:0;min-height:100%;background:#0b0d10;color:#e8eef4;font-family:system-ui,-apple-system,sans-serif}
-  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 20px}
-  .card{max-width:420px;text-align:center}
-  h1{margin:0 0 10px;font-size:22px;letter-spacing:.02em}
-  p{margin:0;color:#9aa8b6;line-height:1.5;font-size:15px}
+html,body{margin:0;height:100%;background:#0b0c10;color:#fff;font-family:-apple-system,BlinkMacSystemFont,sans-serif;overflow:hidden}
+#mainApp{position:fixed;inset:0;display:flex;flex-direction:column;background:#0b0c10}
+.page{display:none;flex:1;overflow:auto;padding:12px 14px 90px;background:#07140f}
+.page.on{display:block}
+.mkt-row{display:grid;grid-template-columns:36px 1fr 78px 88px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.mkt-badge{width:32px;height:32px;border-radius:50%;object-fit:contain;background:#000}
+.mkt-name{font-size:14px;font-weight:600}
+.mkt-sub{font-size:11px;color:#8aa396;margin-top:2px}
+.mkt-price{text-align:right;font-weight:600;font-size:13px}
+.mkt-chg{text-align:right;font-size:12px;font-weight:600}
+.mkt-chg.up{color:#2ee56a}.mkt-chg.down{color:#ff5b5b}
+nav.bottom{position:fixed;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#0b0c10;border-top:1px solid #262626;z-index:99;padding-bottom:env(safe-area-inset-bottom)}
+nav.bottom button{background:0;border:0;color:#a8a8a8;padding:12px 0;font-size:11px;font-weight:600}
+nav.bottom button.on{color:#d4af37}
+.wallet{background:#141923;border:1px solid rgba(212,175,55,.2);border-radius:16px;padding:16px;margin-bottom:12px}
+.wallet b{display:block;font-size:26px;color:#d4af37}
 </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>Own Club is closed</h1>
-    <p>This share market app has been shut down. Sign-in, deposits, shares and the admin console are no longer available.</p>
-  </div>
+<div id="mainApp">
+  <section id="home" class="page on">
+    <div class="wallet"><div style="color:#85929e;font-size:12px">Total Balance</div><b id="bal">UGX 0</b><div style="color:#85929e;font-size:12px">≈ $0.00</div></div>
+    <div id="ocMarketHome"></div>
+  </section>
+  <section id="market" class="page"><div id="ocMarketBoard"></div></section>
+  <section id="machines" class="page"><p>Shares — pick a club pack after Market.</p></section>
+  <section id="team" class="page"><p>Team — invite code IMXT2Y0M8D</p></section>
+  <section id="my" class="page"><p>Account</p><button onclick="localStorage.removeItem('ocToken');location.href='/'" style="margin-top:12px;background:#d4af37;border:0;border-radius:20px;padding:10px 16px">Log out</button></section>
 </div>
+<nav class="bottom">
+  <button class="on" data-page="home">Home</button>
+  <button data-page="market">Market</button>
+  <button data-page="machines">Shares</button>
+  <button data-page="team">Team</button>
+  <button data-page="my">Account</button>
+</nav>
+<script>
+function goPage(id){
+  document.querySelectorAll('.page').forEach(function(p){p.classList.toggle('on', p.id===id);});
+  document.querySelectorAll('nav.bottom button').forEach(function(b){b.classList.toggle('on', b.getAttribute('data-page')===id);});
+  if(id==='market' && window.renderMarketList) window.renderMarketList();
+}
+window.goPage=goPage;
+document.querySelectorAll('nav.bottom button').forEach(function(b){
+  b.onclick=function(){ goPage(b.getAttribute('data-page')); };
+});
+</script>
+<script src="/static/market-data.js?v=72"></script>
+<script src="/static/app-shell-fix.js?v=72"></script>
 </body>
 </html>
