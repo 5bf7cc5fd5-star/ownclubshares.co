@@ -1,4 +1,4 @@
-/* v59 dashboard flex shell */
+/* v64 hide old format */
 :root {
   --bg-deep: #0b0c10;
   --card-charcoal: #141923;
@@ -16,9 +16,23 @@ html, body {
 }
 .space-bg, .warp-img, .warp, .warp2, .warp-stars, #leagueFx, .league-fx, #particleCanvas,
 img[src*="space-wallpaper"], img[src*="ucl-bg"], .bg-space, .wallpaper, #appBg, .app-bg,
-.pitch, .pitch-lines, .pitch-midline, #homeBgUcl, .glow, .home-banner, .home-banner-inner {
+.pitch, .pitch-lines, .pitch-midline, #homeBgUcl, .glow, .home-banner, .home-banner-inner,
+.auth-sport-fx, .sport-bg, .old-hero, .landing-hero {
   display: none !important; visibility: hidden !important; opacity: 0 !important; pointer-events: none !important;
 }
+body.auth-open > *:not(#ocGoldLogin):not(script):not(style):not(link) {
+  visibility: hidden !important;
+  pointer-events: none !important;
+}
+body.auth-open #ocGoldLogin,
+body.auth-open #ocGoldLogin * {
+  visibility: visible !important;
+  pointer-events: auto !important;
+}
+#authScreen, #landing, .auth-wrap, .auth-hero, header.site, .top-login-bar {
+  display: none !important;
+}
+body.auth-open #authScreen { display: none !important; }
 #mainApp:not(.hidden) {
   position: fixed !important; inset: 0 !important; width: 100% !important; height: 100% !important;
   margin: 0 !important; padding: 0 !important; display: flex !important; flex-direction: column !important;
@@ -57,12 +71,7 @@ img[src*="space-wallpaper"], img[src*="ucl-bg"], .bg-space, .wallpaper, #appBg, 
 .grid-icon { font-size: 1.35rem; margin-bottom: 6px; }
 .grid-label { font-size: .75rem; font-weight: 600; color: #85929e; }
 .stats-grid, .stats-grid3 { display: grid !important; gap: 10px !important; margin-bottom: 22px !important; }
-.stats-grid { grid-template-columns: 1fr 1fr !important; }
-.stats-grid3 { grid-template-columns: 1fr 1fr 1fr !important; }
 .stat-box, .card, .kpi { background: #141923 !important; padding: 14px !important; border-radius: 10px !important; border: 1px solid rgba(212,175,55,.15) !important; color: #fff !important; }
-.stat-box .val { font-size: 1.1rem !important; font-weight: 700 !important; }
-.stat-box .lbl { font-size: .75rem !important; color: #85929e !important; }
-.msg-panel { background: #141923 !important; border-radius: 12px !important; border-left: 4px solid #d4af37 !important; padding: 16px !important; margin-bottom: 20px !important; }
 nav.bottom {
   position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important; top: auto !important;
   width: 100% !important; max-width: 100% !important; height: auto !important;
@@ -77,10 +86,8 @@ nav.bottom .nav {
   display: flex !important; flex-direction: column !important; align-items: center !important; justify-content: center !important;
   width: 100% !important; height: 50px !important; margin: 0 !important; padding: 0 !important;
   background: transparent !important; border: 0 !important; color: #85929e !important;
-  font-size: .7rem !important; font-weight: 600 !important; position: static !important; transform: none !important; gap: 3px !important;
+  font-size: .7rem !important; font-weight: 600 !important; position: static !important; transform: none !important;
 }
 nav.bottom .nav.active { color: #d4af37 !important; }
-nav.bottom .nav-center, nav.bottom .nav-center-btn { position: static !important; transform: none !important; box-shadow: none !important; background: transparent !important; }
-nav.bottom .nav-center-btn svg { stroke: currentColor !important; }
-body.auth-open nav.bottom { display: none !important; }
-#marketList, .mkt-list { display: block !important; min-height: 180px !important; }
+body.auth-open nav.bottom { display: none !important; visibility: hidden !important; }
+.oc-old-hide { display: none !important; }
