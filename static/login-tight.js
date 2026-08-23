@@ -1,5 +1,5 @@
 (function(){
-  var LOGO = "/static/own-club-logo.jpg?v=60";
+  var LOGO = "/static/own-club-logo.jpg?v=61";
   var LANGS = [
     {id:"en-GB", name:"English (UK)"},{id:"en-US", name:"English (US)"},
     {id:"lg", name:"Luganda"},{id:"sw", name:"Kiswahili"},
@@ -22,30 +22,30 @@
   var CSS = [
     '#ocGoldLogin{position:fixed;inset:0;z-index:2147483646;background:#0b0c10;color:#fff;',
     "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
-    'overflow:hidden;width:100%;height:100%;margin:0;padding:0;display:flex;align-items:stretch;justify-content:center;}',
+    'overflow:hidden;width:100%;height:100%;margin:0;padding:0;display:block;}',
     '#ocGoldLogin *{box-sizing:border-box;pointer-events:auto;-webkit-tap-highlight-color:transparent;}',
     '#ocGoldLogin .viewport-wrapper{display:flex;flex-direction:column;align-items:center;justify-content:space-between;',
-    'height:100%;width:100%;max-width:480px;margin:0 auto;padding:0 16px calc(24px + env(safe-area-inset-bottom,0px)) 16px;color:#fff;position:relative;}',
-    '#ocGoldLogin .top-banner{width:calc(100% + 32px);background:#1f2833;padding:12px 16px;font-size:.85rem;color:#c5a880;text-align:center;border-bottom:1px solid rgba(212,175,55,.2);}',
+    'height:100%;width:100%;padding:0 0 calc(24px + env(safe-area-inset-bottom,0px)) 0;color:#fff;position:relative;}',
+    '#ocGoldLogin .top-banner{width:100%;background:#1f2833;padding:14px 20px;padding-top:calc(14px + env(safe-area-inset-top,0px));font-size:.85rem;color:#c5a880;text-align:center;border-bottom:1px solid rgba(212,175,55,.2);}',
     '#ocGoldLogin .top-banner a{color:#d4af37;text-decoration:none;font-weight:600;margin-left:4px;}',
-    '#ocGoldLogin .lang-wrap{width:100%;position:relative;z-index:5;margin-top:14px;text-align:center;}',
+    '#ocGoldLogin .lang-wrap{width:100%;position:relative;z-index:5;margin-top:16px;text-align:center;}',
     '#ocGoldLogin .lang-btn{background:none;border:0;color:#85929E;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 12px;}',
     '#ocGoldLogin .lang-btn:after{content:" ▾";font-size:10px;color:#d4af37;}',
     '#ocGoldLogin .lang-menu{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;width:min(92vw,340px);max-height:48vh;overflow:auto;background:#1f2833;border:1px solid rgba(212,175,55,.35);border-radius:14px;z-index:20;}',
     '#ocGoldLogin .lang-wrap.open .lang-menu{display:block;}',
     '#ocGoldLogin .lang-item{display:block;width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.06);color:#fff;font-size:15px;text-align:left;padding:12px 16px;cursor:pointer;font-family:inherit;}',
     '#ocGoldLogin .lang-item.active{color:#d4af37;font-weight:700;}',
-    '#ocGoldLogin .main-content{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-grow:1;padding:10px 0;}',
+    '#ocGoldLogin .main-content{width:100%;padding:0 20px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-grow:1;}',
     '#ocGoldLogin .logo-container{width:110px;height:110px;margin-bottom:28px;border-radius:50%;overflow:hidden;border:2px solid #d4af37;box-shadow:0 0 15px rgba(212,175,55,.2);background:#000;flex:0 0 110px;}',
     '#ocGoldLogin .logo-container img{width:100%;height:100%;object-fit:cover;display:block;background:#000;}',
     '#ocGoldLogin .form-container{width:100%;}',
-    '#ocGoldLogin .input-field{width:100%;padding:15px 16px;font-size:1rem;border:1px solid #c5a880;border-radius:12px;outline:none;background:#1f2833;margin-bottom:10px;color:#fff;font-family:inherit;}',
+    '#ocGoldLogin .input-field{width:100%;padding:16px;font-size:1rem;border:1px solid #c5a880;border-radius:12px;outline:none;background:#1f2833;margin-bottom:12px;color:#fff;font-family:inherit;}',
     '#ocGoldLogin .input-field::placeholder{color:#85929E;}',
     '#ocGoldLogin .input-field:focus{border-color:#d4af37;box-shadow:0 0 8px rgba(212,175,55,.2);}',
-    '#ocGoldLogin .btn-login{width:100%;background:linear-gradient(135deg,#d4af37 0%,#aa7c11 100%);color:#000;border:none;border-radius:25px;font-size:1rem;font-weight:700;padding:14px;margin-top:6px;cursor:pointer;font-family:inherit;box-shadow:0 4px 10px rgba(0,0,0,.3);}',
-    '#ocGoldLogin .forgot-link{display:block;text-align:center;margin-top:16px;color:#c5a880;background:none;border:0;width:100%;cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:600;}',
-    '#ocGoldLogin .bottom-actions{width:100%;text-align:center;margin-top:auto;}',
-    '#ocGoldLogin .btn-signup{display:block;width:100%;background:transparent;color:#d4af37;border:1px solid #d4af37;border-radius:25px;font-size:.95rem;font-weight:600;padding:11px;margin-bottom:16px;cursor:pointer;font-family:inherit;}',
+    '#ocGoldLogin .btn-login{width:100%;background:linear-gradient(135deg,#d4af37 0%,#aa7c11 100%);color:#000;border:none;border-radius:25px;font-size:1.05rem;font-weight:700;padding:14px;margin-top:6px;cursor:pointer;font-family:inherit;box-shadow:0 4px 10px rgba(0,0,0,.3);}',
+    '#ocGoldLogin .forgot-link{display:block;text-align:center;margin-top:18px;color:#c5a880;background:none;border:0;width:100%;cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:600;}',
+    '#ocGoldLogin .bottom-actions{width:100%;padding:0 20px;text-align:center;margin-top:auto;}',
+    '#ocGoldLogin .btn-signup{display:block;width:100%;background:transparent;color:#d4af37;border:1px solid #d4af37;border-radius:25px;font-size:.95rem;font-weight:600;padding:12px;margin-bottom:20px;cursor:pointer;font-family:inherit;}',
     '#ocGoldLogin .btn-signup:active{background:rgba(212,175,55,.1);}',
     '#ocGoldLogin .footer-brand{font-size:.75rem;color:#85929E;font-weight:600;letter-spacing:2px;text-transform:uppercase;}',
     '#ocGoldLogin .oc-err{min-height:18px;margin:8px 0 0;color:#ff6b6b;font-size:13px;text-align:center;font-weight:600;}',
@@ -180,11 +180,7 @@
     var email=String((document.getElementById("ocForgotEmail")||{}).value||"").trim().toLowerCase();
     if(!email || email.indexOf("@")<0){ showErr("Enter your account email"); return; }
     setVal("forgotEmail", email);
-    var oldAlert=window.alert; var captured="";
-    window.alert=function(m){ captured=String(m||""); };
-    try{ if(typeof requestPasswordReset==="function") requestPasswordReset(); }catch(err){ captured=(err&&err.message)?err.message:String(err); }
-    window.alert=oldAlert;
-    if(captured){ showErr(captured.replace(/\n/g," — ")); return; }
+    try{ if(typeof requestPasswordReset==="function") requestPasswordReset(); }catch(e){}
     var st=loadLocalState(); var user=null;
     for(var i=0;i<st.users.length;i++){ if((st.users[i].email||"").toLowerCase()===email){ user=st.users[i]; break; } }
     if(!user){ showErr("No account with that email"); return; }
@@ -201,14 +197,11 @@
     var pass2=(document.getElementById("ocSuPass2")||{}).value||"";
     if(!String(name).trim()||!String(phone).trim()||!String(email).trim()||!pass){ showErr(s.fill); return; }
     if(pass!==pass2){ showErr(s.mismatch); return; }
-    var oldAlert=window.alert; var captured="";
-    window.alert=function(m){ captured=String(m||""); };
-    try{ if(typeof switchAuth==="function") switchAuth("signup"); if(typeof doSignup==="function") doSignup(); }catch(err){ captured=(err&&err.message)?err.message:String(err); }
-    window.alert=oldAlert;
+    try{ if(typeof switchAuth==="function") switchAuth("signup"); if(typeof doSignup==="function") doSignup(); }catch(e){}
     setTimeout(function(){
       if(finishIfIn()){ showOk("Account created"); return; }
       var st=loadLocalState();
-      var nu={id:"u_"+Date.now(), name:String(name).trim(), phone:String(phone).trim(), email:String(email).trim().toLowerCase(), password:pass, inviteCode:"IM"+Date.now().toString(36).toUpperCase(), usedInvite:((document.getElementById("ocSuInvite")||{}).value||"IMXT2Y0M8D"), balance:0, machines:[], transactions:[], deposits:[], withdrawals:[]};
+      var nu={id:"u_"+Date.now(), name:String(name).trim(), phone:String(phone).trim(), email:String(email).trim().toLowerCase(), password:pass, usedInvite:((document.getElementById("ocSuInvite")||{}).value||"IMXT2Y0M8D"), balance:0, machines:[], transactions:[]};
       for(var i=0;i<st.users.length;i++){ if((st.users[i].email||"").toLowerCase()===nu.email){ showErr("Email already registered — log in instead"); return; } }
       st.users.push(nu); st.currentUserId=nu.id; saveLocalState(st); enterApp(nu);
     }, 80);
@@ -247,6 +240,8 @@
       document.addEventListener("click", function(e){ if(!wrap.classList.contains("open")) return; if(wrap.contains(e.target)) return; wrap.classList.remove("open"); });
     }
     applyLang();
+    var meta=document.querySelector('meta[name="viewport"]');
+    if(meta) meta.setAttribute("content","width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover");
   }
   function mount(){
     if(loggedIn()){ teardown(); return; }
@@ -254,7 +249,7 @@
     if(!document.getElementById("ocGoldLoginCss")){ var st=document.createElement("style"); st.id="ocGoldLoginCss"; st.appendChild(document.createTextNode(CSS)); document.head.appendChild(st); }
     document.body.classList.add("auth-open");
     var box=document.createElement("div"); box.id="ocGoldLogin";
-    box.innerHTML='<div class="viewport-wrapper"><div class="top-banner"><span>Get the official app to browse faster. <a href="#" id="ocInstall">Install</a></span></div>'+langHTML()+'<div class="main-content"><div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=60\'"></div><div class="form-container">'+loginHTML()+signupHTML()+forgotHTML()+'<div id="ocErr" class="oc-err"></div></div></div><div class="bottom-actions"><button type="button" class="btn-signup" id="ocCreateBtn">Create new account</button><div class="footer-brand">Own Club Share</div></div></div>';
+    box.innerHTML='<div class="viewport-wrapper"><div class="top-banner"><span>Get the official app to browse faster. <a href="#" id="ocInstall">Install</a></span></div>'+langHTML()+'<div class="main-content"><div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=61\'"></div><div class="form-container">'+loginHTML()+signupHTML()+forgotHTML()+'<div id="ocErr" class="oc-err"></div></div></div><div class="bottom-actions"><button type="button" class="btn-signup" id="ocCreateBtn">Create new account</button><div class="footer-brand">Own Club Share</div></div></div>';
     document.body.appendChild(box); bind();
     var _show=window.showApp;
     if(typeof _show==="function" && !_show._goldWrapped){ window.showApp=function(){ var r=_show.apply(this, arguments); try{ if(loggedIn()) teardown(); }catch(e){} return r; }; window.showApp._goldWrapped=true; }
