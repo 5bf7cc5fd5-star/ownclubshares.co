@@ -33,13 +33,6 @@ if bp.exists():
     except Exception as e:
         print("logo decode", e)
 
-src_logo = root / "static" / "own-club-logo.jpg"
-if not src_logo.exists() or src_logo.stat().st_size < 50000:
-    alt = root / "own-club-logo.jpg"
-    if alt.exists() and alt.stat().st_size > 50000:
-        src_logo.write_bytes(alt.read_bytes())
-        print("logo restored from root")
-
 try:
     import persist; persist.init()
 except Exception as e:
@@ -53,25 +46,10 @@ for script in ("inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrat
         except Exception as e:
             print(script, "failed", e)
 
-srv = root / "server.py"
-if srv.exists():
-    st = srv.read_text(encoding="utf-8", errors="replace")
-    needle = 'if path.startswith("/static/"):'
-    patch = '''if path in ("/own-club-logo.jpg", "/own-club-logo.jpeg", "/logo.jpg"):
-            p = Path(__file__).parent / "own-club-logo.jpg"
-            if not p.is_file():
-                p = Path(__file__).parent / "static" / "own-club-logo.jpg"
-            if p.is_file():
-                return self._serve_file(str(p), "image/jpeg", absolute=True)
-        if path.startswith("/static/"):'''
-    if 'if path in ("/own-club-logo.jpg"' not in st and needle in st:
-        srv.write_text(st.replace(needle, patch, 1), encoding="utf-8")
-        print("server logo route patched")
-
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=59">',
-    '<script src="/static/login-tight.js?v=59"></script>',
-    '<script src="/static/app-shell-fix.js?v=59"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=60">',
+    '<script src="/static/login-tight.js?v=60"></script>',
+    '<script src="/static/app-shell-fix.js?v=60"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -88,7 +66,7 @@ for name in ("index.html", "frontend.html"):
         t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v59", name)
+        print("injected v60", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
