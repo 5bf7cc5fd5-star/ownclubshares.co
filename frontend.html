@@ -4,307 +4,273 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
 <title>Own Club Share</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --bg:#0b0c10; --surface:#141820; --elev:#1a2230; --fg:#f4f1ea;
-    --muted:#9aa3ad; --subtle:#6d7680; --gold:#d4af37; --gold2:#aa7c11;
-    --line:rgba(212,175,55,.16); --up:#3dcc8a; --down:#e57373; --ink:#0b0c10;
-  }
-  * { box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
-  html,body { margin:0; background:#07080a; color:var(--fg); font-family:Manrope,system-ui,sans-serif; height:100%; overflow:hidden; }
-  h1,h2,h3 { font-family:"Cormorant Garamond",Georgia,serif; letter-spacing:-.03em; margin:0; }
-  .stage { max-width:430px; margin:0 auto; height:100dvh; background:var(--bg); position:relative; overflow:hidden; }
-  .top { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:12px;
-         padding:14px 16px; background:rgba(11,12,16,.92); border-bottom:1px solid var(--line); backdrop-filter:blur(8px); }
-  .top img { width:40px; height:40px; border-radius:50%; object-fit:cover; display:block; }
-  .top .name { font-family:"Cormorant Garamond",serif; font-size:18px; font-weight:700; line-height:1.1; }
-  .top .sub { font-size:10px; letter-spacing:.18em; color:var(--gold); text-transform:uppercase; }
-  .pad { padding:16px 16px 8px; }
-  .scroll { height:100%; overflow:auto; padding-bottom:88px; -webkit-overflow-scrolling:touch; }
-  .muted { color:var(--muted); } .subtle { color:var(--subtle); } .gold { color:var(--gold); }
-  .card { background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:14px; }
-  .row { display:flex; align-items:center; gap:12px; }
-  .grow { flex:1; min-width:0; }
-  .num { font-variant-numeric:tabular-nums; }
-  .pill { font-size:11px; font-weight:700; padding:3px 8px; border-radius:999px; }
-  .pill.up { background:rgba(61,204,138,.12); color:var(--up); }
-  .pill.down { background:rgba(229,115,115,.12); color:var(--down); }
-  .badge { width:40px; height:40px; border-radius:12px; display:grid; place-items:center;
-           font-weight:700; font-size:11px; background:var(--elev); color:var(--gold); border:1px solid var(--line); flex-shrink:0; overflow:hidden; }
-  .badge img { width:100%; height:100%; object-fit:contain; }
-  .club { width:100%; text-align:left; background:var(--surface); border:1px solid var(--line);
-          border-radius:14px; padding:12px; display:flex; align-items:center; gap:12px; color:inherit; cursor:pointer; }
-  .club + .club { margin-top:8px; }
-  .spark { width:64px; height:28px; flex-shrink:0; }
-  .tabs { position:absolute; left:0; right:0; bottom:0; width:100%;
-          display:grid; grid-template-columns:repeat(5,1fr); background:rgba(11,12,16,.95); border-top:1px solid var(--line); padding-bottom:env(safe-area-inset-bottom); z-index:30; }
-  .tabs button { background:0; border:0; color:var(--subtle); min-height:64px; font-size:10px; font-weight:600; display:flex; flex-direction:column; align-items:center; justify-content:center; font-family:inherit; }
-  .tabs button.on { color:var(--gold); }
-  .screen { display:none; height:100%; }
-  .screen.on { display:block; }
-  .hero { text-align:center; padding:28px 20px 8px; }
-  .hero img { width:140px; height:140px; border-radius:50%; object-fit:cover; border:2px solid var(--gold); }
-  .seg { display:grid; grid-template-columns:1fr 1fr; gap:8px; background:var(--surface); padding:4px; border-radius:12px; margin:20px 0 14px; }
-  .seg button { height:40px; border:0; border-radius:8px; background:transparent; color:var(--muted); font-weight:700; font-family:inherit; }
-  .seg button.on { background:var(--gold); color:var(--ink); }
-  input { width:100%; height:46px; border-radius:10px; border:1px solid var(--line); background:var(--elev); color:var(--fg); padding:0 14px; font:inherit; margin-bottom:10px; }
-  .btn { width:100%; height:48px; border:0; border-radius:12px; background:var(--gold); color:var(--ink); font-weight:700; font-size:15px; font-family:inherit; }
-  .btn.ghost { background:var(--elev); color:var(--fg); border:1px solid var(--line); }
-  .hint { text-align:center; font-size:12px; color:var(--muted); margin:0 16px 8px; }
-  .kpi { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-  .leagues { display:flex; gap:8px; overflow:auto; padding-bottom:6px; }
-  .leagues button { white-space:nowrap; border:1px solid var(--line); background:var(--surface); color:var(--muted); border-radius:999px; padding:7px 12px; font-size:12px; font-weight:600; font-family:inherit; }
-  .leagues button.on { background:var(--gold); color:var(--ink); border-color:var(--gold); }
-  .chart { height:160px; border-radius:14px; background:linear-gradient(180deg,rgba(212,175,55,.08),transparent 70%); border:1px solid var(--line); }
-  .chart svg { width:100%; height:100%; display:block; }
-  .buy { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
-  .qty { display:flex; align-items:center; justify-content:space-between; background:var(--elev); border-radius:12px; padding:8px 12px; border:1px solid var(--line); }
-  .qty button { width:36px; height:36px; border:0; border-radius:8px; background:var(--surface); color:var(--gold); font-size:20px; }
-  .note { font-size:12px; line-height:1.5; color:var(--muted); margin-top:10px; }
-  .err { min-height:18px; color:#e57373; text-align:center; font-size:13px; margin:8px 0; }
-  .hidden { display:none !important; }
+:root{--bg:#0b0c10;--surface:#141820;--elev:#1a2230;--fg:#f4f1ea;--muted:#9aa3ad;--subtle:#6d7680;--gold:#d4af37;--line:rgba(212,175,55,.16);--up:#3dcc8a;--down:#e57373;--ink:#0b0c10}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:#07080a;color:var(--fg);font-family:Manrope,system-ui,sans-serif;height:100%;overflow:hidden}
+h1,h2{font-family:"Cormorant Garamond",Georgia,serif;letter-spacing:-.03em;margin:0}
+.stage{max-width:430px;margin:0 auto;height:100dvh;background:var(--bg);position:relative;overflow:hidden}
+.top{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:14px 16px;background:rgba(11,12,16,.92);border-bottom:1px solid var(--line)}
+.top img{width:40px;height:40px;border-radius:50%;object-fit:cover;display:block}
+.top .name{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700}
+.top .sub{font-size:10px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+.pad{padding:16px}.scroll{height:100%;overflow:auto;padding-bottom:88px;-webkit-overflow-scrolling:touch}
+.subtle{color:var(--subtle)}.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px}
+.row{display:flex;align-items:center;gap:12px}.grow{flex:1;min-width:0}.num{font-variant-numeric:tabular-nums}
+.pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px}
+.pill.up{background:rgba(61,204,138,.12);color:var(--up)}.pill.down{background:rgba(229,115,115,.12);color:var(--down)}
+.badge{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;font-weight:700;font-size:11px;background:var(--elev);color:var(--gold);border:1px solid var(--line);flex-shrink:0;overflow:hidden}
+.badge img{width:100%;height:100%;object-fit:contain}
+.club{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px;display:flex;align-items:center;gap:12px;color:inherit;cursor:pointer}
+.club+.club{margin-top:8px}.spark{width:64px;height:28px;flex-shrink:0}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:rgba(11,12,16,.95);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom);z-index:30}
+.tabs button{background:0;border:0;color:var(--subtle);min-height:64px;font-size:10px;font-weight:600;display:flex;flex-direction:column;align-items:center;justify-content:center;font-family:inherit}
+.tabs button.on{color:var(--gold)}
+.screen{display:none;height:100%}.screen.on{display:block}
+.hero{text-align:center;padding:28px 20px 8px}.hero img{width:140px;height:140px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)}
+.seg{display:grid;grid-template-columns:1fr 1fr;gap:8px;background:var(--surface);padding:4px;border-radius:12px;margin:20px 0 14px}
+.seg button{height:40px;border:0;border-radius:8px;background:transparent;color:var(--muted);font-weight:700;font-family:inherit}
+.seg button.on{background:var(--gold);color:var(--ink)}
+input,select{width:100%;height:46px;border-radius:10px;border:1px solid var(--line);background:var(--elev);color:var(--fg);padding:0 14px;font:inherit;margin-bottom:10px}
+.btn{width:100%;height:48px;border:0;border-radius:12px;background:var(--gold);color:var(--ink);font-weight:700;font-size:15px;font-family:inherit}
+.btn.ghost{background:var(--elev);color:var(--fg);border:1px solid var(--line)}
+.hint{text-align:center;font-size:12px;color:var(--muted);margin:0 16px 8px}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.leagues{display:flex;gap:8px;overflow:auto;padding-bottom:6px}
+.leagues button{white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:7px 12px;font-size:12px;font-weight:600;font-family:inherit}
+.leagues button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.chart{height:160px;border-radius:14px;background:linear-gradient(180deg,rgba(212,175,55,.08),transparent 70%);border:1px solid var(--line)}
+.chart svg{width:100%;height:100%;display:block}
+.buy{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.qty{display:flex;align-items:center;justify-content:space-between;background:var(--elev);border-radius:12px;padding:8px 12px;border:1px solid var(--line)}
+.qty button{width:36px;height:36px;border:0;border-radius:8px;background:var(--surface);color:var(--gold);font-size:20px}
+.note{font-size:12px;line-height:1.5;color:var(--muted);margin-top:10px}
+.err{min-height:18px;color:#e57373;text-align:center;font-size:13px;margin:8px 0}
+.hidden{display:none!important}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:14px}
+.grid4 button{background:var(--elev);border:1px solid var(--line);border-radius:14px;padding:14px 6px;color:var(--fg);font-family:inherit;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
+.grid4 button span{font-size:11px;font-weight:600;text-align:center}
+.grid4 .ico{width:36px;height:36px;border-radius:10px;background:rgba(212,175,55,.15);display:grid;place-items:center;font-size:18px}
+.pack-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px}
+.pack-btn{background:var(--elev);border:1px solid var(--line);border-radius:10px;padding:10px;text-align:left;color:var(--fg);font-family:inherit;cursor:pointer;font-size:12px}
+.pack-btn b{display:block;color:var(--gold);font-size:13px}
+.club-packs{margin-top:8px;padding-top:8px;border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
 <div class="stage">
 
-  <section id="login" class="screen on">
-    <div class="scroll">
-      <p class="hint" style="padding-top:18px" id="disclaimer">Practice market. Prices move up and down. No guaranteed returns.</p>
-      <div style="text-align:center;margin:0 16px 10px">
-        <select id="langSelect" onchange="setLang(this.value)" style="background:#1a2230;color:#f4f1ea;border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 14px;font-size:13px;font-family:inherit">
-          <option value="en">English</option>
-          <option value="lg">Luganda</option>
-          <option value="sw">Kiswahili</option>
+<section id="login" class="screen on">
+  <div class="scroll">
+    <p class="hint" style="padding-top:18px" id="disclaimer">Practice market. Prices move up and down. No guaranteed returns.</p>
+    <div style="text-align:center;margin:0 16px 10px">
+      <select id="langSelect" onchange="setLang(this.value)" style="background:#1a2230;color:#f4f1ea;border:1px solid rgba(212,175,55,.3);border-radius:8px;padding:8px 14px;font-size:13px;font-family:inherit;width:auto;min-width:160px">
+        <option value="en">English</option>
+        <option value="lg">Luganda</option>
+        <option value="sw">Kiswahili</option>
+        <option value="ar">العربية</option>
+        <option value="fr">Français</option>
+        <option value="tr">Türkçe</option>
+        <option value="es">Español</option>
+        <option value="pt">Português</option>
+        <option value="hi">हिन्दी</option>
+        <option value="zh">中文</option>
+      </select>
+    </div>
+    <div class="hero"><img id="logoHero" alt="Own Club Share" /></div>
+    <div class="pad">
+      <div class="seg">
+        <button class="on" type="button" id="tabLogin">Log in</button>
+        <button type="button" id="tabSignup">Sign up</button>
+      </div>
+      <form id="loginForm">
+        <input type="text" id="loginId" placeholder="Mobile number or email (any country)" autocomplete="username" required />
+        <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" required />
+        <button class="btn" type="submit">Log in</button>
+      </form>
+      <form id="signupForm" class="hidden">
+        <input type="text" id="suName" placeholder="Full name" required />
+        <input type="tel" id="suPhone" placeholder="Mobile (any country +code)" required />
+        <input type="email" id="suEmail" placeholder="Email address" required />
+        <select id="suCountry">
+          <option value="UG">Uganda (UGX)</option>
+          <option value="KW">Kuwait (KWD)</option>
+          <option value="SA">Saudi Arabia (SAR)</option>
+          <option value="US">United States (USD)</option>
+          <option value="GB">United Kingdom (GBP)</option>
+          <option value="TR">Turkey (TRY)</option>
+          <option value="AE">UAE (AED)</option>
+          <option value="KE">Kenya (KES)</option>
+          <option value="TZ">Tanzania (TZS)</option>
+          <option value="NG">Nigeria (NGN)</option>
+          <option value="IN">India (INR)</option>
+          <option value="OTHER">Other (USD)</option>
         </select>
+        <input type="password" id="suPass" placeholder="Password (8+ characters)" required />
+        <input type="text" id="suInvite" value="IMXT2Y0M8D" placeholder="Invite code" />
+        <button class="btn" type="submit">Create account</button>
+      </form>
+      <div class="err" id="authErr"></div>
+    </div>
+  </div>
+</section>
+
+<section id="home" class="screen">
+  <div class="scroll">
+    <header class="top"><img class="logoTop" alt="" /><div><div class="name">Own Club</div><div class="sub">Share Market</div></div></header>
+    <div class="pad">
+      <p class="subtle" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase">Wallet</p>
+      <h1 class="num" id="homeBal" style="font-size:34px;margin:4px 0 14px">USD 0</h1>
+      <div class="kpi">
+        <div class="card"><p class="subtle" style="font-size:11px">Book value</p><p class="num" id="homeBook" style="font-size:20px;margin-top:4px">USD 0</p></div>
+        <div class="card"><p class="subtle" style="font-size:11px">Day change</p><p class="num" id="homeChg" style="font-size:20px;margin-top:4px">—</p></div>
       </div>
-      <div class="hero">
-        <img src="" data-logo class="oc-logo" alt="Own Club Share" />
+      <h2 style="margin:18px 0 10px;font-size:22px">Watchlist</h2>
+      <div id="watchlist"></div>
+    </div>
+  </div>
+</section>
+
+<section id="market" class="screen">
+  <div class="scroll">
+    <header class="top"><img class="logoTop" alt="" /><div><div class="name">Own Club</div><div class="sub">Share Market</div></div></header>
+    <div class="pad">
+      <h1 style="font-size:28px;margin-bottom:12px">Market</h1>
+      <div class="leagues" id="leagues"></div>
+      <div id="marketList" style="margin-top:12px"></div>
+    </div>
+  </div>
+</section>
+
+<section id="club" class="screen">
+  <div class="scroll">
+    <header class="top"><img class="logoTop" alt="" /><div><div class="name" id="clubName">Club</div><div class="sub" id="clubLeague">League</div></div></header>
+    <div class="pad">
+      <p class="subtle" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase">Mark</p>
+      <div class="row" style="align-items:flex-end;margin-bottom:12px">
+        <h1 class="num grow" id="clubPx" style="font-size:34px">USD 0</h1>
+        <span class="pill up" id="clubPill">+0.0%</span>
       </div>
-      <div class="pad">
-        <div class="seg">
-          <button class="on" type="button" id="tabLogin">Log in</button>
-          <button type="button" id="tabSignup">Sign up</button>
-        </div>
-        <form id="loginForm">
-          <input type="text" id="loginId" placeholder="Mobile number or email address" autocomplete="username" required />
-          <input type="password" id="loginPass" placeholder="Password" autocomplete="current-password" required />
-          <button class="btn" type="submit">Log in</button>
-        </form>
-        <form id="signupForm" class="hidden">
-          <input type="text" id="suName" placeholder="Full name" required />
-          <input type="tel" id="suPhone" placeholder="Mobile number +256…" required />
-          <input type="email" id="suEmail" placeholder="Email address" required />
-          <input type="password" id="suPass" placeholder="Password (8+ characters)" required />
-          <input type="text" id="suInvite" value="IMXT2Y0M8D" placeholder="Invite code" />
-          <button class="btn" type="submit">Create account</button>
-        </form>
-        <div class="err" id="authErr"></div>
+      <div class="chart" id="clubChart"></div>
+      <p class="note">Choose a lock pack for this club. Daily withdrawal while locked.</p>
+      <div class="pack-row" id="clubPacks">
+        <button type="button" class="pack-btn" data-p="35000" data-d="7" data-w="5000"><b>USD 35</b>7 days · Daily 5</button>
+        <button type="button" class="pack-btn" data-p="70000" data-d="14" data-w="7500"><b>USD 70</b>14 days · Daily 7.5</button>
+        <button type="button" class="pack-btn" data-p="105000" data-d="21" data-w="10000"><b>USD 105</b>21 days · Daily 10</button>
+        <button type="button" class="pack-btn" data-p="140000" data-d="28" data-w="12500"><b>USD 140</b>28 days · Daily 12.5</button>
+      </div>
+      <p class="note" id="qtyCost">Selected: —</p>
+      <div class="buy">
+        <button class="btn" type="button" id="buyBtn">Buy pack</button>
+        <button class="btn ghost" type="button" onclick="go('market')">Back</button>
+      </div>
+      <div class="err" id="buyErr"></div>
+    </div>
+  </div>
+</section>
+
+<section id="shares" class="screen">
+  <div class="scroll">
+    <header class="top"><img class="logoTop" alt="" /><div><div class="name">Own Club</div><div class="sub">Share Market</div></div></header>
+    <div class="pad">
+      <h1 style="font-size:28px">Shares</h1>
+      <div class="card" style="margin-top:12px">
+        <p class="subtle" style="font-size:11px">Holdings</p>
+        <p class="num" id="holdVal" style="font-size:26px;margin-top:4px">USD 0</p>
+        <p class="note">Each club has 4 lock packs. Pick the pack you want per club.</p>
+      </div>
+      <h2 style="margin:18px 0 10px;font-size:18px">All clubs · Value + packs</h2>
+      <div id="holdList" style="margin-top:4px"></div>
+    </div>
+  </div>
+</section>
+
+<section id="team" class="screen">
+  <div class="scroll">
+    <header class="top"><img class="logoTop" alt="" /><div><div class="name">Own Club</div><div class="sub">Share Market</div></div></header>
+    <div class="pad">
+      <h1 style="font-size:28px">Team</h1>
+      <div class="card" style="margin-top:12px">
+        <p class="subtle" style="font-size:11px">Your invite code</p>
+        <p class="num" id="myCode" style="font-size:26px;margin-top:4px">IMXT2Y0M8D</p>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="home" class="screen">
-    <div class="scroll">
-      <header class="top">
-        <img src="" data-logo class="oc-logo" alt="" />
-        <div><div class="name">Own Club</div><div class="sub">Share Market</div></div>
-      </header>
-      <div class="pad">
-        <p class="subtle" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase">Wallet</p>
-        <h1 class="num" id="homeBal" style="font-size:34px;margin:4px 0 14px">UGX 0</h1>
-        <div class="kpi">
-          <div class="card"><p class="subtle" style="font-size:11px">Book value</p><p class="num" id="homeBook" style="font-size:20px;margin-top:4px">UGX 0</p></div>
-          <div class="card"><p class="subtle" style="font-size:11px">Day change</p><p class="num" id="homeChg" style="font-size:20px;margin-top:4px">—</p></div>
-        </div>
-        <h2 style="margin:18px 0 10px;font-size:22px">Watchlist</h2>
-        <div id="watchlist"></div>
+<section id="account" class="screen">
+  <div class="scroll">
+    <header class="top"><img class="logoTop" alt="" /><div><div class="name">Own Club</div><div class="sub">Share Market</div></div></header>
+    <div class="pad">
+      <h1 style="font-size:28px">Account</h1>
+      <div class="card row" style="margin-top:12px">
+        <span class="badge" style="width:56px;height:56px;border-radius:50%;font-size:20px" id="accInit">A</span>
+        <div class="grow"><b id="accName">Member</b><br /><span class="subtle" style="font-size:12px" id="accSub">Signed in</span></div>
       </div>
-    </div>
-  </section>
-
-  <section id="market" class="screen">
-    <div class="scroll">
-      <header class="top">
-        <img src="" data-logo class="oc-logo" alt="" />
-        <div><div class="name">Own Club</div><div class="sub">Share Market</div></div>
-      </header>
-      <div class="pad">
-        <h1 style="font-size:28px;margin-bottom:12px">Market</h1>
-        <div class="leagues" id="leagues"></div>
-        <div id="marketList" style="margin-top:12px"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="club" class="screen">
-    <div class="scroll">
-      <header class="top">
-        <img src="" data-logo class="oc-logo" alt="" />
-        <div><div class="name" id="clubName">Club</div><div class="sub" id="clubLeague">League</div></div>
-      </header>
-      <div class="pad">
-        <p class="subtle" style="font-size:11px;letter-spacing:.16em;text-transform:uppercase">Mark</p>
-        <div class="row" style="align-items:flex-end;margin-bottom:12px">
-          <h1 class="num grow" id="clubPx" style="font-size:34px">UGX 0</h1>
-          <span class="pill up" id="clubPill">+0.0%</span>
-        </div>
-        <div class="chart" id="clubChart"></div>
-        <p class="note">Share packs lock 1–4 weeks. Daily coupon return compounds on the locked amount.</p>
-        <div class="qty" style="margin-top:14px">
-          <button type="button" id="qtyMinus">−</button>
-          <b id="qtyLabel">1 week</b>
-          <button type="button" id="qtyPlus">+</button>
-        </div>
-        <p class="note" id="qtyCost">Cost UGX 35,000</p>
-        <div class="buy">
-          <button class="btn" type="button" id="buyBtn">Buy</button>
-          <button class="btn ghost" type="button" onclick="go('market')">Back</button>
-        </div>
-        <div class="err" id="buyErr"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="shares" class="screen">
-    <div class="scroll">
-      <header class="top">
-        <img src="" data-logo class="oc-logo" alt="" />
-        <div><div class="name">Own Club</div><div class="sub">Share Market</div></div>
-      </header>
-      <div class="pad">
-        <h1 style="font-size:28px">Shares</h1>
-        <div class="card" style="margin-top:12px">
-          <p class="subtle" style="font-size:11px">Holdings</p>
-          <p class="num" id="holdVal" style="font-size:26px;margin-top:4px">UGX 0</p>
-          <p class="note">Lock packs earn daily withdrawals while locked.</p>
-        </div>
-        <h2 style="margin:18px 0 10px;font-size:18px">Lock packs</h2>
-        <div id="packList">
-          <div class="card" style="margin-bottom:8px"><b>UGX 35,000</b> · 7 days<br><span class="subtle">Daily withdrawal 5,000 UGX</span></div>
-          <div class="card" style="margin-bottom:8px"><b>UGX 70,000</b> · 14 days<br><span class="subtle">Daily withdrawal 7,500 UGX</span></div>
-          <div class="card" style="margin-bottom:8px"><b>UGX 105,000</b> · 21 days<br><span class="subtle">Daily withdrawal 10,000 UGX</span></div>
-          <div class="card" style="margin-bottom:8px"><b>UGX 140,000</b> · 28 days<br><span class="subtle">Daily withdrawal 12,500 UGX</span></div>
-        </div>
-        <h2 style="margin:18px 0 10px;font-size:18px">All clubs · Value</h2>
-        <div id="holdList" style="margin-top:4px"></div>
-      </div>
-    </div>
-  </section>
-
-  <section id="team" class="screen">
-    <div class="scroll">
-      <header class="top">
-        <img src="" data-logo class="oc-logo" alt="" />
-        <div><div class="name">Own Club</div><div class="sub">Share Market</div></div>
-      </header>
-      <div class="pad">
-        <h1 style="font-size:28px">Team</h1>
-        <div class="card" style="margin-top:12px">
-          <p class="subtle" style="font-size:11px">Your invite code</p>
-          <p class="num" id="myCode" style="font-size:26px;margin-top:4px">IMXT2Y0M8D</p>
+      <div class="card" style="margin-top:10px">
+        <div class="row" style="justify-content:space-between">
+          <div><p class="subtle" style="font-size:11px">Wallet</p><p class="num" id="accBal" style="font-size:20px;margin-top:4px">USD 0</p></div>
+          <div style="text-align:right"><p class="subtle" style="font-size:11px">Balance</p><p class="num" id="accBal2" style="font-size:20px;margin-top:4px">USD 0</p></div>
         </div>
       </div>
-    </div>
-  </section>
-
-  <section id="account" class="screen">
-    <div class="scroll">
-      <header class="top">
-        <img src="" data-logo class="oc-logo" alt="" />
-        <div><div class="name">Own Club</div><div class="sub">Share Market</div></div>
-      </header>
-      <div class="pad">
-        <h1 style="font-size:28px">Account</h1>
-        <div class="card row" style="margin-top:12px">
-          <span class="badge" style="width:56px;height:56px;border-radius:50%;font-size:20px" id="accInit">A</span>
-          <div class="grow"><b id="accName">Member</b><br /><span class="subtle" style="font-size:12px" id="accSub">Signed in</span></div>
+      <div class="card" style="margin-top:12px">
+        <p class="subtle" style="font-size:11px">Dividend</p>
+        <p class="num" id="divBal" style="font-size:20px;margin-top:4px">USD 0</p>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
+          <button class="btn" type="button" id="btnWithdrawDiv" style="height:42px;font-size:13px">Withdraw Dividend</button>
+          <button class="btn ghost" type="button" id="btnCreditWallet" style="height:42px;font-size:13px">Credit to Wallet</button>
         </div>
-        <div class="card" style="margin-top:10px">
-          <p class="subtle" style="font-size:11px">Wallet</p>
-          <p class="num" id="accBal" style="font-size:22px;margin-top:4px">UGX 0</p>
-        </div>
-        <div class="card" style="margin-top:12px">
-          <p class="subtle" style="font-size:11px">Dividend</p>
-          <p class="num" id="divBal" style="font-size:20px;margin-top:4px">UGX 0</p>
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-            <button class="btn" type="button" id="btnWithdrawDiv" style="height:42px;font-size:13px">Withdraw Dividend</button>
-            <button class="btn ghost" type="button" id="btnCreditWallet" style="height:42px;font-size:13px">Credit to Wallet</button>
-          </div>
-        </div>
-        <div style="display:flex;justify-content:center;margin:22px 0 8px">
-          <img src="" data-logo class="oc-logo" alt="" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)" />
-        </div>
-        <p class="hint">Own Club · Share Market</p>
-        <button class="btn ghost" type="button" id="signOut" style="margin-top:12px">Sign out</button>
       </div>
+      <div class="grid4" id="accGrid">
+        <button type="button" data-act="deposit"><div class="ico">💳</div><span>Deposit</span></button>
+        <button type="button" data-act="withdraw"><div class="ico">💸</div><span>Withdraw</span></button>
+        <button type="button" data-act="bill"><div class="ico">📄</div><span>Bill</span></button>
+        <button type="button" data-act="invite"><div class="ico">🤝</div><span>Invite</span></button>
+        <button type="button" data-act="team"><div class="ico">👥</div><span>My team</span></button>
+        <button type="button" data-act="vip"><div class="ico">⭐</div><span>VIP Task</span></button>
+        <button type="button" data-act="reward"><div class="ico">🎁</div><span>Reward</span></button>
+        <button type="button" data-act="raffle"><div class="ico">🎟</div><span>Raffle</span></button>
+        <button type="button" data-act="manager"><div class="ico">🎧</div><span>Manager</span></button>
+        <button type="button" data-act="settings"><div class="ico">⚙️</div><span>Settings</span></button>
+        <button type="button" data-act="salary"><div class="ico">💰</div><span>Salary</span></button>
+        <button type="button" data-act="support"><div class="ico">💬</div><span>Support</span></button>
+      </div>
+      <div style="display:flex;justify-content:center;margin:22px 0 8px">
+        <img class="logoBig" alt="" style="width:120px;height:120px;border-radius:50%;object-fit:cover;border:2px solid var(--gold)" />
+      </div>
+      <p class="hint">Own Club · Share Market</p>
+      <button class="btn ghost" type="button" id="signOut" style="margin-top:12px">Sign out</button>
     </div>
-  </section>
+  </div>
+</section>
 
-  <nav class="tabs" id="dock">
-    <button class="on" type="button" data-go="home">Home</button>
-    <button type="button" data-go="market">Market</button>
-    <button type="button" data-go="shares">Shares</button>
-    <button type="button" data-go="team">Team</button>
-    <button type="button" data-go="account">Account</button>
-  </nav>
+<nav class="tabs" id="dock">
+  <button class="on" type="button" data-go="home">Home</button>
+  <button type="button" data-go="market">Market</button>
+  <button type="button" data-go="shares">Shares</button>
+  <button type="button" data-go="team">Team</button>
+  <button type="button" data-go="account">Account</button>
+</nav>
 </div>
 <script>
 (function(){
-var CLUBS=[{id:1,code:"ARS",name:"Arsenal",league:"Premier League",px:82400},{id:2,code:"MCI",name:"Man City",league:"Premier League",px:88100},{id:3,code:"LIV",name:"Liverpool",league:"Premier League",px:79650},{id:4,code:"CHE",name:"Chelsea",league:"Premier League",px:61200},{id:5,code:"MUN",name:"Man United",league:"Premier League",px:70500},{id:6,code:"TOT",name:"Tottenham",league:"Premier League",px:55800},{id:7,code:"RMA",name:"Real Madrid",league:"La Liga",px:91200},{id:8,code:"BAR",name:"Barcelona",league:"La Liga",px:84900},{id:9,code:"ATM",name:"Atletico",league:"La Liga",px:52100},{id:10,code:"VIL",name:"Villarreal CF",league:"La Liga",px:28400},{id:11,code:"NAP",name:"SSC Napoli",league:"Serie A",px:48800},{id:12,code:"INT",name:"Inter Milan",league:"Serie A",px:56000},{id:13,code:"MIL",name:"AC Milan",league:"Serie A",px:47200},{id:14,code:"JUV",name:"Juventus",league:"Serie A",px:61300},{id:15,code:"BAY",name:"Bayern Munich",league:"Bundesliga",px:93600},{id:16,code:"BVB",name:"Dortmund",league:"Bundesliga",px:44800},{id:17,code:"PSG",name:"Paris SG",league:"Ligue 1",px:86800},{id:18,code:"HIL",name:"Al Hilal",league:"Saudi Pro League",px:36500},{id:19,code:"NAS",name:"Al Nassr",league:"Saudi Pro League",px:31600},{id:20,code:"MIA",name:"Inter Miami",league:"MLS",px:44400},{id:21,code:"LEE",name:"Leeds United",league:"Championship",px:16200},{id:22,code:"IPS",name:"Ipswich Town",league:"Championship",px:9800}];
-var st={},filt="All",weeks=1,current=null,token=null,me=null;
-function fmt(n){return "UGX "+Math.round(n).toLocaleString()}
+var OC_LOGO = "PLACEHOLDER_LOGO_WILL_BE_REPLACED";
+function applyLogos(){document.querySelectorAll("#logoHero,.logoTop,.logoBig").forEach(function(img){img.src=OC_LOGO;img.onerror=null;});}
+if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",applyLogos);else applyLogos();setTimeout(applyLogos,50);
+var CLUBS=[{id:1,code:"ARS",name:"Arsenal",league:"Premier League",px:82400,badge:"https://upload.wikimedia.org/wikipedia/en/5/53/Arsenal_FC.svg"},{id:2,code:"MCI",name:"Man City",league:"Premier League",px:88100,badge:"https://upload.wikimedia.org/wikipedia/en/e/eb/Manchester_City_FC_badge.svg"},{id:3,code:"LIV",name:"Liverpool",league:"Premier League",px:79650,badge:"https://upload.wikimedia.org/wikipedia/en/0/0c/Liverpool_FC.svg"},{id:4,code:"CHE",name:"Chelsea",league:"Premier League",px:61200,badge:"https://upload.wikimedia.org/wikipedia/en/c/c5/Chelsea_FC.svg"},{id:5,code:"MUN",name:"Man United",league:"Premier League",px:70500,badge:"https://upload.wikimedia.org/wikipedia/en/7/7a/Manchester_United_FC_crest.svg"},{id:6,code:"TOT",name:"Tottenham",league:"Premier League",px:55800,badge:"https://upload.wikimedia.org/wikipedia/en/b/b4/Tottenham_Hotspur.svg"},{id:7,code:"RMA",name:"Real Madrid",league:"La Liga",px:91200,badge:"https://upload.wikimedia.org/wikipedia/en/5/56/Real_Madrid_CF.svg"},{id:8,code:"BAR",name:"Barcelona",league:"La Liga",px:84900,badge:"https://upload.wikimedia.org/wikipedia/en/4/47/FC_Barcelona_%28crest%29.svg"},{id:9,code:"ATM",name:"Atletico",league:"La Liga",px:52100,badge:"https://upload.wikimedia.org/wikipedia/en/f/f4/Atletico_Madrid_2017_logo.svg"},{id:10,code:"VIL",name:"Villarreal CF",league:"La Liga",px:28400,badge:"https://upload.wikimedia.org/wikipedia/en/7/70/Villarreal_CF_logo.svg"},{id:11,code:"NAP",name:"SSC Napoli",league:"Serie A",px:48800,badge:"https://upload.wikimedia.org/wikipedia/commons/2/2d/SSC_Neapel.svg"},{id:12,code:"INT",name:"Inter Milan",league:"Serie A",px:56000,badge:"https://upload.wikimedia.org/wikipedia/commons/0/05/FC_Internazionale_Milano_2021.svg"},{id:13,code:"MIL",name:"AC Milan",league:"Serie A",px:47200,badge:"https://upload.wikimedia.org/wikipedia/commons/d/d2/AC_Milan_logo.svg"},{id:14,code:"JUV",name:"Juventus",league:"Serie A",px:61300,badge:"https://upload.wikimedia.org/wikipedia/commons/1/15/Juventus_FC_2017_logo.svg"},{id:15,code:"BAY",name:"Bayern Munich",league:"Bundesliga",px:93600,badge:"https://upload.wikimedia.org/wikipedia/commons/1/1b/FC_Bayern_München_logo_%282017%29.svg"},{id:16,code:"BVB",name:"Dortmund",league:"Bundesliga",px:44800,badge:"https://upload.wikimedia.org/wikipedia/commons/6/67/Borussia_Dortmund_logo.svg"},{id:17,code:"PSG",name:"Paris SG",league:"Ligue 1",px:86800,badge:"https://upload.wikimedia.org/wikipedia/en/a/a7/Paris_Saint-Germain_F.C..svg"},{id:18,code:"HIL",name:"Al Hilal",league:"Saudi Pro League",px:36500,badge:"https://upload.wikimedia.org/wikipedia/en/1/1a/Al_Hilal_SFC_logo.svg"},{id:19,code:"NAS",name:"Al Nassr",league:"Saudi Pro League",px:31600,badge:"https://upload.wikimedia.org/wikipedia/en/a/a2/Al_Nassr_FC_Logo.svg"},{id:20,code:"AHL",name:"Al Ahli",league:"Saudi Pro League",px:29800,badge:"https://upload.wikimedia.org/wikipedia/en/4/4a/Al_Ahli_Saudi_FC_logo.svg"},{id:21,code:"MIA",name:"Inter Miami",league:"MLS",px:44400,badge:"https://upload.wikimedia.org/wikipedia/en/5/5c/Inter_Miami_CF_logo.svg"},{id:22,code:"ATL",name:"Atlanta United",league:"MLS",px:22100,badge:"https://upload.wikimedia.org/wikipedia/en/b/bb/Atlanta_United_FC_logo.svg"},{id:23,code:"LAG",name:"LA Galaxy",league:"MLS",px:18900,badge:"https://upload.wikimedia.org/wikipedia/en/5/51/LA_Galaxy_logo.svg"},{id:24,code:"LEE",name:"Leeds United",league:"Championship",px:16200,badge:"https://upload.wikimedia.org/wikipedia/en/5/54/Leeds_United_F.C._logo.svg"},{id:25,code:"IPS",name:"Ipswich Town",league:"Championship",px:9800,badge:"https://upload.wikimedia.org/wikipedia/en/4/43/Ipswich_Town.svg"}];
+var PACKS=[{price:35000,days:7,daily:5000,label:"7 days · Daily 5,000"},{price:70000,days:14,daily:7500,label:"14 days · Daily 7,500"},{price:105000,days:21,daily:10000,label:"21 days · Daily 10,000"},{price:140000,days:28,daily:12500,label:"28 days · Daily 12,500"}];
+var st={},filt="All",selectedPack=null,current=null,token=null,me=null,ccy="USD";
+function fmt(n){return ccy+" "+Math.round(n).toLocaleString()}
 function spark(hist,up){var min=Math.min.apply(null,hist),max=Math.max.apply(null,hist),range=(max-min)||1,pts=[];for(var i=0;i<hist.length;i++){var x=(i/(hist.length-1))*64,y=26-((hist[i]-min)/range)*22;pts.push((i?"L":"M")+x.toFixed(1)+" "+y.toFixed(1))}return '<svg class="spark" viewBox="0 0 64 28"><path d="'+pts.join(" ")+'" fill="none" stroke="'+(up?"#3dcc8a":"#e57373")+'" stroke-width="2"/></svg>'}
 function seed(){CLUBS.forEach(function(c){if(st[c.id])return;var hist=[],p=c.px;for(var i=0;i<16;i++){p=p*(1+(Math.random()-0.5)*0.012);hist.push(p)}st[c.id]={px:p,open:c.px,hist:hist,chg:((p-c.px)/c.px)*100}})}
-function clubBtn(c){var s=st[c.id],up=s.chg>=0;return '<button class="club" type="button" data-id="'+c.id+'"><span class="badge">'+c.code+'</span><span class="grow"><b>'+c.name+'</b><br /><span class="subtle" style="font-size:12px">'+c.league+'</span></span>'+spark(s.hist,up)+'<span style="text-align:right"><b class="num">'+Math.round(s.px).toLocaleString()+'</b><br /><span class="pill '+(up?"up":"down")+'">'+(up?"+":"")+s.chg.toFixed(1)+'%</span></span></button>'}
+function badgeHtml(c){if(c.badge)return '<img src="'+c.badge+'" alt="" onerror="this.style.display=\'none\';this.parentNode.textContent=\''+c.code+'\'"/>';return c.code}
+function clubBtn(c){var s=st[c.id],up=s.chg>=0;return '<button class="club" type="button" data-id="'+c.id+'"><span class="badge">'+badgeHtml(c)+'</span><span class="grow"><b>'+c.name+'</b><br /><span class="subtle" style="font-size:12px">'+c.league+'</span></span>'+spark(s.hist,up)+'<span style="text-align:right"><b class="num">'+Math.round(s.px).toLocaleString()+'</b><br /><span class="pill '+(up?"up":"down")+'">'+(up?"+":"")+s.chg.toFixed(1)+'%</span></span></button>'}
 function paintMarket(){seed();var leagues=["All","Premier League","La Liga","Serie A","Bundesliga","Ligue 1","Saudi Pro League","MLS","Championship"];document.getElementById("leagues").innerHTML=leagues.map(function(l){return '<button type="button" class="'+(filt===l?"on":"")+'" data-l="'+l+'">'+l+'</button>'}).join("");var html="";CLUBS.forEach(function(c){if(filt==="All"||c.league===filt)html+=clubBtn(c)});document.getElementById("marketList").innerHTML=html;document.getElementById("watchlist").innerHTML=CLUBS.slice(0,4).map(clubBtn).join("")}
-function openClub(id){current=CLUBS.find(function(c){return c.id==id});if(!current)return;var s=st[current.id],up=s.chg>=0;document.getElementById("clubName").textContent=current.name;document.getElementById("clubLeague").textContent=current.league;document.getElementById("clubPx").textContent=fmt(s.px);var pill=document.getElementById("clubPill");pill.className="pill "+(up?"up":"down");pill.textContent=(up?"+":"")+s.chg.toFixed(1)+"%";var min=Math.min.apply(null,s.hist),max=Math.max.apply(null,s.hist),range=(max-min)||1,d="";s.hist.forEach(function(v,i){var x=(i/(s.hist.length-1))*360,y=140-((v-min)/range)*110;d+=(i?" L":"M")+x.toFixed(1)+" "+y.toFixed(1)});document.getElementById("clubChart").innerHTML='<svg viewBox="0 0 360 160" preserveAspectRatio="none"><path d="'+d+'" fill="none" stroke="#d4af37" stroke-width="2.4"/></svg>';weeks=1;syncQty();go("club")}
-function syncQty(){document.getElementById("qtyLabel").textContent=weeks+" week"+(weeks>1?"s":"");document.getElementById("qtyCost").textContent="Cost "+fmt(35000*weeks)}
-var dock=document.getElementById("dock");
-window.go=function(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id===id)});dock.style.display=id==="login"?"none":"grid";document.querySelectorAll(".tabs button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-go")===id)}); if(id==="shares") paintShares();};
-dock.style.display="none";
-dock.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.getAttribute("data-go"))go(b.getAttribute("data-go"))});
-document.getElementById("tabLogin").onclick=function(){this.classList.add("on");document.getElementById("tabSignup").classList.remove("on");document.getElementById("loginForm").classList.remove("hidden");document.getElementById("signupForm").classList.add("hidden")};
-document.getElementById("tabSignup").onclick=function(){this.classList.add("on");document.getElementById("tabLogin").classList.remove("on");document.getElementById("signupForm").classList.remove("hidden");document.getElementById("loginForm").classList.add("hidden")};
-document.getElementById("leagues").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;filt=b.getAttribute("data-l");paintMarket()});
-document.body.addEventListener("click",function(e){var b=e.target.closest(".club");if(b&&b.getAttribute("data-id"))openClub(+b.getAttribute("data-id"))});
-document.getElementById("qtyMinus").onclick=function(){weeks=Math.max(1,weeks-1);syncQty()};
-document.getElementById("qtyPlus").onclick=function(){weeks=Math.min(4,weeks+1);syncQty()};
-document.getElementById("signOut").onclick=function(){localStorage.removeItem("ocToken");token=null;me=null;go("login")};
-function applyMe(){var bal=me&&me.balance||0;document.getElementById("homeBal").textContent=fmt(bal);document.getElementById("accBal").textContent=fmt(bal);document.getElementById("accName").textContent=(me&&me.name)||"Member";document.getElementById("accSub").textContent=(me&&(me.email||me.phone))||"Signed in";document.getElementById("accInit").textContent=((me&&me.name)||"A").charAt(0).toUpperCase();document.getElementById("myCode").textContent=(me&&me.invite_code)||"IMXT2Y0M8D"}
-function afterAuth(j){if(j.token){token=j.token;try{localStorage.setItem("ocToken",j.token)}catch(e){}}me=j.user||me;applyMe();paintMarket();go("home")}
-document.getElementById("loginForm").onsubmit=function(e){e.preventDefault();var err=document.getElementById("authErr");err.textContent="";fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identifier:document.getElementById("loginId").value.trim(),password:document.getElementById("loginPass").value})}).then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})}).then(function(res){if(res.ok&&(res.j.token||res.j.user))afterAuth(res.j);else err.textContent=(res.j&&res.j.error)||"Check details"}).catch(function(){err.textContent="Network error"})};
-document.getElementById("signupForm").onsubmit=function(e){e.preventDefault();var err=document.getElementById("authErr");err.textContent="";fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:document.getElementById("suName").value.trim(),phone:document.getElementById("suPhone").value.trim(),email:document.getElementById("suEmail").value.trim(),password:document.getElementById("suPass").value,invite_code:document.getElementById("suInvite").value.trim()||"IMXT2Y0M8D"})}).then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j}})}).then(function(res){if(res.ok&&(res.j.token||res.j.user))afterAuth(res.j);else err.textContent=(res.j&&res.j.error)||"Could not create account"}).catch(function(){err.textContent="Network error"})};
-document.getElementById("buyBtn").onclick=function(){document.getElementById("buyErr").textContent="Wallet must cover UGX 35,000 x weeks."};
-
-  // PERMANENT LOGO LOCK — data URI never fails to load
-  var OC_LOGO = "data:image/jpeg;base64,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";
-  // truncated in this call for safety - full content is in local file
-  document.querySelectorAll("img[data-logo],img.oc-logo").forEach(function(img){ img.src = OC_LOGO; img.onerror=null; });
-  var LANG = {
-    en: {disclaimer:"Practice market. Prices move up and down. No guaranteed returns.", login:"Log in", signup:"Sign up"},
-    lg: {disclaimer:"Akasoko ke kugeza. Emigaso egenda waggulu n'wansi. Tewali byesigibwa.", login:"Yingira", signup:"Wewandiise"},
-    sw: {disclaimer:"Soko la mazoezi. Bei hupanda na kushuka. Hakuna faida zilizohakikishwa.", login:"Ingia", signup:"Jisajili"}
-  };
-  function setLang(code){
-    var t = LANG[code] || LANG.en;
-    var d = document.getElementById("disclaimer"); if(d) d.textContent = t.disclaimer;
-    var tl = document.getElementById("tabLogin"); if(tl) tl.textContent = t.login;
-    var ts = document.getElementById("tabSignup"); if(ts) ts.textContent = t.signup;
-    try{ localStorage.setItem("ocLang", code); }catch(e){}
-  }
-  try{ var saved = localStorage.getItem("ocLang"); if(saved){ var sel=document.getElementById("langSelect"); if(sel){ sel.value=saved; setLang(saved);} } }catch(e){}
-  function paintShares(){
-    var h=""; CLUBS.forEach(function(c){ var s=st[c.id]||{px:c.px}; h+='<div class="card row" style="margin-bottom:8px"><span class="badge">'+c.code+'</span><div class="grow"><b>'+c.name+'</b><br><span class="subtle">'+c.league+'</span></div><b class="num">'+fmt(s.px)+'</b></div>'; });
-    var el=document.getElementById("holdList"); if(el) el.innerHTML=h;
-  }
-  var bw=document.getElementById("btnWithdrawDiv"); if(bw) bw.onclick=function(){ alert("Dividend withdrawn to balance"); };
-  var bc=document.getElementById("btnCreditWallet"); if(bc) bc.onclick=function(){ alert("Dividend credited to wallet"); };
-
-seed(); paintMarket(); paintShares();
-try{token=localStorage.getItem("ocToken")}catch(e){}
-if(token){fetch("/api/me",{headers:{Authorization:"Bearer "+token}}).then(function(r){return r.json()}).then(function(j){if(j&&j.user){me=j.user;applyMe();go("home")}}).catch(function(){})}
+function openClub(id){current=CLUBS.find(function(c){return c.id==id});if(!current)return;var s=st[current.id],up=s.chg>=0;document.getElementById("clubName").textContent=current.name;document.getElementById("clubLeague").textContent=current.league;document.getElementById("clubPx").textContent=fmt(s.px);var pill=document.getElementById("clubPill");pill.className="pill "+(up?"up":"down");pill.textContent=(up?"+":"")+s.chg.toFixed(1)+"%";var min=Math.min.apply(null,s.hist),max=Math.max.apply(null,s.hist),range=(max-min)||1,d="";s.hist.forEach(function(v,i){var x=(i/(s.hist.length-1))*360,y=140-((v-min)/range)*110;d+=(i?" L":"M")+x.toFixed(1)+" "+y.toFixed(1)});document.getElementById("clubChart").innerHTML='<svg viewBox="0 0 360 160" preserveAspectRatio="none"><path d="'+d+'" fill="none" stroke="#d4af37" stroke-width="2.4"/></svg>';selectedPack=null;document.getElementById("qtyCost").textContent="Selected: —";go("club")}
+function paintShares(){seed();var h="";CLUBS.forEach(function(c){var s=st[c.id]||{px:c.px};h+='<div class="card" style="margin-bottom:10px"><div class="row"><span class="badge">'+badgeHtml(c)+'</span><div class="grow"><b>'+c.name+'</b><br><span class="subtle">'+c.league+'</span></div><b class="num">'+fmt(s.px)+'</b></div><div class="club-packs pack-row">';PACKS.forEach(function(p){h+='<button type="button" class="pack-btn" data-club="'+c.id+'" data-p="'+p.price+'" data-d="'+p.days+'" data-w="'+p.daily+'"><b>'+fmt(p.price)+'</b>'+p.days+'d · Daily '+p.daily.toLocaleString()+'</button>'});h+='</div></div>'});var el=document.getElementById("holdList");if(el)el.innerHTML=h}
+var dock=document.getElementById("dock");window.go=function(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id===id)});dock.style.display=id==="login"?"none":"grid";document.querySelectorAll(".tabs button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-go")===id)});if(id==="shares")paintShares();if(id==="account")applyLogos()};dock.style.display="none";dock.addEventListener("click",function(e){var b=e.target.closest("button");if(b&&b.getAttribute("data-go"))go(b.getAttribute("data-go"))});document.getElementById("tabLogin").onclick=function(){this.classList.add("on");document.getElementById("tabSignup").classList.remove("on");document.getElementById("loginForm").classList.remove("hidden");document.getElementById("signupForm").classList.add("hidden")};document.getElementById("tabSignup").onclick=function(){this.classList.add("on");document.getElementById("tabLogin").classList.remove("on");document.getElementById("signupForm").classList.remove("hidden");document.getElementById("loginForm").classList.add("hidden")};document.getElementById("leagues").addEventListener("click",function(e){var b=e.target.closest("button");if(!b)return;filt=b.getAttribute("data-l");paintMarket()});document.body.addEventListener("click",function(e){var b=e.target.closest(".club");if(b&&b.getAttribute("data-id"))openClub(+b.getAttribute("data-id"));var pb=e.target.closest(".pack-btn");if(pb){selectedPack={price:+pb.getAttribute("data-p"),days:+pb.getAttribute("data-d"),daily:+pb.getAttribute("data-w"),clubId:pb.getAttribute("data-club")};var costEl=document.getElementById("qtyCost");if(costEl)costEl.textContent="Selected: "+fmt(selectedPack.price)+" · "+selectedPack.days+" days · Daily "+selectedPack.daily.toLocaleString()}});document.getElementById("signOut").onclick=function(){localStorage.removeItem("ocToken");token=null;me=null;go("login")};function applyMe(){var bal=me&&me.balance||0;document.getElementById("homeBal").textContent=fmt(bal);document.getElementById("accBal").textContent=fmt(bal);document.getElementById("accBal2").textContent=fmt(bal);document.getElementById("accName").textContent=(me&&me.name)||"Member";document.getElementById("accSub").textContent=(me&&(me.email||me.phone))||"Signed in";document.getElementById("accInit").textContent=((me&&me.name)||"A").charAt(0).toUpperCase();document.getElementById("myCode").textContent=(me&&me.invite_code)||"IMXT2Y0M8D";if(me&&me.currency)ccy=me.currency}function afterAuth(j){if(j.token){token=j.token;try{localStorage.setItem("ocToken",j.token)}catch(e){}}me=j.user||me;applyMe();paintMarket();go("home")}document.getElementById("loginForm").onsubmit=function(e){e.preventDefault();var err=document.getElementById("authErr");err.textContent="";fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identifier:document.getElementById("loginId").value.trim(),password:document.getElementById("loginPass").value})}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(res){if(res.ok&&(res.j.token||res.j.user))afterAuth(res.j);else err.textContent=(res.j&&res.j.error)||"Check details"}).catch(function(){err.textContent="Network error"})};document.getElementById("signupForm").onsubmit=function(e){e.preventDefault();var err=document.getElementById("authErr");err.textContent="";var country=document.getElementById("suCountry").value;fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:document.getElementById("suName").value.trim(),phone:document.getElementById("suPhone").value.trim(),email:document.getElementById("suEmail").value.trim(),password:document.getElementById("suPass").value,invite_code:document.getElementById("suInvite").value.trim()||"IMXT2Y0M8D",country:country})}).then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j}})}).then(function(res){if(res.ok&&(res.j.token||res.j.user))afterAuth(res.j);else err.textContent=(res.j&&res.j.error)||"Could not create account"}).catch(function(){err.textContent="Network error"})};document.getElementById("buyBtn").onclick=function(){if(!selectedPack){document.getElementById("buyErr").textContent="Select a pack first";return}document.getElementById("buyErr").textContent="Wallet must cover "+fmt(selectedPack.price)};var LANG={en:{disclaimer:"Practice market. Prices move up and down. No guaranteed returns.",login:"Log in",signup:"Sign up"},lg:{disclaimer:"Akasoko ke kugeza. Emigaso egenda waggulu n'wansi. Tewali byesigibwa.",login:"Yingira",signup:"Wewandiise"},sw:{disclaimer:"Soko la mazoezi. Bei hupanda na kushuka. Hakuna faida zilizohakikishwa.",login:"Ingia",signup:"Jisajili"},ar:{disclaimer:"سوق تجريبي. الأسعار ترتفع وتنخفض. لا عوائد مضمونة.",login:"تسجيل الدخول",signup:"إنشاء حساب"},fr:{disclaimer:"Marché d'entraînement. Les prix montent et descendent. Aucun rendement garanti.",login:"Connexion",signup:"S'inscrire"},tr:{disclaimer:"Alıştırma piyasası. Fiyatlar yükselir ve düşer. Garantili getiri yoktur.",login:"Giriş yap",signup:"Kayıt ol"},es:{disclaimer:"Mercado de práctica. Los precios suben y bajan. Sin rendimientos garantizados.",login:"Iniciar sesión",signup:"Registrarse"},pt:{disclaimer:"Mercado de prática. Os preços sobem e descem. Sem retornos garantidos.",login:"Entrar",signup:"Criar conta"},hi:{disclaimer:"अभ्यास बाज़ार। कीमतें ऊपर-नीचे होती हैं। कोई गारंटीकृत रिटर्न नहीं।",login:"लॉग इन",signup:"साइन अप"},zh:{disclaimer:"练习市场。价格会上下波动。没有保证回报。",login:"登录",signup:"注册"}};window.setLang=function(code){var t=LANG[code]||LANG.en;var d=document.getElementById("disclaimer");if(d)d.textContent=t.disclaimer;var tl=document.getElementById("tabLogin");if(tl)tl.textContent=t.login;var ts=document.getElementById("tabSignup");if(ts)ts.textContent=t.signup;try{localStorage.setItem("ocLang",code)}catch(e){}};try{var saved=localStorage.getItem("ocLang");if(saved){var sel=document.getElementById("langSelect");if(sel){sel.value=saved;setLang(saved)}}}catch(e){}document.getElementById("btnWithdrawDiv").onclick=function(){alert("Dividend withdrawn to balance")};document.getElementById("btnCreditWallet").onclick=function(){alert("Dividend credited to wallet")};document.getElementById("accGrid").addEventListener("click",function(e){var b=e.target.closest("button[data-act]");if(!b)return;var act=b.getAttribute("data-act");if(act==="team")go("team");else if(act==="settings")alert("Settings");else if(act==="invite")go("team");else alert(act.charAt(0).toUpperCase()+act.slice(1)+" — coming soon")});seed();paintMarket();paintShares();try{token=localStorage.getItem("ocToken")}catch(e){}if(token){fetch("/api/me",{headers:{Authorization:"Bearer "+token}}).then(function(r){return r.json()}).then(function(j){if(j&&j.user){me=j.user;applyMe();go("home")}}).catch(function(){})}
 })();
-</script></body></html>
+</script>
+</body>
+</html>
