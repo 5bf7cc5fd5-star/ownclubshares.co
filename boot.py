@@ -15,7 +15,7 @@ def run(script):
         except Exception as e:
             print(script, "failed", e)
 
-for script in ("patch_lock_logo.py", "patch_serve_index.py", "patch_badges.py", "patch_login_guard.py", "patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
+for script in ("patch_embed_logo.py", "patch_lock_logo.py", "patch_serve_index.py", "patch_badges.py", "patch_login_guard.py", "patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
     run(script)
 
 pool_p = root / "data" / "company_pool.json"
@@ -36,7 +36,7 @@ if not bp.exists() and (root / "logo.b64").exists():
     bp.write_text((root / "logo.b64").read_text())
 if bp.exists():
     try:
-        data = base64.b64decode(bp.read_text().strip())
+        data = base64.b64decode("".join(bp.read_text().split()))
         (root / "own-club-logo.jpg").write_bytes(data)
         (root / "static" / "own-club-logo.jpg").write_bytes(data)
         print("logo files written", len(data))
