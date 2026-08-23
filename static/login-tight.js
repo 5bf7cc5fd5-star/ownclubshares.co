@@ -1,52 +1,51 @@
 (function(){
-  var LOGO = "/static/own-club-logo.jpg?v=65";
-  var LANGS = [
-    {id:"en-GB", name:"English (UK)"},{id:"en-US", name:"English (US)"},
-    {id:"lg", name:"Luganda"},{id:"sw", name:"Kiswahili"},
-    {id:"ar", name:"Arabic"},{id:"fr", name:"Français"}
-  ];
+  var LOGO = "/static/own-club-logo.jpg?v=66";
+  var LANGS = [{id:"en-GB",name:"English (UK)"},{id:"en-US",name:"English (US)"},{id:"lg",name:"Luganda"},{id:"sw",name:"Kiswahili"},{id:"ar",name:"Arabic"},{id:"fr",name:"Français"}];
   var I18N = {
-    "en-GB":{login:"Log In",forgot:"Forgotten password?",create:"Create new account",id:"Mobile number or email address",pass:"Password",name:"Full name",phone:"Mobile number",email:"Email address",pass2:"Confirm password",invite:"Invite code IMXT2Y0M8D",signup:"Create new account",back:"Already have an account?",needId:"Enter mobile number or email",needPass:"Enter password",fill:"Fill name, mobile, email and password",mismatch:"Passwords do not match"},
-    "lg":{login:"Yingira",forgot:"Werabidde ekigambo ky'okuyingira?",create:"Tonda akawunti empya",id:"Ennamba y'essimu oba email",pass:"Ekigambo ky'okuyingira",name:"Erinnya lyonna",phone:"Ennamba y'essimu",email:"Email",pass2:"Ddamu ekigambo",invite:"Koodi IMXT2Y0M8D",signup:"Tonda akawunti empya",back:"Olina akawunti?",needId:"Yingiza essimu oba email",needPass:"Yingiza ekigambo",fill:"Jjuza byonna",mismatch:"Tebikwatagana"},
-    "sw":{login:"Ingia",forgot:"Umesahau nenosiri?",create:"Fungua akaunti mpya",id:"Namba ya simu au barua pepe",pass:"Nenosiri",name:"Jina kamili",phone:"Namba ya simu",email:"Barua pepe",pass2:"Thibitisha nenosiri",invite:"Msimbo IMXT2Y0M8D",signup:"Fungua akaunti mpya",back:"Tayari una akaunti?",needId:"Weka simu au email",needPass:"Weka nenosiri",fill:"Jaza taarifa zote",mismatch:"Manenosiri hayafanani"}
+    "en-GB":{login:"Log in",forgot:"Forgot password?",create:"Create new account",id:"Mobile number, username or email",pass:"Password",name:"Full name",phone:"Mobile number",email:"Email address",pass2:"Confirm password",invite:"Invite code IMXT2Y0M8D",signup:"Sign up",back:"Have an account? Log in",needId:"Enter mobile number or email",needPass:"Enter password",fill:"Fill all fields",mismatch:"Passwords do not match",or:"OR",dont:"Don't have an account?"},
+    "lg":{login:"Yingira",forgot:"Werabidde ekigambo?",create:"Tonda akawunti",id:"Essimu, erinnya oba email",pass:"Ekigambo",name:"Erinnya",phone:"Essimu",email:"Email",pass2:"Ddamu",invite:"Koodi IMXT2Y0M8D",signup:"Wewandiise",back:"Olina akawunti?",needId:"Yingiza essimu",needPass:"Yingiza ekigambo",fill:"Jjuza byonna",mismatch:"Tebikwatagana",or:"OB",dont:"Tolina akawunti?"},
+    "sw":{login:"Ingia",forgot:"Umesahau nenosiri?",create:"Fungua akaunti",id:"Simu, jina au email",pass:"Nenosiri",name:"Jina",phone:"Simu",email:"Email",pass2:"Thibitisha",invite:"Msimbo IMXT2Y0M8D",signup:"Jisajili",back:"Una akaunti? Ingia",needId:"Weka simu",needPass:"Weka nenosiri",fill:"Jaza yote",mismatch:"Hayafanani",or:"AU",dont:"Huna akaunti?"}
   };
   I18N["en-US"]=I18N["en-GB"];
   function t(){ return I18N[currentLang()] || I18N["en-GB"]; }
   function currentLang(){ try{ return localStorage.getItem("ocLang") || "en-GB"; }catch(e){ return "en-GB"; } }
   function langName(id){ for(var i=0;i<LANGS.length;i++) if(LANGS[i].id===id) return LANGS[i].name; return "English (UK)"; }
   var CSS = [
+    'html,body{height:100%!important;width:100%!important;overflow:hidden!important;background:#000!important;margin:0!important;}',
     'body.auth-open > *:not(#ocGoldLogin):not(script):not(style){visibility:hidden!important;pointer-events:none!important;}',
     'body.auth-open #ocGoldLogin,body.auth-open #ocGoldLogin *{visibility:visible!important;pointer-events:auto!important;}',
-    '#ocGoldLogin{position:fixed;inset:0;z-index:2147483647;background:#0b0c10;color:#fff;',
+    'body.auth-open nav.bottom{display:none!important;}',
+    '#ocGoldLogin{position:fixed;inset:0;z-index:2147483647;background:#000;color:#fff;',
     "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
-    'overflow:hidden;width:100%;height:100%;margin:0;padding:0 16px 20px 16px;display:flex;flex-direction:column;align-items:center;justify-content:space-between;box-sizing:border-box;}',
+    'width:100%;height:100%;margin:0;padding:0;display:flex;flex-direction:column;overflow:hidden;transform:none!important;}',
     '#ocGoldLogin *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}',
-    '#ocGoldLogin .top-banner{width:100%;background:#1f2833;padding:10px 16px;font-size:.85rem;color:#c5a880;display:flex;align-items:center;justify-content:center;gap:6px;text-align:center;border-bottom-left-radius:4px;border-bottom-right-radius:4px;}',
-    '#ocGoldLogin .top-banner a{color:#d4af37;text-decoration:none;font-weight:500;}',
-    '#ocGoldLogin .lang-wrap{width:100%;max-width:400px;text-align:center;margin-top:8px;position:relative;z-index:6;}',
-    '#ocGoldLogin .lang-btn{background:none;border:0;color:#85929E;font-size:.85rem;cursor:pointer;font-family:inherit;}',
-    '#ocGoldLogin .lang-btn:after{content:" ▾";color:#d4af37;font-size:10px;}',
-    '#ocGoldLogin .lang-menu{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;width:min(92vw,340px);max-height:40vh;overflow:auto;background:#1f2833;border:1px solid rgba(212,175,55,.35);border-radius:14px;}',
+    '#ocGoldLogin .ig-lang{flex:0 0 auto;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 8px;text-align:center;position:relative;}',
+    '#ocGoldLogin .lang-btn{background:none;border:0;color:#a8a8a8;font-size:13px;cursor:pointer;font-family:inherit;}',
+    '#ocGoldLogin .lang-btn:after{content:" ▾";font-size:9px;}',
+    '#ocGoldLogin .lang-menu{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;width:min(90vw,320px);max-height:40vh;overflow:auto;background:#1a1a1a;border:1px solid #363636;border-radius:12px;z-index:8;}',
     '#ocGoldLogin .lang-wrap.open .lang-menu{display:block;}',
     '#ocGoldLogin .lang-item{display:block;width:100%;background:none;border:0;color:#fff;text-align:left;padding:12px 16px;cursor:pointer;font-family:inherit;}',
-    '#ocGoldLogin .main-content{width:100%;max-width:400px;display:flex;flex-direction:column;align-items:center;flex-grow:1;justify-content:center;}',
-    '#ocGoldLogin .logo-container{width:140px;height:140px;margin-bottom:35px;border-radius:50%;overflow:hidden;border:2px solid #d4af37;box-shadow:0 0 15px rgba(212,175,55,.3);background:#000;display:flex;justify-content:center;align-items:center;flex:0 0 140px;}',
+    '#ocGoldLogin .ig-main{flex:1 1 auto;width:100%;max-width:350px;margin:0 auto;padding:8px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;}',
+    '#ocGoldLogin .ig-word{font-family:"Grand Hotel","Segoe Script",cursive;font-size:42px;font-weight:400;letter-spacing:.5px;margin:0 0 18px;color:#fff;}',
+    '#ocGoldLogin .logo-container{width:88px;height:88px;border-radius:50%;overflow:hidden;border:1px solid #363636;margin-bottom:28px;background:#000;flex:0 0 88px;}',
     '#ocGoldLogin .logo-container img{width:100%;height:100%;object-fit:cover;display:block;background:#000;}',
     '#ocGoldLogin .form-container{width:100%;}',
-    '#ocGoldLogin .input-field{width:100%;padding:16px;font-size:1rem;border:1px solid #c5a880;border-radius:12px;outline:none;background:#1f2833;margin-bottom:12px;color:#fff;font-family:inherit;}',
-    '#ocGoldLogin .input-field::placeholder{color:#85929E;}',
-    '#ocGoldLogin .input-field:focus{border-color:#d4af37;box-shadow:0 0 8px rgba(212,175,55,.2);}',
-    '#ocGoldLogin .btn-login{width:100%;background:linear-gradient(135deg,#d4af37 0%,#aa7c11 100%);color:#000;border:none;border-radius:26px;font-size:1.05rem;font-weight:700;padding:14px;margin-top:8px;cursor:pointer;font-family:inherit;box-shadow:0 4px 10px rgba(0,0,0,.3);}',
-    '#ocGoldLogin .forgot-link{display:block;text-align:center;margin:20px 0 35px 0;color:#c5a880;background:none;border:0;width:100%;cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:500;}',
-    '#ocGoldLogin .bottom-actions{width:100%;max-width:400px;text-align:center;}',
-    '#ocGoldLogin .btn-signup{display:block;width:100%;background:transparent;color:#d4af37;border:1px solid #d4af37;border-radius:26px;font-size:.95rem;font-weight:600;padding:12px;margin-bottom:20px;cursor:pointer;font-family:inherit;}',
-    '#ocGoldLogin .btn-signup:active{background:rgba(212,175,55,.1);}',
-    '#ocGoldLogin .footer-brand{font-size:.8rem;color:#c5a880;font-weight:600;letter-spacing:2px;text-transform:uppercase;}',
-    '#ocGoldLogin .oc-err{min-height:18px;color:#ff6b6b;font-size:13px;text-align:center;font-weight:600;}',
-    '#ocGoldLogin .oc-ok{color:#d4af37;}',
+    '#ocGoldLogin .input-field{width:100%;background:#121212;border:1px solid #363636;border-radius:6px;padding:13px 12px;font-size:13px;color:#fff;margin-bottom:8px;outline:none;font-family:inherit;}',
+    '#ocGoldLogin .input-field::placeholder{color:#a8a8a8;}',
+    '#ocGoldLogin .input-field:focus{border-color:#737373;}',
+    '#ocGoldLogin .btn-login{width:100%;background:#0095f6;color:#fff;border:none;border-radius:8px;font-size:14px;font-weight:600;padding:11px;margin-top:10px;cursor:pointer;font-family:inherit;}',
+    '#ocGoldLogin .btn-login:active{opacity:.85;}',
+    '#ocGoldLogin .forgot-link{display:block;width:100%;text-align:center;margin:16px 0 0;color:#0095f6;background:none;border:0;font-size:13px;font-weight:500;cursor:pointer;font-family:inherit;}',
+    '#ocGoldLogin .ig-or{display:flex;align-items:center;gap:16px;width:100%;margin:22px 0 18px;color:#a8a8a8;font-size:13px;font-weight:600;}',
+    '#ocGoldLogin .ig-or:before,#ocGoldLogin .ig-or:after{content:"";flex:1;height:1px;background:#363636;}',
+    '#ocGoldLogin .ig-bottom{flex:0 0 auto;width:100%;border-top:1px solid #363636;padding:18px 24px calc(18px + env(safe-area-inset-bottom,0px));text-align:center;}',
+    '#ocGoldLogin .btn-signup{display:inline;background:none;border:0;color:#0095f6;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit;padding:0;}',
+    '#ocGoldLogin .ig-dont{color:#a8a8a8;font-size:14px;margin-right:4px;}',
+    '#ocGoldLogin .footer-brand{display:none;}',
+    '#ocGoldLogin .oc-err{min-height:16px;margin-top:10px;color:#ed4956;font-size:13px;text-align:center;}',
+    '#ocGoldLogin .oc-ok{color:#0095f6;}',
     '#ocGoldLogin .oc-pane{width:100%;}',
-    '#ocGoldLogin .oc-pane.hidden{display:none!important;}',
-    'body.auth-open nav.bottom{display:none!important;}'
+    '#ocGoldLogin .oc-pane.hidden{display:none!important;}'
   ].join('');
   function setVal(id,v){ var el=document.getElementById(id); if(el) el.value=v==null?"":String(v); return el; }
   function loggedIn(){
@@ -69,14 +68,14 @@
     ["ocLoginPane","ocSignupPane","ocForgotPane"].forEach(function(id){
       var el=document.getElementById(id); if(el) el.classList.toggle("hidden", id!==(which==="login"?"ocLoginPane":which==="signup"?"ocSignupPane":"ocForgotPane"));
     });
-    var createBtn=document.getElementById("ocCreateBtn"); if(createBtn) createBtn.style.display = which==="login"?"":"none";
+    var bot=document.getElementById("ocIgBottom"); if(bot) bot.style.display = which==="login"?"":"none";
     showErr("");
   }
   function applyLang(){
     var s=t(); var btn=document.getElementById("ocLangBtn"); if(btn) btn.textContent=langName(currentLang());
     function ph(fid,val){ var el=document.getElementById(fid); if(el) el.placeholder=val; }
     ph("ocId",s.id); ph("ocPass",s.pass); ph("ocSuName",s.name); ph("ocSuPhone",s.phone); ph("ocSuEmail",s.email); ph("ocSuPass",s.pass); ph("ocSuPass2",s.pass2); ph("ocSuInvite",s.invite); ph("ocForgotEmail",s.email);
-    var map={ocLoginBtn:s.login,ocForgotBtn:s.forgot,ocCreateBtn:s.create,ocSignupGo:s.signup,ocBackLogin:s.back};
+    var map={ocLoginBtn:s.login,ocForgotBtn:s.forgot,ocCreateBtn:s.create,ocSignupGo:s.signup,ocBackLogin:s.back,ocOr:s.or,ocDont:s.dont};
     Object.keys(map).forEach(function(k){ var el=document.getElementById(k); if(el) el.textContent=map[k]; });
   }
   function loadLocalState(){
@@ -141,7 +140,7 @@
       try{ fn(); }catch(err){ captured=(err&&err.message)?err.message:String(err); }
       window.alert=oldAlert;
       setTimeout(function(){
-        if(finishIfIn()){ showOk("Welcome"); return; }
+        if(finishIfIn()) return;
         if(captured) showErr(captured.replace(/\n/g," — "));
         else { var m=runLocalLogin(creds); if(m && !loggedIn()) showErr(m); }
       }, 80);
@@ -158,12 +157,7 @@
       })
       .catch(function(){ var m=runLocalLogin(creds); if(m && !loggedIn()) showErr(m); });
   }
-  function runForgot(){
-    showErr("");
-    var email=String((document.getElementById("ocForgotEmail")||{}).value||"").trim().toLowerCase();
-    if(!email || email.indexOf("@")<0){ showErr("Enter your account email"); return; }
-    showOk("Reset started. Contact support if you need a new password.");
-  }
+  function runForgot(){ showErr(""); var email=String((document.getElementById("ocForgotEmail")||{}).value||"").trim().toLowerCase(); if(!email || email.indexOf("@")<0){ showErr("Enter your account email"); return; } showOk("Reset started. Contact support if you need a new password."); }
   function runSignup(){
     var s=t(); showErr(""); copySignup();
     var name=(document.getElementById("ocSuName")||{}).value||"";
@@ -178,36 +172,29 @@
       if(finishIfIn()) return;
       var st=loadLocalState();
       var nu={id:"u_"+Date.now(), name:String(name).trim(), phone:String(phone).trim(), email:String(email).trim().toLowerCase(), password:pass, usedInvite:((document.getElementById("ocSuInvite")||{}).value||"IMXT2Y0M8D"), balance:0, machines:[], transactions:[]};
-      for(var i=0;i<st.users.length;i++){ if((st.users[i].email||"").toLowerCase()===nu.email){ showErr("Email already registered — log in instead"); return; } }
+      for(var i=0;i<st.users.length;i++){ if((st.users[i].email||"").toLowerCase()===nu.email){ showErr("Email already registered"); return; } }
       st.users.push(nu); st.currentUserId=nu.id; saveLocalState(st); enterApp(nu);
     }, 80);
   }
-  function loginHTML(){ return '<div class="oc-pane" id="ocLoginPane"><input type="text" class="input-field" id="ocId" placeholder="Mobile number or email address" autocomplete="username"><input type="password" class="input-field" id="ocPass" placeholder="Password" autocomplete="current-password"><button type="button" class="btn-login" id="ocLoginBtn">Log In</button><button type="button" class="forgot-link" id="ocForgotBtn">Forgotten password?</button></div>'; }
-  function signupHTML(){ return '<div class="oc-pane hidden" id="ocSignupPane"><input type="text" class="input-field" id="ocSuName" placeholder="Full name"><input type="tel" class="input-field" id="ocSuPhone" placeholder="Mobile number"><input type="email" class="input-field" id="ocSuEmail" placeholder="Email address"><input type="password" class="input-field" id="ocSuPass" placeholder="Password"><input type="password" class="input-field" id="ocSuPass2" placeholder="Confirm password"><input type="text" class="input-field" id="ocSuInvite" placeholder="Invite code IMXT2Y0M8D" value="IMXT2Y0M8D"><button type="button" class="btn-login" id="ocSignupGo">Create new account</button><button type="button" class="forgot-link" id="ocBackLogin">Already have an account?</button></div>'; }
-  function forgotHTML(){ return '<div class="oc-pane hidden" id="ocForgotPane"><input type="email" class="input-field" id="ocForgotEmail" placeholder="Email address"><button type="button" class="btn-login" id="ocForgotGo">Reset password</button><button type="button" class="forgot-link" id="ocForgotBack">Back to Log In</button></div>'; }
+  function loginHTML(){ return '<div class="oc-pane" id="ocLoginPane"><input type="text" class="input-field" id="ocId" placeholder="Mobile number, username or email" autocomplete="username"><input type="password" class="input-field" id="ocPass" placeholder="Password" autocomplete="current-password"><button type="button" class="btn-login" id="ocLoginBtn">Log in</button><button type="button" class="forgot-link" id="ocForgotBtn">Forgot password?</button><div class="ig-or" id="ocOr">OR</div></div>'; }
+  function signupHTML(){ return '<div class="oc-pane hidden" id="ocSignupPane"><input type="text" class="input-field" id="ocSuName" placeholder="Full name"><input type="tel" class="input-field" id="ocSuPhone" placeholder="Mobile number"><input type="email" class="input-field" id="ocSuEmail" placeholder="Email address"><input type="password" class="input-field" id="ocSuPass" placeholder="Password"><input type="password" class="input-field" id="ocSuPass2" placeholder="Confirm password"><input type="text" class="input-field" id="ocSuInvite" placeholder="Invite code IMXT2Y0M8D" value="IMXT2Y0M8D"><button type="button" class="btn-login" id="ocSignupGo">Sign up</button><button type="button" class="forgot-link" id="ocBackLogin">Have an account? Log in</button></div>'; }
+  function forgotHTML(){ return '<div class="oc-pane hidden" id="ocForgotPane"><input type="email" class="input-field" id="ocForgotEmail" placeholder="Email address"><button type="button" class="btn-login" id="ocForgotGo">Send reset link</button><button type="button" class="forgot-link" id="ocForgotBack">Back to log in</button></div>'; }
   function langHTML(){
     var cur=currentLang();
     var items=LANGS.map(function(L){ return '<button type="button" class="lang-item" data-lang="'+L.id+'">'+L.name+'</button>'; }).join('');
-    return '<div class="lang-wrap" id="ocLangWrap"><button type="button" class="lang-btn" id="ocLangBtn">'+langName(cur)+'</button><div class="lang-menu" id="ocLangMenu">'+items+'</div></div>';
+    return '<div class="ig-lang"><div class="lang-wrap" id="ocLangWrap"><button type="button" class="lang-btn" id="ocLangBtn">'+langName(cur)+'</button><div class="lang-menu" id="ocLangMenu">'+items+'</div></div></div>';
   }
   function bind(){
     var loginBtn=document.getElementById("ocLoginBtn");
-    var signupGo=document.getElementById("ocSignupGo");
-    var createBtn=document.getElementById("ocCreateBtn");
-    var forgotBtn=document.getElementById("ocForgotBtn");
-    var backBtn=document.getElementById("ocBackLogin");
-    var pass=document.getElementById("ocPass");
-    var wrap=document.getElementById("ocLangWrap");
-    var langBtn=document.getElementById("ocLangBtn");
     if(loginBtn) loginBtn.onclick=function(e){ if(e) e.preventDefault(); runLogin(); };
-    if(signupGo) signupGo.onclick=function(e){ if(e) e.preventDefault(); runSignup(); };
-    if(createBtn) createBtn.onclick=function(e){ if(e) e.preventDefault(); showPane("signup"); };
-    if(backBtn) backBtn.onclick=function(e){ if(e) e.preventDefault(); showPane("login"); };
-    if(forgotBtn) forgotBtn.onclick=function(e){ if(e) e.preventDefault(); showPane("forgot"); };
-    var forgotGo=document.getElementById("ocForgotGo"); var forgotBack=document.getElementById("ocForgotBack");
-    if(forgotGo) forgotGo.onclick=function(e){ if(e) e.preventDefault(); runForgot(); };
-    if(forgotBack) forgotBack.onclick=function(e){ if(e) e.preventDefault(); showPane("login"); };
-    if(pass) pass.addEventListener("keydown", function(e){ if(e.key==="Enter") runLogin(); });
+    var signupGo=document.getElementById("ocSignupGo"); if(signupGo) signupGo.onclick=function(e){ if(e) e.preventDefault(); runSignup(); };
+    var createBtn=document.getElementById("ocCreateBtn"); if(createBtn) createBtn.onclick=function(e){ if(e) e.preventDefault(); showPane("signup"); };
+    var backBtn=document.getElementById("ocBackLogin"); if(backBtn) backBtn.onclick=function(e){ if(e) e.preventDefault(); showPane("login"); };
+    var forgotBtn=document.getElementById("ocForgotBtn"); if(forgotBtn) forgotBtn.onclick=function(e){ if(e) e.preventDefault(); showPane("forgot"); };
+    var forgotGo=document.getElementById("ocForgotGo"); if(forgotGo) forgotGo.onclick=function(e){ if(e) e.preventDefault(); runForgot(); };
+    var forgotBack=document.getElementById("ocForgotBack"); if(forgotBack) forgotBack.onclick=function(e){ if(e) e.preventDefault(); showPane("login"); };
+    var pass=document.getElementById("ocPass"); if(pass) pass.addEventListener("keydown", function(e){ if(e.key==="Enter") runLogin(); });
+    var wrap=document.getElementById("ocLangWrap"); var langBtn=document.getElementById("ocLangBtn");
     if(langBtn && wrap && !wrap._ocBound){
       wrap._ocBound=true;
       langBtn.onclick=function(e){ if(e){ e.preventDefault(); e.stopPropagation(); } wrap.classList.toggle("open"); };
@@ -222,7 +209,7 @@
     if(!document.getElementById("ocGoldLoginCss")){ var st=document.createElement("style"); st.id="ocGoldLoginCss"; st.appendChild(document.createTextNode(CSS)); document.head.appendChild(st); }
     document.body.classList.add("auth-open");
     var box=document.createElement("div"); box.id="ocGoldLogin";
-    box.innerHTML='<div class="top-banner"><span>Experience modern networking. <a href="#" id="ocInstall">Download App</a></span></div>'+langHTML()+'<div class="main-content"><div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=65\'"></div><div class="form-container">'+loginHTML()+signupHTML()+forgotHTML()+'<div id="ocErr" class="oc-err"></div></div></div><div class="bottom-actions"><button type="button" class="btn-signup" id="ocCreateBtn">Create new account</button><div class="footer-brand">Own Club Share</div></div>';
+    box.innerHTML=langHTML()+'<div class="ig-main"><div class="ig-word">Own Club</div><div class="logo-container"><img src="'+LOGO+'" alt="Own Club" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=66\'"></div><div class="form-container">'+loginHTML()+signupHTML()+forgotHTML()+'<div id="ocErr" class="oc-err"></div></div></div><div class="ig-bottom" id="ocIgBottom"><span class="ig-dont" id="ocDont">Don\'t have an account?</span> <button type="button" class="btn-signup" id="ocCreateBtn">Sign up</button></div>';
     document.body.appendChild(box); bind();
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", mount); else mount();
