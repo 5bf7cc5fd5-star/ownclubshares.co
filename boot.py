@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
-import runpy, subprocess, sys, base64, re, os, json
+import runpy, subprocess, sys, base64, json
 
 root = Path(__file__).resolve().parent
 (root / "static").mkdir(exist_ok=True)
@@ -15,8 +15,8 @@ def run(script):
         except Exception as e:
             print(script, "failed", e)
 
-# Keep the committed frontend.html app shell. Do NOT glue the old 4-part SPA
-# back on top — that is what left the green landing beside the dashboard.
+for script in ("patch_serve_index.py", "patch_badges.py", "patch_login_guard.py", "patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
+    run(script)
 
 pool_p = root / "data" / "company_pool.json"
 snap = {"balance_usd": 100000000, "balance": 100000000, "currency": "USD", "initialized": True, "as_of": "2026-08-22T22:00:00+03:00", "updated_at": "2026-08-22T22:00:00+03:00", "ledger": [{"at": "2026-08-22 22:00:00", "type": "snapshot", "amount": 0, "balance_after": 100000000, "note": "Restored 22 Aug 2026 10pm"}]}
@@ -30,12 +30,6 @@ if not cur or float(cur.get("balance_usd") or cur.get("balance") or 0) == 0:
 wd_p = root / "data" / "withdrawals.json"
 if (not wd_p.exists()) or wd_p.stat().st_size < 3:
     wd_p.write_text("[]", encoding="utf-8")
-
-for closed_marker in ("APP_CLOSED", "CLOSED.html"):
-    p = root / closed_marker
-    if p.exists():
-        try: p.unlink()
-        except Exception: pass
 
 bp = root / "static" / "logo.b64"
 if bp.exists():
@@ -51,8 +45,5 @@ try:
 except Exception as e:
     print("persist init", e)
 
-for script in ("patch_serve_index.py", "patch_login_guard.py", "patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
-    run(script)
-
-print("boot starting — login /  app /app")
+print("boot starting")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
