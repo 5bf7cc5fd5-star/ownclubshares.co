@@ -45,9 +45,9 @@ for script in ("patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "p
             print(script, "failed", e)
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=65">',
-    '<script src="/static/login-tight.js?v=65"></script>',
-    '<script src="/static/app-shell-fix.js?v=65"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=66">',
+    '<script src="/static/login-tight.js?v=66"></script>',
+    '<script src="/static/app-shell-fix.js?v=66"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -61,7 +61,7 @@ for name in ("index.html", "frontend.html"):
     else: t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v65", name)
+        print("injected v66", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
