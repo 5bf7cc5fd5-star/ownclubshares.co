@@ -5,6 +5,7 @@
     {page:"home", label:"Home"},
     {page:"market", label:"Market"},
     {page:"machines", label:"Shares"},
+    {page:"team", label:"Team"},
     {page:"my", label:"Account"}
   ];
   function setViewport(){
@@ -16,9 +17,7 @@
     [".space-bg",".warp-img",".warp",".warp2",".warp-stars","#leagueFx",".league-fx","#particleCanvas",
      "img[src*='space-wallpaper']","img[src*='ucl-bg']",".bg-space",".wallpaper","#appBg",".app-bg",
      ".pitch",".pitch-lines",".pitch-midline","#homeBgUcl",".glow",".auth-sport-fx",".home-banner"].forEach(function(s){
-      document.querySelectorAll(s).forEach(function(el){
-        el.remove();
-      });
+      document.querySelectorAll(s).forEach(function(el){ el.remove(); });
     });
     document.documentElement.style.setProperty("background","#0b0c10","important");
     document.body.style.setProperty("background","#0b0c10","important");
@@ -31,15 +30,13 @@
       document.body.appendChild(nav);
     }
     if(nav.parentElement !== document.body) document.body.appendChild(nav);
-    if(!nav.getAttribute("data-oc4")){
-      nav.setAttribute("data-oc4","1");
-      nav.innerHTML = TABS.map(function(t){
-        return '<button type="button" class="nav" data-page="'+t.page+'">'+t.label+'</button>';
-      }).join("");
-    }
-    var logged = !document.body.classList.contains("auth-open") && (location.pathname==="/app" || !!localStorage.getItem("ocToken"));
-    nav.style.setProperty("display", logged ? "grid" : "none", "important");
-    nav.style.setProperty("grid-template-columns","1fr 1fr 1fr 1fr","important");
+    nav.setAttribute("data-oc5","1");
+    nav.innerHTML = TABS.map(function(t){
+      return '<button type="button" class="nav" data-page="'+t.page+'">'+t.label+'</button>';
+    }).join("");
+    var logged = location.pathname==="/app" || !!localStorage.getItem("ocToken");
+    nav.style.setProperty("display", logged && !document.body.classList.contains("auth-open") ? "grid" : "none", "important");
+    nav.style.setProperty("grid-template-columns","repeat(5,1fr)","important");
     nav.style.setProperty("position","fixed","important");
     nav.style.setProperty("left","0","important");
     nav.style.setProperty("right","0","important");
@@ -57,7 +54,7 @@
       btn.style.setProperty("background","transparent","important");
       btn.style.setProperty("border","0","important");
       btn.style.setProperty("padding","10px 0","important");
-      btn.style.setProperty("font-size","12px","important");
+      btn.style.setProperty("font-size","11px","important");
       btn.style.setProperty("font-weight","600","important");
       btn.onclick = function(){
         var p = btn.getAttribute("data-page");
