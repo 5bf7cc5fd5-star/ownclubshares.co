@@ -1,5 +1,5 @@
 (function(){
-  var LOGO = "/static/own-club-logo.jpg?v=53";
+  var LOGO = "/static/own-club-logo.jpg?v=54";
   var CSS = [
     '#ocGoldLogin{position:fixed;inset:0;z-index:2147483646;background:#0b0c10;color:#ffffff;',
     "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
@@ -18,7 +18,7 @@
     '#ocGoldLogin .logo-container{width:110px;height:110px;margin-bottom:24px;border-radius:50%;overflow:hidden;',
     'border:2px solid #d4af37;box-shadow:0 0 15px rgba(212,175,55,0.2);background-color:#000000;',
     'flex:0 0 110px;}',
-    '#ocGoldLogin .logo-container img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;}',
+    '#ocGoldLogin .logo-container img{width:100%;height:100%;object-fit:contain;object-position:center;display:block;background:#000;}',
     '#ocGoldLogin .form-container{width:100%;}',
     '#ocGoldLogin .input-field{width:100%;padding:14px 16px;font-size:1rem;border:1px solid #c5a880;border-radius:12px;',
     'outline:none;background-color:#1f2833;margin-bottom:10px;color:#ffffff;font-family:inherit;}',
@@ -71,7 +71,7 @@
       '<div class="top-banner"><span>Get the official app to browse faster. <a href="#" id="ocDl">Install</a></span></div>'+
       '<div class="language-text">English (UK)</div>'+
       '<div class="main-content">'+
-        '<div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg\'"></div>'+
+        '<div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=54\'"></div>'+
         '<div class="form-container">'+
           '<input type="text" class="input-field" id="ocId" placeholder="Mobile number or email address" autocomplete="username" required>'+
           '<input type="password" class="input-field" id="ocPass" placeholder="Password" autocomplete="current-password" required>'+
