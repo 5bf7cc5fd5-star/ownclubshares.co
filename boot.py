@@ -72,9 +72,9 @@ if srv.exists():
         print("server logo route patched")
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=57">',
-    '<script src="/static/login-tight.js?v=57"></script>',
-    '<script src="/static/app-shell-fix.js?v=57"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=58">',
+    '<script src="/static/login-tight.js?v=58"></script>',
+    '<script src="/static/app-shell-fix.js?v=58"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -91,7 +91,7 @@ for name in ("index.html", "frontend.html"):
         t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v57", name)
+        print("injected v58", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
