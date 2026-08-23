@@ -1,24 +1,134 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Own Club — Closed</title>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Own Club Console</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-  html,body{margin:0;min-height:100%;background:#0b0d10;color:#e8eef4;font-family:system-ui,-apple-system,sans-serif}
-  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 20px}
-  .card{max-width:420px;text-align:center}
-  h1{margin:0 0 10px;font-size:22px;letter-spacing:.02em}
-  p{margin:0;color:#9aa8b6;line-height:1.5;font-size:15px}
-</style>
-</head>
-<body>
-<div class="wrap">
-  <div class="card">
-    <h1>Own Club is closed</h1>
-    <p>This share market app has been shut down. Sign-in, deposits, shares and the admin console are no longer available.</p>
+:root{--p:#440099;--ps:#f3e9ff;--bg:#f5f6f8;--c:#fff;--b:#e8eaed;--t:#2E2D2C;--m:#6b7280;--side:248px}
+*{box-sizing:border-box}html,body{margin:0;height:100%;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--t)}
+button,input,select,textarea{font:inherit}
+.login-shell{min-height:100vh;display:flex;align-items:center;justify-content:center;background:linear-gradient(145deg,#2a0670,#440099 50%,#78C4DD);padding:24px}
+.login-card{width:min(400px,100%);background:#fff;border-radius:16px;padding:32px 28px;box-shadow:0 20px 50px rgba(0,0,0,.25)}
+.login-logo{width:48px;height:48px;border-radius:12px;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:18px;margin-bottom:16px}
+.login-card h1{margin:0 0 4px;font-size:22px;font-weight:800}.login-card .sub{margin:0 0 22px;color:var(--m);font-size:13px}
+.login-card label{display:block;font-size:12px;font-weight:600;color:#4b5563;margin-bottom:6px}
+.login-card input{width:100%;padding:12px 14px;border:1px solid var(--b);border-radius:10px;margin-bottom:14px;outline:none}
+.btn-primary{width:100%;border:0;background:var(--p);color:#fff;padding:12px;border-radius:10px;font-weight:700;cursor:pointer}
+.shell{display:flex;min-height:100vh}.sidebar{width:var(--side);background:#fff;border-right:1px solid var(--b);display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.side-head{padding:18px 16px;border-bottom:1px solid var(--b);display:flex;align-items:center;gap:12px}
+.side-head .mark{width:36px;height:36px;border-radius:10px;background:var(--p);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800}
+.side-nav{padding:12px 10px;flex:1;overflow:auto}.side-nav .sec{font-size:10px;text-transform:uppercase;color:#9ca3af;padding:10px 12px 6px;font-weight:700}
+.side-nav button{width:100%;text-align:left;border:0;background:transparent;padding:10px 12px;border-radius:10px;color:#374151;font-size:13px;cursor:pointer;margin:2px 0}
+.side-nav button.on,.side-nav button:hover{background:var(--ps);color:var(--p);font-weight:700}
+.side-foot{padding:12px;border-top:1px solid var(--b);font-size:12px;color:var(--m)}
+.content{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:56px;background:#fff;border-bottom:1px solid var(--b);display:flex;align-items:center;justify-content:space-between;padding:0 20px;position:sticky;top:0;z-index:10}
+.chip{border:1px solid var(--b);background:#fff;border-radius:8px;padding:7px 10px;font-size:12px;cursor:pointer}
+.chip-p{background:var(--p);color:#fff;border-color:var(--p)}
+.page{padding:20px;max-width:1280px}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:16px}
+.kpi{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:16px}
+.kpi .lbl{font-size:12px;color:var(--m);font-weight:600}.kpi .val{font-size:22px;font-weight:800;margin-top:8px}
+.card{background:var(--c);border:1px solid var(--b);border-radius:14px;padding:18px;margin-bottom:14px}
+.card h3{margin:0 0 14px;font-size:15px;font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th,td{padding:12px 8px;border-bottom:1px solid var(--b)}
+.badge{display:inline-block;padding:3px 8px;border-radius:999px;font-size:11px;font-weight:700}
+.badge-ok{background:#dcfce7;color:#166534}.badge-bad{background:#fee2e2;color:#991b1b}.badge-wait{background:#fef3c7;color:#92400e}
+.badge-l1{background:#ede9fe;color:#5b21b6}.badge-l2{background:#e0f2fe;color:#075985}.badge-l3{background:#fce7f3;color:#9d174d}.badge-root{background:#fef3c7;color:#92400e}
+.row-actions button{border:0;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;margin-right:6px}
+.btn-ok{background:#16a34a;color:#fff}.btn-bad{background:#dc2626;color:#fff}
+.hidden{display:none!important}
+.toast{position:fixed;right:18px;bottom:18px;background:#111;color:#fff;padding:11px 14px;border-radius:10px;display:none;z-index:50}
+.empty{color:var(--m);font-size:13px;padding:18px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:600;margin-bottom:4px}
+.field input,.field textarea{width:100%;padding:10px 12px;border:1px solid var(--b);border-radius:8px}
+.bulk-bar{display:flex;flex-wrap:wrap;align-items:center;gap:10px;padding:12px 0 14px;margin-bottom:8px;border-bottom:1px solid var(--b)}
+.menu-btn{display:none;border:1px solid var(--b);background:#fff;border-radius:8px;padding:7px 10px;margin-right:8px}
+@media(max-width:960px){
+  .sidebar{display:none;position:fixed;left:0;top:0;bottom:0;z-index:30;box-shadow:8px 0 30px rgba(0,0,0,.18)}
+  .sidebar.open{display:flex}
+  .menu-btn{display:inline-block}
+  .kpis,.grid2{grid-template-columns:1fr 1fr}
+}
+</style></head><body>
+<div id="app">
+  <div class="login-shell" id="loginView">
+    <div class="login-card">
+      <div class="login-logo">OC</div>
+      <h1>Console</h1>
+      <p class="sub">Own Club — Share Market · KMK Holding Co.</p>
+      <label for="email">Email</label>
+      <input id="email" type="email" autocomplete="username" value="k_hmed@yahoo.com">
+      <label for="pass">Password</label>
+      <input id="pass" type="password" autocomplete="current-password" placeholder="Password">
+      <button class="btn-primary" type="button" onclick="doLogin()">Sign in</button>
+    </div>
+  </div>
+  <div class="shell hidden" id="shellView">
+    <aside class="sidebar" id="sideNav">
+      <div class="side-head"><div class="mark">OC</div><div><b>Own Club</b><small>Share Market</small></div></div>
+      <nav class="side-nav">
+        <div class="sec">Main</div>
+        <button type="button" class="on" data-page="dashboard" onclick="goPage('dashboard',this)">Dashboard</button>
+        <button type="button" data-page="deposits" onclick="goPage('deposits',this)">Deposits</button>
+        <button type="button" data-page="withdrawals" onclick="goPage('withdrawals',this)">Withdrawals</button>
+        <button type="button" data-page="logs" onclick="goPage('logs',this)">Transaction log</button>
+        <div class="sec">Inventory</div>
+        <button type="button" data-page="pool" onclick="goPage('pool',this)">Company pool</button>
+        <button type="button" data-page="credit" onclick="goPage('credit',this)">Credit wallet</button>
+        <div class="sec">People</div>
+        <button type="button" data-page="members" onclick="goPage('members',this)">Members</button>
+        <button type="button" data-page="referrals" onclick="goPage('referrals',this)">Referrals / Levels</button>
+        <div class="sec">Support</div>
+        <button type="button" onclick="location.href='/'">Member app</button>
+        <button type="button" onclick="logout()">Logout</button>
+      </nav>
+    </aside>
+    <div class="content">
+      <header class="topbar">
+        <div><button class="menu-btn" type="button" onclick="document.getElementById('sideNav').classList.toggle('open')">Menu</button><span id="crumb"><b>Dashboard</b></span></div>
+        <div class="actions">
+          <button class="chip" type="button" onclick="refreshAll()">Refresh</button>
+          <button class="chip chip-p" type="button" onclick="logout()">Logout</button>
+        </div>
+      </header>
+      <main class="page">
+        <section id="page-dashboard"><div class="kpis">
+          <div class="kpi"><div class="lbl">Members</div><div class="val" id="kUsers">0</div></div>
+          <div class="kpi"><div class="lbl">Net deposits</div><div class="val" id="kInv">UGX 0</div></div>
+          <div class="kpi"><div class="lbl">Pending withdrawals</div><div class="val" id="kPwd">0</div></div>
+          <div class="kpi"><div class="lbl">Level 1 referrals</div><div class="val" id="kL1">0</div></div>
+        </div>
+        <div class="card"><h3>Operations</h3><p class="empty" style="padding-top:0">Approve deposits after TxID check. Withdrawals: Under Review → Reviewed → Disbursed. Use Members to credit wallets.</p></div></section>
+        <section id="page-deposits" class="hidden"><div class="card"><h3>Deposits</h3><div id="depTable"></div></div></section>
+        <section id="page-withdrawals" class="hidden"><div class="card"><h3>Withdrawals</h3><div id="wdTable"></div></div></section>
+        <section id="page-logs" class="hidden"><div class="card"><h3>Transaction log</h3><div id="logN"></div><div class="table-wrap" id="logTable"></div></div></section>
+        <section id="page-pool" class="hidden"><div class="card"><h3>Company pool</h3><div id="poolBal">0</div><div id="poolLedger"></div></div></section>
+        <section id="page-credit" class="hidden"><div class="card"><h3>Credit wallet</h3>
+          <div class="field"><label>Email / phone / id</label><input id="crId"></div>
+          <div class="field"><label>Amount</label><input id="crAmt" type="number"></div>
+          <div class="field"><label>Note</label><input id="crNote"></div>
+          <button class="chip chip-p" type="button" onclick="creditOne()">Credit</button>
+        </div></section>
+        <section id="page-members" class="hidden"><div class="card"><h3>Members</h3>
+          <div class="bulk-bar">
+            <label><input type="checkbox" id="chkAllMembers" onclick="toggleAllMembers(this)"> Select all</label>
+            <input type="number" id="bulkAmt" placeholder="Amount (UGX)">
+            <input type="text" id="bulkNote" placeholder="Note">
+            <button class="chip chip-p" type="button" onclick="creditSelected()">Credit selected</button>
+            <span id="selCount">0 selected</span>
+          </div>
+          <div id="memTable"></div>
+        </div></section>
+        <section id="page-referrals" class="hidden"><div class="card"><h3>Referrals</h3>
+          <div id="refL1">0</div><div id="refTable"></div><div id="refTree"></div>
+        </div></section>
+      </main>
+    </div>
   </div>
 </div>
-</body>
-</html>
+<div class="toast" id="toast"></div>
+<script src="/static/admin-console.js?v=2"></script>
+</body></html>
