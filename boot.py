@@ -6,7 +6,6 @@ root = Path(__file__).resolve().parent
 (root / "static").mkdir(exist_ok=True)
 (root / "data").mkdir(exist_ok=True)
 
-# Ensure app is open — remove close marker if present
 # Assemble full app pages from parts if current index is the closed stub (< 5KB)
 parts = sorted((root / "frontend.part{}.html".format(i) for i in range(1,5)), key=lambda p: p.name)
 if all(p.exists() for p in parts):
@@ -73,9 +72,9 @@ if srv.exists():
         print("server logo route patched")
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=52">',
-    '<script src="/static/login-tight.js?v=52"></script>',
-    '<script src="/static/app-shell-fix.js?v=52"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=53">',
+    '<script src="/static/login-tight.js?v=53"></script>',
+    '<script src="/static/app-shell-fix.js?v=53"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -83,7 +82,6 @@ for name in ("index.html", "frontend.html"):
     if not p.exists():
         continue
     t = p.read_text(encoding="utf-8", errors="replace")
-    # Strip any previous injects
     t2 = re.sub(r'<script[^>]*login-tight\.js[^>]*></script>\s*', '', t)
     t2 = re.sub(r'<link[^>]*app-shell-fix\.css[^>]*>\s*', '', t2)
     t2 = re.sub(r'<script[^>]*app-shell-fix\.js[^>]*></script>\s*', '', t2)
@@ -93,7 +91,7 @@ for name in ("index.html", "frontend.html"):
         t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v52", name)
+        print("injected v53", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
