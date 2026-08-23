@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 from pathlib import Path
 import runpy, subprocess, sys, base64, re, os, json
-from datetime import datetime, timezone, timedelta
 
 root = Path(__file__).resolve().parent
 (root / "static").mkdir(exist_ok=True)
@@ -10,15 +9,14 @@ root = Path(__file__).resolve().parent
 parts = sorted((root / "frontend.part{}.html".format(i) for i in range(1,5)), key=lambda p: p.name)
 if all(p.exists() for p in parts):
     full = "".join(p.read_text(encoding="utf-8", errors="replace") for p in parts)
-    for name in ("index.html", "frontend.html"):
-        p = root / name
-        if (not p.exists()) or p.stat().st_size < 5000:
-            p.write_text(full, encoding="utf-8")
-            print("assembled full", name, "from parts", len(full))
+    p = root / "frontend.html"
+    p.write_text(full, encoding="utf-8")
+    print("assembled frontend.html", len(full))
 
 pool_p = root / "data" / "company_pool.json"
 snap = {
     "balance_usd": 100000000,
+    "balance": 100000000,
     "currency": "USD",
     "initialized": True,
     "as_of": "2026-08-22T22:00:00+03:00",
@@ -29,7 +27,7 @@ try:
     cur = json.loads(pool_p.read_text()) if pool_p.exists() else {}
 except Exception:
     cur = {}
-if not cur or float(cur.get("balance_usd") or 0) == 0:
+if not cur or float(cur.get("balance_usd") or cur.get("balance") or 0) == 0:
     pool_p.write_text(json.dumps(snap, indent=2), encoding="utf-8")
     print("restored pool snapshot 100M")
 
@@ -57,7 +55,7 @@ try:
 except Exception as e:
     print("persist init", e)
 
-for script in ("patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
+for script in ("patch_serve_index.py", "patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
     p = root / script
     if p.exists():
         try:
@@ -67,15 +65,14 @@ for script in ("patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "p
             print(script, "failed", e)
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=67">',
-    '<script src="/static/login-tight.js?v=66"></script>',
-    '<script src="/static/app-shell-fix.js?v=67"></script>',
-    '<script src="/static/market-data.js?v=67"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=68">',
+    '<script src="/static/login-tight.js?v=68"></script>',
+    '<script src="/static/app-shell-fix.js?v=68"></script>',
+    '<script src="/static/market-data.js?v=68"></script>',
 ]
 block = "\n".join(INJECT)
-for name in ("index.html", "frontend.html"):
-    p = root / name
-    if not p.exists(): continue
+p = root / "frontend.html"
+if p.exists():
     t = p.read_text(encoding="utf-8", errors="replace")
     t2 = re.sub(r'<script[^>]*login-tight\.js[^>]*></script>\s*', '', t)
     t2 = re.sub(r'<link[^>]*app-shell-fix\.css[^>]*>\s*', '', t2)
@@ -83,9 +80,8 @@ for name in ("index.html", "frontend.html"):
     t2 = re.sub(r'<script[^>]*market-data\.js[^>]*></script>\s*', '', t2)
     if "</body>" in t2: t2 = t2.replace("</body>", block + "\n</body>", 1)
     else: t2 += "\n" + block
-    if t2 != t:
-        p.write_text(t2, encoding="utf-8")
-        print("injected v67", name)
+    p.write_text(t2, encoding="utf-8")
+    print("injected v68 frontend.html")
 
-print("boot starting server — app OPEN")
+print("boot starting server — login at / , app at /app")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
