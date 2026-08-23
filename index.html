@@ -1,24 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow">
-<title>Own Club — Closed</title>
-<style>
-  html,body{margin:0;min-height:100%;background:#0b0d10;color:#e8eef4;font-family:system-ui,-apple-system,sans-serif}
-  .wrap{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:32px 20px}
-  .card{max-width:420px;text-align:center}
-  h1{margin:0 0 10px;font-size:22px;letter-spacing:.02em}
-  p{margin:0;color:#9aa8b6;line-height:1.5;font-size:15px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Own Club – Log In</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        html, body { height: 100%; overflow: hidden; }
+        body { background-color: #0b0c10; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0 16px 20px 16px; color: #ffffff; }
+        .top-banner { width: calc(100% + 32px); background-color: #1f2833; padding: 12px 16px; font-size: 0.85rem; color: #c5a880; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
+        .top-banner a { color: #d4af37; text-decoration: none; font-weight: 600; margin-left: 4px; }
+        .main-content { flex: 1; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .logo-container { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; border: 3px solid #d4af37; margin-bottom: 28px; background: #0b0c10; }
+        .logo-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .form-container { width: 100%; }
+        .input-field { width: 100%; background: #1a2230; border: 1px solid rgba(212,175,55,.25); border-radius: 12px; padding: 14px; font-size: 16px; color: #fff; margin-bottom: 12px; outline: none; }
+        .btn-login { width: 100%; background: linear-gradient(180deg,#e3c56a,#d4af37); color: #0b0c10; border: none; border-radius: 26px; font-size: 1.05rem; font-weight: 700; padding: 14px; cursor: pointer; }
+        .forgot-link { display: block; text-align: center; margin-top: 14px; color: #d4af37; text-decoration: none; font-size: .9rem; }
+        .bottom-actions { width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; }
+        .btn-signup-mobile { width: 100%; color: #d4af37; border: 1.5px solid #d4af37; border-radius: 26px; font-size: .95rem; font-weight: 600; padding: 11px; text-decoration: none; text-align: center; margin-bottom: 16px; }
+        .btn-signup-mobile:active { background-color: rgba(212, 175, 55, 0.1); }
+        .footer-brand { font-size: 0.8rem; color: #c5a880; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+        .err { min-height: 18px; color: #e57373; font-size: .85rem; text-align: center; margin-top: 10px; }
+    </style>
 </head>
 <body>
-<div class="wrap">
-  <div class="card">
-    <h1>Own Club is closed</h1>
-    <p>This share market app has been shut down. Sign-in, deposits, shares and the admin console are no longer available.</p>
-  </div>
-</div>
+    <div class="top-banner">
+        <span>Experience modern networking. <a href="#">Download App</a></span>
+    </div>
+    <div class="main-content">
+        <div class="logo-container">
+            <img src="/static/own-club-logo.jpg" alt="Own Club Share Logo">
+        </div>
+        <div class="form-container">
+            <form id="loginForm" action="#" method="POST">
+                <input type="text" class="input-field" id="loginId" placeholder="Mobile number or email address" required>
+                <input type="password" class="input-field" id="loginPass" placeholder="Password" required>
+                <button type="submit" class="btn-login">Log In</button>
+                <a href="#" class="forgot-link" id="forgotLink">Forgotten password?</a>
+            </form>
+            <div class="err" id="err"></div>
+        </div>
+    </div>
+    <div class="bottom-actions">
+        <a href="/app" class="btn-signup-mobile" id="createBtn">Create new account</a>
+        <div class="footer-brand">Own Club Share</div>
+    </div>
+    <script>
+    document.getElementById("loginForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      var id = document.getElementById("loginId").value.trim();
+      var pass = document.getElementById("loginPass").value;
+      var err = document.getElementById("err");
+      err.textContent = "";
+      if(!id || !pass){ err.textContent = "Enter mobile / email and password"; return; }
+      fetch("/api/login", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({identifier:id, password:pass})})
+        .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+        .then(function(res){
+          if(res.ok && res.j && res.j.token){
+            try{ localStorage.setItem("ocToken", res.j.token); }catch(e){}
+            location.href = "/app";
+          } else {
+            err.textContent = (res.j && res.j.error) || "Check details and try again.";
+          }
+        })
+        .catch(function(){ err.textContent = "Network error. Try again."; });
+    });
+    </script>
+    <script src="/static/login-tight.js?v=68"></script>
 </body>
 </html>
