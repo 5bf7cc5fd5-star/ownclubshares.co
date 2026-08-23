@@ -14,6 +14,14 @@ if all(p.exists() for p in parts):
         if (not p.exists()) or p.stat().st_size < 5000:
             p.write_text(full, encoding="utf-8")
             print("assembled full", name, "from parts", len(full))
+
+ap = [root / "admin.part1.html", root / "admin.part2.html"]
+if all(p.exists() for p in ap):
+    full_admin = "".join(p.read_text(encoding="utf-8", errors="replace") for p in ap)
+    dst = root / "admin.html"
+    dst.write_text(full_admin, encoding="utf-8")
+    print("assembled admin.html", len(full_admin))
+
 for closed_marker in ("APP_CLOSED", "CLOSED.html"):
     p = root / closed_marker
     if p.exists():
