@@ -1,52 +1,68 @@
-/* v50 — lifted full-width tab bar above Safari chrome, no wallpaper leak */
+/* v52 — pure dark edge-to-edge, locked full-width nav above Safari indicator, zero pitch/green bleed */
 html, body {
   width: 100% !important;
   max-width: 100% !important;
+  min-width: 100% !important;
+  height: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
   overflow-x: hidden !important;
-  background: #07140f !important;
+  background: #0a0a0c !important;
+  background-color: #0a0a0c !important;
 }
-.space-bg, .warp-img, .warp, #leagueFx, .league-fx, #particleCanvas,
-img[src*="space-wallpaper"], img[src*="ucl-bg"], .bg-space, .wallpaper {
+
+/* Kill every pitch / wallpaper / green field element */
+.space-bg, .warp-img, .warp, .warp2, .warp-stars, #leagueFx, .league-fx, #particleCanvas,
+img[src*="space-wallpaper"], img[src*="ucl-bg"], .bg-space, .wallpaper, #appBg, .app-bg,
+.pitch, .pitch-lines, .pitch-midline, .league-fx .pitch, .auth-sport-fx, .auth-sport-fx .pitch-lines,
+body > .space-bg, body > img.bg, #homeBgUcl, .glow {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  background: transparent !important;
+  background-image: none !important;
 }
+
 #mainApp:not(.hidden) {
   position: fixed !important;
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 8px) !important;
+  bottom: calc(64px + env(safe-area-inset-bottom, 0px) + 6px) !important;
   width: 100% !important;
   max-width: 100% !important;
   min-width: 100% !important;
   height: auto !important;
   margin: 0 !important;
+  padding: 0 !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  background: #07140f !important;
+  background: #0a0a0c !important;
+  background-color: #0a0a0c !important;
   z-index: 20 !important;
   border-radius: 0 !important;
   box-shadow: none !important;
   transform: none !important;
+  -webkit-overflow-scrolling: touch !important;
 }
+
 #mainApp > header,
 #mainApp > main.content,
 #mainApp .page {
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
-  padding-left: 14px !important;
-  padding-right: 14px !important;
+  padding-left: max(12px, env(safe-area-inset-left, 0px)) !important;
+  padding-right: max(12px, env(safe-area-inset-right, 0px)) !important;
   box-sizing: border-box !important;
+  background: transparent !important;
 }
+
 #mainApp .page { display: none !important; }
 #mainApp .page.active { display: block !important; }
 
-/* Bottom nav: solid full-width bar, buttons lifted above Safari search / home indicator */
+/* Bottom nav: solid locked full-width bar, buttons above Safari search / home indicator */
 nav.bottom {
   position: fixed !important;
   left: 0 !important;
@@ -65,14 +81,16 @@ nav.bottom {
   align-items: stretch !important;
   justify-items: stretch !important;
   background: #0b0d10 !important;
+  background-color: #0b0d10 !important;
   border-top: 1px solid #1a3348 !important;
   border-radius: 0 !important;
   z-index: 2147483000 !important;
   transform: none !important;
   gap: 0 !important;
   box-sizing: border-box !important;
-  box-shadow: 0 -4px 20px rgba(0,0,0,.35) !important;
+  box-shadow: 0 -4px 20px rgba(0,0,0,.4) !important;
 }
+
 nav.bottom .nav {
   display: flex !important;
   flex-direction: column !important;
@@ -93,7 +111,9 @@ nav.bottom .nav {
   float: none !important;
   line-height: 1.15 !important;
 }
+
 nav.bottom .nav.active { color: #1ebcff !important; }
+
 nav.bottom .nav.nav-center,
 nav.bottom .nav-center,
 nav.bottom .nav-center-btn {
@@ -103,15 +123,18 @@ nav.bottom .nav-center-btn {
   margin: 0 !important;
   box-shadow: none !important;
 }
+
 nav.bottom .nav-center-btn {
   width: 26px !important;
   height: 26px !important;
   border-radius: 50% !important;
   background: #00c853 !important;
 }
+
 #marketList, .mkt-list { display: block !important; min-height: 180px !important; }
 
-/* Extra guard: any residual full-bleed wallpaper behind content */
-body > .space-bg, body > img.bg, #appBg, .app-bg {
-  display: none !important;
+/* Force no green anywhere on chrome */
+html, body, #mainApp, .page, .content, header, nav.bottom {
+  --bg: #0a0a0c;
+  background-image: none !important;
 }
