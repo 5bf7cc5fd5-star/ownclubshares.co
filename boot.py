@@ -6,7 +6,6 @@ root = Path(__file__).resolve().parent
 (root / "static").mkdir(exist_ok=True)
 (root / "data").mkdir(exist_ok=True)
 
-# Assemble full app pages from parts if current index is the closed stub (< 5KB)
 parts = sorted((root / "frontend.part{}.html".format(i) for i in range(1,5)), key=lambda p: p.name)
 if all(p.exists() for p in parts):
     full = "".join(p.read_text(encoding="utf-8", errors="replace") for p in parts)
@@ -34,7 +33,6 @@ if bp.exists():
     except Exception as e:
         print("logo decode", e)
 
-# Prefer high-quality local logo
 src_logo = root / "static" / "own-club-logo.jpg"
 if not src_logo.exists() or src_logo.stat().st_size < 50000:
     alt = root / "own-club-logo.jpg"
@@ -55,7 +53,6 @@ for script in ("inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrat
         except Exception as e:
             print(script, "failed", e)
 
-# Serve root logo even if request is /own-club-logo.jpg
 srv = root / "server.py"
 if srv.exists():
     st = srv.read_text(encoding="utf-8", errors="replace")
@@ -72,9 +69,9 @@ if srv.exists():
         print("server logo route patched")
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=58">',
-    '<script src="/static/login-tight.js?v=58"></script>',
-    '<script src="/static/app-shell-fix.js?v=58"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=59">',
+    '<script src="/static/login-tight.js?v=59"></script>',
+    '<script src="/static/app-shell-fix.js?v=59"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -91,7 +88,7 @@ for name in ("index.html", "frontend.html"):
         t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v58", name)
+        print("injected v59", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
