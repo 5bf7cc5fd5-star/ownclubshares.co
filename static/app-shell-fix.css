@@ -10,7 +10,7 @@ nav.bottom {
   position: fixed !important; left: 0 !important; right: 0 !important; bottom: 0 !important;
   width: 100% !important;
   min-height: calc(52px + env(safe-area-inset-bottom, 0px)) !important;
-  display: grid !important; grid-template-columns: repeat(4, 1fr) !important;
+  display: grid !important; grid-template-columns: repeat(5, 1fr) !important;
   background: #0b0c10 !important; border-top: 1px solid #262626 !important;
   z-index: 2147483000 !important; transform: none !important;
   padding-bottom: env(safe-area-inset-bottom, 0px) !important;
