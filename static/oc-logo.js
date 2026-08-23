@@ -1,14 +1,14 @@
 (function(){
-  var L = "data:image/jpeg;base64,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";
+  var L = "https://raw.githubusercontent.com/5bf7cc5fd5-star/ownclubshares.co/main/own-club-logo.jpg";
   window.OC_LOGO = L;
   function lock(){
-    document.querySelectorAll("img#logoHero, img.logoTop, img.logoBig, img.oc-logo, img[data-logo]").forEach(function(img){
-      img.src = L;
+    document.querySelectorAll("img#logoHero, img.logoTop, img.logoBig, img.oc-logo, img[data-logo], .hero img, .top img").forEach(function(img){
+      if((img.src||"").indexOf("raw.githubusercontent")<0) img.src = L;
       img.onerror = function(){ this.onerror=null; this.src=L; };
     });
   }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", lock);
   else lock();
-  setTimeout(lock, 20); setTimeout(lock, 150); setTimeout(lock, 500);
+  setTimeout(lock, 20); setTimeout(lock, 200); setTimeout(lock, 800);
   try{ new MutationObserver(lock).observe(document.documentElement, {childList:true, subtree:true}); }catch(e){}
 })();
