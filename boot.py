@@ -18,11 +18,8 @@ if all(p.exists() for p in parts):
 for closed_marker in ("APP_CLOSED", "CLOSED.html"):
     p = root / closed_marker
     if p.exists():
-        try:
-            p.unlink()
-            print("removed", closed_marker)
-        except Exception as e:
-            print("could not remove", closed_marker, e)
+        try: p.unlink()
+        except Exception as e: print("could not remove", closed_marker, e)
 
 bp = root / "static" / "logo.b64"
 if bp.exists():
@@ -30,7 +27,6 @@ if bp.exists():
         data = base64.b64decode(bp.read_text().strip())
         (root / "own-club-logo.jpg").write_bytes(data)
         (root / "static" / "own-club-logo.jpg").write_bytes(data)
-        print("logo written", len(data))
     except Exception as e:
         print("logo decode", e)
 
@@ -42,15 +38,13 @@ except Exception as e:
 for script in ("inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
     p = root / script
     if p.exists():
-        try:
-            subprocess.check_call([sys.executable, str(p)], cwd=str(root))
-        except Exception as e:
-            print(script, "failed", e)
+        try: subprocess.check_call([sys.executable, str(p)], cwd=str(root))
+        except Exception as e: print(script, "failed", e)
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=63">',
-    '<script src="/static/login-tight.js?v=63"></script>',
-    '<script src="/static/app-shell-fix.js?v=63"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=64">',
+    '<script src="/static/login-tight.js?v=64"></script>',
+    '<script src="/static/app-shell-fix.js?v=64"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -67,7 +61,7 @@ for name in ("index.html", "frontend.html"):
         t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v63", name)
+        print("injected v64", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
