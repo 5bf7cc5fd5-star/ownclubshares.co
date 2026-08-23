@@ -7,6 +7,15 @@ root = Path(__file__).resolve().parent
 (root / "data").mkdir(exist_ok=True)
 
 # Ensure app is open — remove close marker if present
+# Assemble full app pages from parts if current index is the closed stub (< 5KB)
+parts = sorted((root / "frontend.part{}.html".format(i) for i in range(1,5)), key=lambda p: p.name)
+if all(p.exists() for p in parts):
+    full = "".join(p.read_text(encoding="utf-8", errors="replace") for p in parts)
+    for name in ("index.html", "frontend.html"):
+        p = root / name
+        if (not p.exists()) or p.stat().st_size < 5000:
+            p.write_text(full, encoding="utf-8")
+            print("assembled full", name, "from parts", len(full))
 for closed_marker in ("APP_CLOSED", "CLOSED.html"):
     p = root / closed_marker
     if p.exists():
