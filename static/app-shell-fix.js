@@ -13,11 +13,29 @@
       document.querySelectorAll(s).forEach(function(el){
         el.style.setProperty("display","none","important");
         el.style.setProperty("visibility","hidden","important");
-        el.style.setProperty("opacity","0","important");
       });
     });
     document.documentElement.style.setProperty("background","#0b0c10","important");
     document.body.style.setProperty("background","#0b0c10","important");
+  }
+  function hideOldChrome(){
+    var needles = /System Dashboard|Company fund pool|Customers \u2014 tap|Customers — tap|OPEN APPROVALS|LOG IN SIGN UP|Security note: passwords/i;
+    document.querySelectorAll("h1,h2,h3,h4,section,article,.card,.panel,.box,.wrap").forEach(function(el){
+      if(el.id==="ocGoldLogin" || (el.closest && el.closest("#ocGoldLogin"))) return;
+      var t = (el.textContent||"").replace(/\s+/g," ").slice(0,160);
+      if(needles.test(t)){
+        var box = el.closest("section, article, .card, .panel, .box") || el;
+        box.classList.add("oc-old-hide");
+        box.style.setProperty("display","none","important");
+      }
+    });
+    document.querySelectorAll("a,button").forEach(function(el){
+      var t=(el.textContent||"").replace(/\s+/g," ").trim();
+      if(t==="LOG IN" || t==="SIGN UP" || t==="LOG IN SIGN UP"){
+        var bar = el.parentElement;
+        if(bar) bar.style.setProperty("display","none","important");
+      }
+    });
   }
   function injectDashboard(){
     var home = document.getElementById("home");
@@ -46,39 +64,21 @@
   function pinNav(){
     var nav = document.querySelector("nav.bottom"); if(!nav) return;
     if(nav.parentElement !== document.body) document.body.appendChild(nav);
-    var safe = "env(safe-area-inset-bottom, 0px)";
-    nav.style.setProperty("display","grid","important");
+    var logged = !document.body.classList.contains("auth-open");
+    nav.style.setProperty("display", logged ? "grid" : "none", "important");
     nav.style.setProperty("grid-template-columns","1fr 1fr 1fr 1fr 1fr","important");
     nav.style.setProperty("position","fixed","important");
     nav.style.setProperty("left","0","important");
     nav.style.setProperty("right","0","important");
     nav.style.setProperty("bottom","0","important");
-    nav.style.setProperty("top","auto","important");
     nav.style.setProperty("width","100%","important");
-    nav.style.setProperty("max-width","100%","important");
-    nav.style.setProperty("min-height","calc(56px + " + safe + ")","important");
-    nav.style.setProperty("padding","8px 0 calc(" + safe + " + 8px) 0","important");
     nav.style.setProperty("z-index","2147483000","important");
-    nav.style.setProperty("transform","none","important");
     nav.style.setProperty("background","#141923","important");
-    nav.style.setProperty("border-top","1px solid rgba(212,175,55,0.15)","important");
     nav.querySelectorAll(".nav").forEach(function(btn){
       btn.style.setProperty("position","static","important");
-      btn.style.setProperty("transform","none","important");
-      btn.style.setProperty("height","50px","important");
-      btn.style.setProperty("width","100%","important");
       if(!btn.onclick){ btn.onclick = function(){ var p = btn.getAttribute("data-page"); if(typeof goPage==="function") goPage(p); }; }
     });
-    var main = document.getElementById("mainApp");
-    if(main){
-      main.style.setProperty("background","#0b0c10","important");
-      main.style.setProperty("display","flex","important");
-      main.style.setProperty("flex-direction","column","important");
-      injectDashboard(); syncDashBal();
-    }
-    if(document.getElementById("authScreen") && !document.getElementById("authScreen").classList.contains("hidden")){
-      nav.style.setProperty("display","none","important");
-    }
+    injectDashboard(); syncDashBal();
   }
   function swapPhonesInText(s){
     if(!s) return s;
@@ -92,11 +92,9 @@
       if(el.href && /7805|7806|0780/.test(el.href)) el.href = swapPhonesInText(el.href);
     });
   }
-  function run(){ setViewport(); hideWall(); pinNav(); injectDashboard(); syncDashBal(); fixPhones(); }
+  function run(){ setViewport(); hideWall(); hideOldChrome(); pinNav(); injectDashboard(); syncDashBal(); fixPhones(); }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", run); else run();
   setTimeout(run,50); setTimeout(run,250); setTimeout(run,800);
   window.addEventListener("resize", function(){ pinNav(); hideWall(); });
-  window.addEventListener("orientationchange", function(){ setTimeout(function(){ pinNav(); hideWall(); }, 100); });
-  if(window.visualViewport) window.visualViewport.addEventListener("resize", function(){ pinNav(); });
-  try { new MutationObserver(function(){ hideWall(); pinNav(); }).observe(document.documentElement, { childList:true, subtree:true }); } catch(e){}
+  try { new MutationObserver(function(){ hideWall(); hideOldChrome(); }).observe(document.documentElement, { childList:true, subtree:true }); } catch(e){}
 })();
