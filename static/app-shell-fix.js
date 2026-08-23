@@ -30,7 +30,6 @@
       document.body.appendChild(nav);
     }
     if(nav.parentElement !== document.body) document.body.appendChild(nav);
-    nav.setAttribute("data-oc5","1");
     nav.innerHTML = TABS.map(function(t){
       return '<button type="button" class="nav" data-page="'+t.page+'">'+t.label+'</button>';
     }).join("");
@@ -61,23 +60,15 @@
         nav.querySelectorAll(".nav").forEach(function(b){ b.style.color = "#a8a8a8"; });
         btn.style.color = "#d4af37";
         if(typeof goPage==="function") goPage(p);
+        if(p==="market" && typeof window.startMarketFeed==="function") window.startMarketFeed();
+        if(p==="market" && typeof window.renderMarketList==="function") window.renderMarketList();
       };
     });
   }
-  function swapPhonesInText(s){
-    if(!s) return s;
-    return String(s).replace(/\+256780509960/g, NEW_PHONE).replace(/\+256780609970/g, NEW_PHONE)
-      .replace(/256780509960/g, "256779168109").replace(/256780609970/g, "256779168109")
-      .replace(/0780509960/g, NEW_LOCAL).replace(/0780609970/g, NEW_LOCAL);
+  function run(){
+    setViewport(); hideWall(); pinNav();
+    if(typeof window.startMarketFeed==="function") window.startMarketFeed();
   }
-  function fixPhones(){
-    document.querySelectorAll("a,span,p,div,button,td,li").forEach(function(el){
-      if(el.children.length===0 && el.textContent && /7805|7806|0780/.test(el.textContent)) el.textContent = swapPhonesInText(el.textContent);
-      if(el.href && /7805|7806|0780/.test(el.href)) el.href = swapPhonesInText(el.href);
-    });
-  }
-  function run(){ setViewport(); hideWall(); pinNav(); fixPhones(); }
   if(document.readyState==="loading") document.addEventListener("DOMContentLoaded", run); else run();
-  setTimeout(run,50); setTimeout(run,250); setTimeout(run,800);
-  window.addEventListener("resize", function(){ pinNav(); hideWall(); });
+  setTimeout(run,50); setTimeout(run,300); setTimeout(run,900);
 })();
