@@ -15,13 +15,6 @@ if all(p.exists() for p in parts):
             p.write_text(full, encoding="utf-8")
             print("assembled full", name, "from parts", len(full))
 
-ap = [root / "admin.part1.html", root / "admin.part2.html"]
-if all(p.exists() for p in ap):
-    full_admin = "".join(p.read_text(encoding="utf-8", errors="replace") for p in ap)
-    dst = root / "admin.html"
-    dst.write_text(full_admin, encoding="utf-8")
-    print("assembled admin.html", len(full_admin))
-
 for closed_marker in ("APP_CLOSED", "CLOSED.html"):
     p = root / closed_marker
     if p.exists():
@@ -55,9 +48,9 @@ for script in ("inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrat
             print(script, "failed", e)
 
 INJECT = [
-    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=62">',
-    '<script src="/static/login-tight.js?v=62"></script>',
-    '<script src="/static/app-shell-fix.js?v=62"></script>',
+    '<link rel="stylesheet" href="/static/app-shell-fix.css?v=63">',
+    '<script src="/static/login-tight.js?v=63"></script>',
+    '<script src="/static/app-shell-fix.js?v=63"></script>',
 ]
 block = "\n".join(INJECT)
 for name in ("index.html", "frontend.html"):
@@ -74,7 +67,7 @@ for name in ("index.html", "frontend.html"):
         t2 += "\n" + block
     if t2 != t:
         p.write_text(t2, encoding="utf-8")
-        print("injected v62", name)
+        print("injected v63", name)
 
 print("boot starting server — app OPEN")
 runpy.run_path(str(root / "server.py"), run_name="__main__")
