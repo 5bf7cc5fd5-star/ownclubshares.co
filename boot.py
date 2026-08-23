@@ -35,11 +35,14 @@ try:
 except Exception as e:
     print("persist init", e)
 
-for script in ("inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
+for script in ("patch_credit_pool.py", "inject_ops.py", "fix_admin_phone.py", "patch_phones.py", "migrate.py"):
     p = root / script
     if p.exists():
-        try: subprocess.check_call([sys.executable, str(p)], cwd=str(root))
-        except Exception as e: print(script, "failed", e)
+        try:
+            subprocess.check_call([sys.executable, str(p)], cwd=str(root))
+            print("ran", script)
+        except Exception as e:
+            print(script, "failed", e)
 
 INJECT = [
     '<link rel="stylesheet" href="/static/app-shell-fix.css?v=65">',
