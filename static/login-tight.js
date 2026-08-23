@@ -1,5 +1,5 @@
 (function(){
-  var LOGO = "/static/own-club-logo.jpg?v=58";
+  var LOGO = "/static/own-club-logo.jpg?v=60";
   var LANGS = [
     {id:"en-GB", name:"English (UK)"},{id:"en-US", name:"English (US)"},
     {id:"lg", name:"Luganda"},{id:"sw", name:"Kiswahili"},
@@ -7,53 +7,55 @@
     {id:"ach", name:"Acholi"},{id:"luo", name:"Dholuo"},{id:"so", name:"Somali"},
     {id:"am", name:"Amharic"},{id:"ar", name:"Arabic"},{id:"fr", name:"Français"},
     {id:"es", name:"Español"},{id:"pt", name:"Português"},{id:"de", name:"Deutsch"},
-    {id:"tr", name:"Türkçe"},{id:"it", name:"Italiano"},{id:"nl", name:"Nederlands"},
-    {id:"ru", name:"Russian"},{id:"uk", name:"Ukrainian"},{id:"pl", name:"Polski"},
-    {id:"hi", name:"Hindi"},{id:"ur", name:"Urdu"},{id:"bn", name:"Bengali"},
-    {id:"zh", name:"Chinese"},{id:"ja", name:"Japanese"},{id:"ko", name:"Korean"},
+    {id:"tr", name:"Türkçe"},{id:"hi", name:"Hindi"},{id:"zh", name:"Chinese"},
     {id:"ha", name:"Hausa"},{id:"yo", name:"Yoruba"},{id:"zu", name:"isiZulu"},{id:"af", name:"Afrikaans"}
   ];
   var I18N = {
     "en-GB":{login:"Log In",forgot:"Forgotten password?",create:"Create new account",id:"Mobile number or email address",pass:"Password",name:"Full name",phone:"Mobile number",email:"Email address",pass2:"Confirm password",invite:"Invite code IMXT2Y0M8D",signup:"Create new account",back:"Already have an account?",needId:"Enter mobile number or email",needPass:"Enter password",fill:"Fill name, mobile, email and password",mismatch:"Passwords do not match"},
-    "lg":{login:"Yingira",forgot:"Werabidde ekigambo ky'okuyingira?",create:"Tonda akawunti empya",id:"Ennamba y'essimu oba email",pass:"Ekigambo ky'okuyingira",name:"Erinnya lyonna",phone:"Ennamba y'essimu",email:"Email",pass2:"Ddamu ekigambo ky'okuyingira",invite:"Koodi y'okuyita IMXT2Y0M8D",signup:"Tonda akawunti empya",back:"Olina akawunti?",needId:"Yingiza essimu oba email",needPass:"Yingiza ekigambo ky'okuyingira",fill:"Jjuza amannya, essimu, email n'ekigambo",mismatch:"Ebigambo by'okuyingira tebikwatagana"},
-    "sw":{login:"Ingia",forgot:"Umesahau nenosiri?",create:"Fungua akaunti mpya",id:"Namba ya simu au barua pepe",pass:"Nenosiri",name:"Jina kamili",phone:"Namba ya simu",email:"Barua pepe",pass2:"Thibitisha nenosiri",invite:"Msimbo wa mwaliko IMXT2Y0M8D",signup:"Fungua akaunti mpya",back:"Tayari una akaunti?",needId:"Weka namba ya simu au barua pepe",needPass:"Weka nenosiri",fill:"Jaza jina, simu, barua pepe na nenosiri",mismatch:"Manenosiri hayafanani"}
+    "lg":{login:"Yingira",forgot:"Werabidde ekigambo ky'okuyingira?",create:"Tonda akawunti empya",id:"Ennamba y'essimu oba email",pass:"Ekigambo ky'okuyingira",name:"Erinnya lyonna",phone:"Ennamba y'essimu",email:"Email",pass2:"Ddamu ekigambo",invite:"Koodi IMXT2Y0M8D",signup:"Tonda akawunti empya",back:"Olina akawunti?",needId:"Yingiza essimu oba email",needPass:"Yingiza ekigambo",fill:"Jjuza byonna",mismatch:"Tebikwatagana"},
+    "sw":{login:"Ingia",forgot:"Umesahau nenosiri?",create:"Fungua akaunti mpya",id:"Namba ya simu au barua pepe",pass:"Nenosiri",name:"Jina kamili",phone:"Namba ya simu",email:"Barua pepe",pass2:"Thibitisha nenosiri",invite:"Msimbo IMXT2Y0M8D",signup:"Fungua akaunti mpya",back:"Tayari una akaunti?",needId:"Weka simu au email",needPass:"Weka nenosiri",fill:"Jaza taarifa zote",mismatch:"Manenosiri hayafanani"}
   };
-  I18N["en-US"] = I18N["en-GB"];
+  I18N["en-US"]=I18N["en-GB"];
   function t(){ return I18N[currentLang()] || I18N["en-GB"]; }
   function currentLang(){ try{ return localStorage.getItem("ocLang") || "en-GB"; }catch(e){ return "en-GB"; } }
   function langName(id){ for(var i=0;i<LANGS.length;i++) if(LANGS[i].id===id) return LANGS[i].name; return "English (UK)"; }
   var CSS = [
     '#ocGoldLogin{position:fixed;inset:0;z-index:2147483646;background:#0b0c10;color:#fff;',
     "font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;",
-    'overflow:auto;width:100%;height:100%;margin:0;display:flex;flex-direction:column;align-items:center;justify-content:space-between;',
-    'padding:0 16px calc(24px + env(safe-area-inset-bottom,0px)) 16px;box-sizing:border-box;pointer-events:auto;}',
-    '#ocGoldLogin *{box-sizing:border-box;pointer-events:auto;}',
-    '#ocGoldLogin .lang-wrap{width:100%;max-width:380px;position:relative;z-index:5;padding-top:calc(16px + env(safe-area-inset-top,0px));text-align:center;}',
+    'overflow:hidden;width:100%;height:100%;margin:0;padding:0;display:flex;align-items:stretch;justify-content:center;}',
+    '#ocGoldLogin *{box-sizing:border-box;pointer-events:auto;-webkit-tap-highlight-color:transparent;}',
+    '#ocGoldLogin .viewport-wrapper{display:flex;flex-direction:column;align-items:center;justify-content:space-between;',
+    'height:100%;width:100%;max-width:480px;margin:0 auto;padding:0 16px calc(24px + env(safe-area-inset-bottom,0px)) 16px;color:#fff;position:relative;}',
+    '#ocGoldLogin .top-banner{width:calc(100% + 32px);background:#1f2833;padding:12px 16px;font-size:.85rem;color:#c5a880;text-align:center;border-bottom:1px solid rgba(212,175,55,.2);}',
+    '#ocGoldLogin .top-banner a{color:#d4af37;text-decoration:none;font-weight:600;margin-left:4px;}',
+    '#ocGoldLogin .lang-wrap{width:100%;position:relative;z-index:5;margin-top:14px;text-align:center;}',
     '#ocGoldLogin .lang-btn{background:none;border:0;color:#85929E;font-size:.85rem;font-weight:600;cursor:pointer;font-family:inherit;padding:8px 12px;}',
-    '#ocGoldLogin .lang-btn:after{content:" \25BE";font-size:10px;color:#d4af37;}',
-    '#ocGoldLogin .lang-menu{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;width:min(92vw,340px);max-height:52vh;overflow:auto;background:#1f2833;border:1px solid rgba(212,175,55,.35);border-radius:14px;z-index:20;}',
+    '#ocGoldLogin .lang-btn:after{content:" ▾";font-size:10px;color:#d4af37;}',
+    '#ocGoldLogin .lang-menu{display:none;position:absolute;left:50%;transform:translateX(-50%);top:100%;width:min(92vw,340px);max-height:48vh;overflow:auto;background:#1f2833;border:1px solid rgba(212,175,55,.35);border-radius:14px;z-index:20;}',
     '#ocGoldLogin .lang-wrap.open .lang-menu{display:block;}',
     '#ocGoldLogin .lang-item{display:block;width:100%;background:none;border:0;border-bottom:1px solid rgba(255,255,255,.06);color:#fff;font-size:15px;text-align:left;padding:12px 16px;cursor:pointer;font-family:inherit;}',
     '#ocGoldLogin .lang-item.active{color:#d4af37;font-weight:700;}',
-    '#ocGoldLogin .main-content{width:100%;max-width:380px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-grow:1;padding:10px 0;}',
-    '#ocGoldLogin .logo-container{width:110px;height:110px;margin-bottom:20px;border-radius:50%;overflow:hidden;border:2px solid #d4af37;background:#000;flex:0 0 110px;}',
-    '#ocGoldLogin .logo-container img{width:100%;height:100%;object-fit:contain;display:block;background:#000;}',
+    '#ocGoldLogin .main-content{width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-grow:1;padding:10px 0;}',
+    '#ocGoldLogin .logo-container{width:110px;height:110px;margin-bottom:28px;border-radius:50%;overflow:hidden;border:2px solid #d4af37;box-shadow:0 0 15px rgba(212,175,55,.2);background:#000;flex:0 0 110px;}',
+    '#ocGoldLogin .logo-container img{width:100%;height:100%;object-fit:cover;display:block;background:#000;}',
     '#ocGoldLogin .form-container{width:100%;}',
-    '#ocGoldLogin .input-field{width:100%;padding:14px 16px;font-size:16px;border:1px solid #c5a880;border-radius:12px;outline:none;background:#1f2833;margin-bottom:10px;color:#fff;font-family:inherit;}',
-    '#ocGoldLogin .btn-login{width:100%;background:linear-gradient(135deg,#d4af37 0%,#aa7c11 100%);color:#000;border:none;border-radius:25px;font-size:1rem;font-weight:700;padding:14px;margin-top:6px;cursor:pointer;font-family:inherit;}',
+    '#ocGoldLogin .input-field{width:100%;padding:15px 16px;font-size:1rem;border:1px solid #c5a880;border-radius:12px;outline:none;background:#1f2833;margin-bottom:10px;color:#fff;font-family:inherit;}',
+    '#ocGoldLogin .input-field::placeholder{color:#85929E;}',
+    '#ocGoldLogin .input-field:focus{border-color:#d4af37;box-shadow:0 0 8px rgba(212,175,55,.2);}',
+    '#ocGoldLogin .btn-login{width:100%;background:linear-gradient(135deg,#d4af37 0%,#aa7c11 100%);color:#000;border:none;border-radius:25px;font-size:1rem;font-weight:700;padding:14px;margin-top:6px;cursor:pointer;font-family:inherit;box-shadow:0 4px 10px rgba(0,0,0,.3);}',
     '#ocGoldLogin .forgot-link{display:block;text-align:center;margin-top:16px;color:#c5a880;background:none;border:0;width:100%;cursor:pointer;font-family:inherit;font-size:.95rem;font-weight:600;}',
-    '#ocGoldLogin .bottom-actions{width:100%;max-width:380px;text-align:center;margin-top:auto;}',
+    '#ocGoldLogin .bottom-actions{width:100%;text-align:center;margin-top:auto;}',
     '#ocGoldLogin .btn-signup{display:block;width:100%;background:transparent;color:#d4af37;border:1px solid #d4af37;border-radius:25px;font-size:.95rem;font-weight:600;padding:11px;margin-bottom:16px;cursor:pointer;font-family:inherit;}',
+    '#ocGoldLogin .btn-signup:active{background:rgba(212,175,55,.1);}',
     '#ocGoldLogin .footer-brand{font-size:.75rem;color:#85929E;font-weight:600;letter-spacing:2px;text-transform:uppercase;}',
     '#ocGoldLogin .oc-err{min-height:18px;margin:8px 0 0;color:#ff6b6b;font-size:13px;text-align:center;font-weight:600;}',
-    '#ocGoldLogin .oc-ok{min-height:18px;margin:8px 0 0;color:#d4af37;font-size:13px;text-align:center;font-weight:600;}',
+    '#ocGoldLogin .oc-ok{color:#d4af37;}',
     '#ocGoldLogin .oc-pane{width:100%;}',
     '#ocGoldLogin .oc-pane.hidden{display:none!important;}',
     '#authScreen.hidden{display:none!important;}',
-    '#mainApp:not(.hidden){display:block!important;}',
     'body.auth-open nav.bottom{display:none!important;}'
   ].join('');
-  function setVal(id,v){ var el=document.getElementById(id); if(el){ el.value=v==null?"":String(v); } return el; }
+  function setVal(id,v){ var el=document.getElementById(id); if(el) el.value=v==null?"":String(v); return el; }
   function loggedIn(){
     try{ if(typeof currentUser==="function" && currentUser()) return true; }catch(e){}
     try{ if(window.state && state.currentUserId) return true; }catch(e){}
@@ -66,13 +68,13 @@
     if(auth){ auth.classList.add("hidden"); auth.style.setProperty("display","none","important"); }
     document.body.classList.remove("auth-open");
     var main=document.getElementById("mainApp");
-    if(main){ main.classList.remove("hidden"); main.style.setProperty("display","block","important"); }
+    if(main){ main.classList.remove("hidden"); main.style.setProperty("display","flex","important"); }
   }
   function showErr(msg){ var el=document.getElementById("ocErr"); if(el){ el.className="oc-err"; el.textContent=msg||""; } }
-  function showOk(msg){ var el=document.getElementById("ocErr"); if(el){ el.className="oc-ok"; el.textContent=msg||""; } }
+  function showOk(msg){ var el=document.getElementById("ocErr"); if(el){ el.className="oc-err oc-ok"; el.textContent=msg||""; } }
   function showPane(which){
     ["ocLoginPane","ocSignupPane","ocForgotPane"].forEach(function(id){
-      var el=document.getElementById(id); if(el) el.classList.toggle("hidden", id!== (which==="login"?"ocLoginPane":which==="signup"?"ocSignupPane":"ocForgotPane"));
+      var el=document.getElementById(id); if(el) el.classList.toggle("hidden", id!==(which==="login"?"ocLoginPane":which==="signup"?"ocSignupPane":"ocForgotPane"));
     });
     var createBtn=document.getElementById("ocCreateBtn"); if(createBtn) createBtn.style.display = which==="login"?"":"none";
     showErr("");
@@ -201,7 +203,7 @@
     if(pass!==pass2){ showErr(s.mismatch); return; }
     var oldAlert=window.alert; var captured="";
     window.alert=function(m){ captured=String(m||""); };
-    try{ if(typeof switchAuth==="function") switchAuth("signup"); if(typeof doSignup==="function") doSignup(); else captured=""; }catch(err){ captured=(err&&err.message)?err.message:String(err); }
+    try{ if(typeof switchAuth==="function") switchAuth("signup"); if(typeof doSignup==="function") doSignup(); }catch(err){ captured=(err&&err.message)?err.message:String(err); }
     window.alert=oldAlert;
     setTimeout(function(){
       if(finishIfIn()){ showOk("Account created"); return; }
@@ -252,7 +254,7 @@
     if(!document.getElementById("ocGoldLoginCss")){ var st=document.createElement("style"); st.id="ocGoldLoginCss"; st.appendChild(document.createTextNode(CSS)); document.head.appendChild(st); }
     document.body.classList.add("auth-open");
     var box=document.createElement("div"); box.id="ocGoldLogin";
-    box.innerHTML=langHTML()+'<div class="main-content"><div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=58\'"></div><div class="form-container">'+loginHTML()+signupHTML()+forgotHTML()+'<div id="ocErr" class="oc-err"></div></div></div><div class="bottom-actions"><button type="button" class="btn-signup" id="ocCreateBtn">Create new account</button><div class="footer-brand">Own Club Share</div></div>';
+    box.innerHTML='<div class="viewport-wrapper"><div class="top-banner"><span>Get the official app to browse faster. <a href="#" id="ocInstall">Install</a></span></div>'+langHTML()+'<div class="main-content"><div class="logo-container"><img src="'+LOGO+'" alt="Own Club Share Logo" onerror="this.onerror=null;this.src=\'/own-club-logo.jpg?v=60\'"></div><div class="form-container">'+loginHTML()+signupHTML()+forgotHTML()+'<div id="ocErr" class="oc-err"></div></div></div><div class="bottom-actions"><button type="button" class="btn-signup" id="ocCreateBtn">Create new account</button><div class="footer-brand">Own Club Share</div></div></div>';
     document.body.appendChild(box); bind();
     var _show=window.showApp;
     if(typeof _show==="function" && !_show._goldWrapped){ window.showApp=function(){ var r=_show.apply(this, arguments); try{ if(loggedIn()) teardown(); }catch(e){} return r; }; window.showApp._goldWrapped=true; }
