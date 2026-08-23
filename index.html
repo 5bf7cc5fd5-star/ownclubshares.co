@@ -2,26 +2,149 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
     <title>Own Club – Log In</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; -webkit-tap-highlight-color: transparent; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
         html, body { height: 100%; overflow: hidden; }
-        body { background-color: #0b0c10; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 0 16px 20px 16px; color: #ffffff; }
-        .top-banner { width: calc(100% + 32px); background-color: #1f2833; padding: 12px 16px; font-size: 0.85rem; color: #c5a880; text-align: center; border-bottom: 1px solid rgba(212, 175, 55, 0.2); }
-        .top-banner a { color: #d4af37; text-decoration: none; font-weight: 600; margin-left: 4px; }
-        .main-content { flex: 1; width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-        .logo-container { width: 140px; height: 140px; border-radius: 50%; overflow: hidden; border: 3px solid #d4af37; margin-bottom: 28px; background: #0b0c10; }
-        .logo-container img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        body {
+            background-color: #0b0c10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px 20px 16px;
+            color: #ffffff;
+        }
+        .top-banner {
+            width: calc(100% + 32px);
+            background-color: #1f2833;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            color: #c5a880;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-align: center;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+        }
+        .top-banner a {
+            color: #d4af37;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .main-content {
+            width: 100%;
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-grow: 1;
+            justify-content: center;
+        }
+        .logo-container {
+            width: 140px;
+            height: 140px;
+            margin-bottom: 35px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid #d4af37;
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+            background-color: #000000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .logo-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
         .form-container { width: 100%; }
-        .input-field { width: 100%; background: #1a2230; border: 1px solid rgba(212,175,55,.25); border-radius: 12px; padding: 14px; font-size: 16px; color: #fff; margin-bottom: 12px; outline: none; }
-        .btn-login { width: 100%; background: linear-gradient(180deg,#e3c56a,#d4af37); color: #0b0c10; border: none; border-radius: 26px; font-size: 1.05rem; font-weight: 700; padding: 14px; cursor: pointer; }
-        .forgot-link { display: block; text-align: center; margin-top: 14px; color: #d4af37; text-decoration: none; font-size: .9rem; }
-        .bottom-actions { width: 100%; max-width: 400px; display: flex; flex-direction: column; align-items: center; }
-        .btn-signup-mobile { width: 100%; color: #d4af37; border: 1.5px solid #d4af37; border-radius: 26px; font-size: .95rem; font-weight: 600; padding: 11px; text-decoration: none; text-align: center; margin-bottom: 16px; }
+        .input-field {
+            width: 100%;
+            padding: 16px;
+            font-size: 1rem;
+            border: 1px solid #c5a880;
+            border-radius: 12px;
+            outline: none;
+            background-color: #1f2833;
+            margin-bottom: 12px;
+            color: #ffffff;
+        }
+        .input-field::placeholder { color: #85929E; }
+        .input-field:focus {
+            border-color: #d4af37;
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+        }
+        .btn-login {
+            width: 100%;
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            color: #000000;
+            border: none;
+            border-radius: 26px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            padding: 14px;
+            margin-top: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .btn-login:active { opacity: 0.9; }
+        .forgot-link {
+            display: block;
+            text-align: center;
+            margin: 20px 0 35px 0;
+            color: #c5a880;
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            background: none;
+            border: 0;
+            width: 100%;
+            cursor: pointer;
+            font-family: inherit;
+        }
+        .bottom-actions {
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        .btn-signup-mobile {
+            display: block;
+            width: 100%;
+            background-color: transparent;
+            color: #d4af37;
+            border: 1px solid #d4af37;
+            border-radius: 26px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            padding: 12px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+            font-family: inherit;
+        }
         .btn-signup-mobile:active { background-color: rgba(212, 175, 55, 0.1); }
-        .footer-brand { font-size: 0.8rem; color: #c5a880; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
-        .err { min-height: 18px; color: #e57373; font-size: .85rem; text-align: center; margin-top: 10px; }
+        .footer-brand {
+            font-size: 0.8rem;
+            color: #c5a880;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+        .hidden { display: none !important; }
+        .err { min-height: 18px; color: #e57373; text-align: center; font-size: 0.85rem; margin-top: 8px; }
     </style>
 </head>
 <body>
@@ -37,36 +160,84 @@
                 <input type="text" class="input-field" id="loginId" placeholder="Mobile number or email address" required>
                 <input type="password" class="input-field" id="loginPass" placeholder="Password" required>
                 <button type="submit" class="btn-login">Log In</button>
-                <a href="#" class="forgot-link" id="forgotLink">Forgotten password?</a>
+                <button type="button" class="forgot-link" id="forgotLink">Forgotten password?</button>
+            </form>
+            <form id="signupForm" class="hidden" action="#" method="POST">
+                <input type="text" class="input-field" id="suName" placeholder="Full name" required>
+                <input type="tel" class="input-field" id="suPhone" placeholder="Mobile number" required>
+                <input type="email" class="input-field" id="suEmail" placeholder="Email address" required>
+                <input type="password" class="input-field" id="suPass" placeholder="Password" required>
+                <input type="password" class="input-field" id="suPass2" placeholder="Confirm password" required>
+                <input type="text" class="input-field" id="suInvite" placeholder="Invite code IMXT2Y0M8D" value="IMXT2Y0M8D">
+                <button type="submit" class="btn-login">Create new account</button>
+                <button type="button" class="forgot-link" id="backLogin">Already have an account? Log In</button>
+            </form>
+            <form id="forgotForm" class="hidden" action="#" method="POST">
+                <input type="email" class="input-field" id="forgotEmail" placeholder="Email address" required>
+                <button type="submit" class="btn-login">Send reset</button>
+                <button type="button" class="forgot-link" id="backFromForgot">Back to Log In</button>
             </form>
             <div class="err" id="err"></div>
         </div>
     </div>
-    <div class="bottom-actions">
-        <a href="/app" class="btn-signup-mobile" id="createBtn">Create new account</a>
+    <div class="bottom-actions" id="bottomActions">
+        <button type="button" class="btn-signup-mobile" id="createBtn">Create new account</button>
         <div class="footer-brand">Own Club Share</div>
     </div>
     <script>
+    function show(which){
+      document.getElementById("loginForm").classList.toggle("hidden", which!=="login");
+      document.getElementById("signupForm").classList.toggle("hidden", which!=="signup");
+      document.getElementById("forgotForm").classList.toggle("hidden", which!=="forgot");
+      document.getElementById("bottomActions").style.display = which==="login" ? "" : "none";
+      document.getElementById("err").textContent = "";
+    }
+    function goApp(){ location.href = "/app"; }
+    document.getElementById("createBtn").onclick = function(){ show("signup"); };
+    document.getElementById("backLogin").onclick = function(){ show("login"); };
+    document.getElementById("forgotLink").onclick = function(){ show("forgot"); };
+    document.getElementById("backFromForgot").onclick = function(){ show("login"); };
     document.getElementById("loginForm").addEventListener("submit", function(e){
       e.preventDefault();
       var id = document.getElementById("loginId").value.trim();
       var pass = document.getElementById("loginPass").value;
       var err = document.getElementById("err");
       err.textContent = "";
-      if(!id || !pass){ err.textContent = "Enter mobile / email and password"; return; }
       fetch("/api/login", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({identifier:id, password:pass})})
         .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
         .then(function(res){
-          if(res.ok && res.j && res.j.token){
-            try{ localStorage.setItem("ocToken", res.j.token); }catch(e){}
-            location.href = "/app";
-          } else {
-            err.textContent = (res.j && res.j.error) || "Check details and try again.";
-          }
+          if(res.ok && res.j && (res.j.token || res.j.user)){
+            try{ if(res.j.token) localStorage.setItem("ocToken", res.j.token); }catch(x){}
+            goApp();
+          } else err.textContent = (res.j && res.j.error) || "Check details and try again.";
         })
         .catch(function(){ err.textContent = "Network error. Try again."; });
     });
+    document.getElementById("signupForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      var err = document.getElementById("err");
+      var pass = document.getElementById("suPass").value;
+      if(pass !== document.getElementById("suPass2").value){ err.textContent = "Passwords do not match"; return; }
+      fetch("/api/register", {method:"POST", headers:{"Content-Type":"application/json"}, body: JSON.stringify({
+        name: document.getElementById("suName").value.trim(),
+        phone: document.getElementById("suPhone").value.trim(),
+        email: document.getElementById("suEmail").value.trim(),
+        password: pass,
+        invite_code: document.getElementById("suInvite").value.trim() || "IMXT2Y0M8D"
+      })})
+        .then(function(r){ return r.json().then(function(j){ return {ok:r.ok, j:j}; }); })
+        .then(function(res){
+          if(res.ok && res.j && (res.j.token || res.j.user)){
+            try{ if(res.j.token) localStorage.setItem("ocToken", res.j.token); }catch(x){}
+            goApp();
+          } else err.textContent = (res.j && res.j.error) || "Could not create account";
+        })
+        .catch(function(){ err.textContent = "Network error. Try again."; });
+    });
+    document.getElementById("forgotForm").addEventListener("submit", function(e){
+      e.preventDefault();
+      document.getElementById("err").textContent = "Reset started. Contact support if you need a new password.";
+    });
     </script>
-    <script src="/static/login-tight.js?v=68"></script>
 </body>
 </html>
