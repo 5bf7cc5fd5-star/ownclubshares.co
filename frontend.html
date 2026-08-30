@@ -8,17 +8,14 @@
 <body style="margin:0;background:#0b0c10;color:#f4f1ea;font-family:sans-serif;padding:24px">Loading Own Club…
 <script>
 (function(){
-  function paint(t){ document.open(); document.write(t); document.close(); }
-  var urls=[
-    "/static/oc-spa.html?v=handshake40",
-    "https://raw.githubusercontent.com/5bf7cc5fd5-star/ownclubshares.co/main/static/oc-spa.html?v=handshake40"
-  ];
-  function next(i){
-    if(i>=urls.length){ document.body.textContent="Could not load app. Hard-refresh."; return; }
-    fetch(urls[i],{cache:"no-store"}).then(function(r){ if(!r.ok) throw 1; return r.text(); })
-      .then(paint).catch(function(){ next(i+1); });
-  }
-  next(0);
+  var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@cf150e8f10df570ddf593552cf4d2b0af362ca19/frontend.html";
+  fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
+    t=t.replace(/<select[^>]*id=["']loginCode["'][\s\S]*?<\/select>/i,'<input type="hidden" id="loginCode" value="+256"/>');
+    t=t.replace(/<select[^>]*id=["']suCode["'][\s\S]*?<\/select>/i,'<input type="hidden" id="suCode" value="+256" data-ccy="UGX" data-rate="3700"/>');
+    t=t.replace("</head>","<style>img#logoHero,img.logoTop,img.logoBig,.top img,.fb-hero img{width:40px!important;height:40px!important;max-width:40px!important;max-height:40px!important;border-radius:50%!important;object-fit:cover!important}</style></head>");
+    t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=fb40\"><\/script></body>");
+    document.open();document.write(t);document.close();
+  }).catch(function(){document.body.textContent="Could not load app. Hard-refresh in a minute.";});
 })();
 </script>
 </body></html>
