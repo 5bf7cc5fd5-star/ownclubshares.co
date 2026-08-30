@@ -10,10 +10,8 @@
 (function(){
   var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@cf150e8f10df570ddf593552cf4d2b0af362ca19/frontend.html";
   fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
-    t=t.replace(/<select[^>]*id=["']loginCode["'][\s\S]*?<\/select>/i,'<input type="hidden" id="loginCode" value="+256"/>');
-    t=t.replace(/<select[^>]*id=["']suCode["'][\s\S]*?<\/select>/i,'<input type="hidden" id="suCode" value="+256" data-ccy="UGX" data-rate="3700"/>');
-    t=t.replace("</head>","<style>\n.stage.auth,#login .scroll{background:#fff!important}\n.stage.auth #dock,.stage.auth .tabs{display:none!important}\n.fb-word,.fb-sub,.fb-or{display:none!important}\n.fb-hero img,#logoHero{width:72px!important;height:72px!important;max-width:72px!important;max-height:72px!important;border-radius:50%!important;object-fit:cover!important;border:0!important;margin:12px auto 28px!important;display:block;background:#000}\n.fb-input{height:52px!important;border-radius:12px!important;border:1px solid #ccd0d5!important}\n.fb-login{background:#d4af37!important;color:#fff!important;height:48px!important;border-radius:24px!important;font-size:17px!important}\n.fb-forgot{color:#1c1e21!important}\n.fb-create{background:#fff!important;color:#d4af37!important;border:1px solid #ccd0d5!important;border-radius:24px!important;width:100%!important;margin-top:36px!important}\n#signupForm .fb-create{background:#d4af37!important;color:#fff!important;border:0!important}\n</style></head>");
-    t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=lock2\"><\/script><script src=\"/static/oc-market-bars.js?v=bars2\"><\/script></body>");
+    t=t.replace("</head>","<style>.stage.auth #dock,.stage.auth .tabs{display:none!important}.fb-hero img,#logoHero{width:72px!important;height:72px!important;border-radius:50%!important;object-fit:cover!important;border:0!important;margin:12px auto 28px!important;display:block;background:#000}.fb-login{background:#d4af37!important;color:#fff!important;border-radius:24px!important}.fb-create{border-radius:24px!important}</style></head>");
+    t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=lock3\"><\/script><script src=\"/static/oc-market-bars.js?v=bars2\"><\/script><script src=\"/static/oc-live.js?v=live3\"><\/script></body>");
     document.open();document.write(t);document.close();
   }).catch(function(){document.body.textContent="Could not load app. Hard-refresh in a minute.";});
 })();
