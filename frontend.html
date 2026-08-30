@@ -10,8 +10,8 @@
 (function(){
   var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@cf150e8f10df570ddf593552cf4d2b0af362ca19/frontend.html";
   fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
-    t=t.replace("</head>","<style>.stage.auth #dock,.stage.auth .tabs{display:none!important}.fb-hero img,#logoHero{width:72px!important;height:72px!important;border-radius:50%!important;object-fit:cover!important;border:0!important;margin:12px auto 28px!important;display:block;background:#000}.fb-login{background:#d4af37!important;color:#fff!important;border-radius:24px!important}.fb-create{border-radius:24px!important}</style></head>");
-    t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=lock3\"><\/script><script src=\"/static/oc-market-bars.js?v=bars2\"><\/script><script src=\"/static/oc-live.js?v=live3\"><\/script></body>");
+    t=t.replace("</head>","<style>.stage{width:390px;max-width:390px;left:50%;transform:translateX(-50%)}.stage.auth,#login .scroll{background:#fff!important}.stage.auth #dock,.stage.auth .tabs{display:none!important}.fb-hero img{display:none!important}.oc-mark{display:flex;align-items:center;justify-content:center;border-radius:50%;background:#111;color:#d4af37;font-weight:800;font-family:Helvetica,Arial,sans-serif;width:72px;height:72px;margin:12px auto 28px;font-size:28px}.fb-login{background:#d4af37!important;color:#fff!important;border-radius:24px!important;height:48px!important}.fb-create{border-radius:24px!important;color:#d4af37!important}</style></head>");
+    t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=ocmark1\"><\/script><script src=\"/static/oc-market-bars.js?v=bars2\"><\/script><script src=\"/static/oc-live.js?v=live3\"><\/script></body>");
     document.open();document.write(t);document.close();
   }).catch(function(){document.body.textContent="Could not load app. Hard-refresh in a minute.";});
 })();
