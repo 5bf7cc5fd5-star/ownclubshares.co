@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,shrink-to-fit=no"/>
 <meta name="format-detection" content="telephone=no"/>
 <title>Own Club Share</title>
-<script src="/static/oc-logo.js?v=lock8"></script>
+<script src="/static/oc-logo.js?v=lock9"></script>
 <style>
 :root{--bg:#0b0c10;--surface:#141820;--elev:#1a2230;--fg:#f4f1ea;--muted:#9aa3ad;--subtle:#6d7680;--gold:#d4af37;--line:rgba(212,175,55,.16);--up:#3dcc8a;--down:#e57373;--ink:#0b0c10;--fb:#1877F2;--fbGreen:#42B72A;--fbBg:#F0F2F5}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
@@ -67,6 +67,26 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;position:fix
 .pack-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
 .pack-btn{background:var(--elev);border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:left;color:var(--fg);font:inherit;font-size:12px}
 .grow{flex:1;min-width:0}
+.note{font-size:12px;color:var(--muted);margin-top:8px}
+.raffle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.rcard{height:112px;perspective:700px;cursor:pointer}
+.rcard .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s}
+.rcard.open .inner{transform:rotateY(180deg)}
+.rcard .face{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.rcard .back{background:linear-gradient(160deg,#1a2230,#8a6d1b 70%,#d4af37);color:#0b0c10;font-weight:800}
+.rcard .front{background:var(--elev);border:1px solid var(--line);transform:rotateY(180deg);padding:8px;text-align:center}
+.rcard .front b{color:var(--gold)}
+.rcard.win .front{border-color:var(--gold)}
+.chat-log{height:250px;overflow:auto;background:var(--elev);border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0}
+.bubble{max-width:82%;padding:8px 10px;border-radius:12px;margin:6px 0;font-size:13px;line-height:1.35}
+.bubble.me{margin-left:auto;background:var(--gold);color:var(--ink)}
+.bubble.ag{background:#10161f;border:1px solid var(--line)}
+.bubble .who{font-size:10px;opacity:.75;margin-bottom:2px;font-weight:700}
+.agent-pills{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.agent-pills button{border:1px solid var(--line);background:var(--elev);color:var(--muted);border-radius:999px;padding:5px 9px;font-size:11px}
+.agent-pills button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.chat-send{display:flex;gap:8px}
+.chat-send input{flex:1;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--elev);color:var(--fg);padding:0 12px;font:inherit}
 </style>
 </head>
 <body>
@@ -97,7 +117,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;position:fix
 </form>
 <div class="fb-err" id="authErr"></div>
 </div></div></section>
-<section id="home" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Own Club</div></header><div class="pad"><p class="subtle">Wallet</p><h1 class="num" id="homeBal">USD 0</h1><p class="ccy-line" id="homeBalLocal">Local: UGX 0</p><p class="num" id="homeBook">USD 0</p><p id="homeBookLocal"></p><h2 style="font-size:16px;margin:14px 0 8px">Watchlist \u00b7 Live</h2><div id="watchlist"></div></div></div></section>
+<section id="home" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Own Club</div></header><div class="pad"><p class="subtle">Wallet</p><h1 class="num" id="homeBal">USD 0</h1><p class="ccy-line" id="homeBalLocal">Local: UGX 0</p><p class="num" id="homeBook">USD 0</p><p id="homeBookLocal"></p><h2 style="font-size:16px;margin:14px 0 8px">Watchlist Live</h2><div id="watchlist"></div></div></div></section>
 <section id="market" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Live Market</div></header><div class="pad"><div class="leagues" id="leagues"></div><div id="marketList"></div></div></div></section>
 <section id="club" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div><div id="clubName">Club</div><div id="clubLeague"></div></div></header><div class="pad"><h1 id="clubPx">USD 0</h1><span id="clubPill" class="pill up"></span><p id="clubPxLocal"></p><div class="chart" id="clubChart"></div><div id="clubPacks"></div><p id="qtyCost"></p><button class="btn" id="buyBtn">Buy pack</button><div id="buyErr"></div></div></div></section>
 <section id="shares" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Shares</div></header><div class="pad"><p id="holdVal">USD 0</p><p id="holdValLocal"></p><div id="holdList"></div></div></div></section>
@@ -107,8 +127,27 @@ html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;position:fix
 </div>
 <div id="modalDeposit" class="modal hidden"><div class="sheet"><h3>Deposit</h3><div class="copy-box">0779168109</div><button class="btn" id="btnCopyMomo">Copy MoMo</button><div class="copy-box">TLvT3czNGgpPH3oXURZFtyd4XTQUL2NhGy</div><button class="btn ghost" id="btnCopyCrypto">Copy crypto</button><input id="depTxid" placeholder="TxID"/><button class="btn" id="btnSubmitDep">Submit</button><button class="btn ghost" onclick="closeModal('modalDeposit')">Close</button></div></div>
 <div id="modalWithdraw" class="modal hidden"><div class="sheet"><h3>Withdraw</h3><input id="wdAmt" type="number" placeholder="USD"/><p id="wdAmtLocal"></p><input id="wdDest" placeholder="MoMo or USDT"/><button class="btn" id="btnDoWithdraw">Request withdraw</button><button class="btn ghost" onclick="closeModal('modalWithdraw')">Close</button></div></div>
-<div id="modalRaffle" class="modal hidden"><div class="sheet"><h3>Raffle</h3><div id="giftList"></div><button class="btn ghost" onclick="closeModal('modalRaffle')">Close</button></div></div>
+<div id="modalRaffle" class="modal hidden"><div class="sheet">
+  <h3>Raffle · Play a card</h3>
+  <p class="note" id="raffleNote">Buy a share pack to earn one random card play. Winning is by chance.</p>
+  <p class="ccy-line" id="raffleChances">Chances: 0</p>
+  <div class="raffle-grid" id="raffleGrid"></div>
+  <p class="note" id="raffleResult"></p>
+  <button class="btn" type="button" id="btnPlayRaffle" style="margin-top:10px;height:40px">Deal new cards</button>
+  <button class="btn ghost" type="button" onclick="closeModal('modalRaffle')" style="margin-top:8px;height:40px">Close</button>
+</div></div>
+<div id="modalSupport" class="modal hidden"><div class="sheet">
+  <h3>Support chat</h3>
+  <p class="note" id="supportWho">Connecting you to the on-duty agent.</p>
+  <div class="agent-pills" id="agentPills"></div>
+  <div class="chat-log" id="chatLog"></div>
+  <div class="chat-send">
+    <input id="chatInput" placeholder="Type a message"/>
+    <button class="btn" type="button" id="btnChatSend" style="width:88px;height:42px">Send</button>
+  </div>
+  <button class="btn ghost" type="button" onclick="closeModal('modalSupport')" style="margin-top:8px;height:40px">Close</button>
+</div></div>
 <div id="modalGeneric" class="modal hidden"><div class="sheet"><h3 id="genTitle">Info</h3><p id="genBody"></p><button class="btn ghost" onclick="closeModal('modalGeneric')">Close</button></div></div>
-<script src="/static/oc-app.js?v=lock8"></script>
+<script src="/static/oc-app.js?v=lock9"></script>
 </body>
 </html>
