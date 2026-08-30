@@ -1,1 +1,26 @@
-PLACEHOLDER
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<title>Own Club Share</title>
+</head>
+<body style="margin:0;background:#0b0c10;color:#f4f1ea;font-family:sans-serif;padding:24px">Loading Own Club…
+<script>
+(function(){
+  var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@cf150e8f10df570ddf593552cf4d2b0af362ca19/frontend.html";
+  fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
+    t=t.split("https://media.api-sports.io/football/teams/2938.png").join("https://images.fotmob.com/image_resources/logo/teamlogo/101918.png");
+    t=t.split("https://media.api-sports.io/football/teams/1609.png").join("https://a.espncdn.com/i/teamlogos/soccer/500/187.png");
+    t=t.split("https://media.api-sports.io/football/teams/347.png").join("https://a.espncdn.com/i/teamlogos/soccer/500/256.png");
+    t=t.split("https://media.api-sports.io/football/teams/348.png").join("https://a.espncdn.com/i/teamlogos/soccer/500/257.png");
+    t=t.split("https://media.api-sports.io/football/teams/2880.png").join("https://images.fotmob.com/image_resources/logo/teamlogo/4530.png");
+    t=t.split("https://media.api-sports.io/football/teams/1028.png").join("https://images.fotmob.com/image_resources/logo/teamlogo/101745.png");
+    t=t.split("https://media.api-sports.io/football/teams/1029.png").join("https://images.fotmob.com/image_resources/logo/teamlogo/8153.png");
+    t=t.split("https://media.api-sports.io/football/teams/2960.png").join("https://images.fotmob.com/image_resources/logo/teamlogo/102035.png");
+    t=t.split("https://media.api-sports.io/football/teams/194.png").join("https://a.espncdn.com/i/teamlogos/soccer/500/139.png");
+    document.open();document.write(t);document.close();
+  }).catch(function(){document.body.textContent="Could not load app. Hard-refresh in a minute.";});
+})();
+</script>
+</body></html>
