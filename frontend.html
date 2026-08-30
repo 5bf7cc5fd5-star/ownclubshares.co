@@ -3,151 +3,88 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover,shrink-to-fit=no"/>
-<meta name="format-detection" content="telephone=no"/>
 <title>Own Club Share</title>
 <script src="/static/oc-logo.js?v=lock9"></script>
 <style>
 :root{--bg:#0b0c10;--surface:#141820;--elev:#1a2230;--fg:#f4f1ea;--muted:#9aa3ad;--subtle:#6d7680;--gold:#d4af37;--line:rgba(212,175,55,.16);--up:#3dcc8a;--down:#e57373;--ink:#0b0c10;--fb:#1877F2;--fbGreen:#42B72A;--fbBg:#F0F2F5}
-*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
-html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;position:fixed;inset:0;background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;touch-action:manipulation;overscroll-behavior:none}
-.stage{position:fixed;inset:0;width:100%;width:100vw;max-width:none;height:100%;height:100dvh;height:100svh;margin:0;background:var(--bg);overflow:hidden;touch-action:manipulation}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;width:100%;height:100%;overflow:hidden;position:fixed;inset:0;background:var(--bg);color:var(--fg);font-family:system-ui,sans-serif;touch-action:manipulation}
+.stage{position:fixed;inset:0;width:100%;height:100%;height:100dvh;margin:0;background:var(--bg);overflow:hidden}
 .stage.auth{background:var(--fbBg)}
-.screen{display:none;height:100%}.screen.on{display:block}
-.hidden{display:none!important}
-.scroll{height:100%;overflow:auto;padding-bottom:84px;-webkit-overflow-scrolling:touch}
-#login .scroll{padding-bottom:20px;background:var(--fbBg)}
-.fb-wrap{padding:14px 22px 24px}
-.fb-lang{display:block;margin:0 auto 8px;border:0;background:0;color:#606770;font-size:13px}
-.fb-hero{text-align:center;margin:6px 0 18px}
-.fb-hero img{width:88px;height:88px;border-radius:50%;object-fit:cover}
-.fb-word{color:var(--fb);font-size:34px;font-weight:800}
-.fb-sub{color:#606770;font-size:13px}
-.fb-input,.fb-select{width:100%;height:46px;border-radius:8px;border:1px solid #dddfe2;background:#fff;color:#1c1e21;padding:0 12px;margin-bottom:12px;font:inherit}
-.phone-row{display:flex;gap:8px;margin-bottom:12px}
-.phone-row .fb-select{width:112px;flex-shrink:0;margin:0}
-.phone-row .fb-input{flex:1;margin:0;min-width:0}
-.fb-login{width:100%;height:46px;border:0;border-radius:8px;background:var(--fb);color:#fff;font-weight:800;font-size:16px}
-.fb-forgot{display:block;width:100%;margin:16px 0 0;border:0;background:0;color:var(--fb);font-weight:600}
-.fb-or{display:flex;align-items:center;gap:10px;margin:26px 0}
-.fb-or i{flex:1;height:1px;background:#ccd0d5}
-.fb-create{display:block;width:72%;margin:0 auto;height:42px;border:0;border-radius:8px;background:var(--fbGreen);color:#fff;font-weight:800}
-.fb-back{display:block;width:100%;margin-top:16px;border:0;background:0;color:var(--fb)}
-.fb-title{font-size:22px;font-weight:800;color:#1c1e21}
-.fb-easy{color:#606770;margin-bottom:14px}
-.fb-hint{color:#606770;font-size:12px;margin:0 0 10px}
-.fb-err{color:#e0245e;text-align:center;min-height:16px}
-.top{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);background:rgba(11,12,16,.94)}
-.top img{width:36px;height:36px;border-radius:50%;object-fit:cover}
-.pad{padding:14px 16px}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px}
-.tabs{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#0b0c10;border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
-.tabs button{background:0;border:0;color:var(--subtle);min-height:58px;font-size:10px}
-.tabs button.on{color:var(--gold)}
-.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
-.grid4 button{background:var(--elev);border:1px solid var(--line);border-radius:12px;padding:10px 2px;color:var(--fg)}
+.screen{display:none;height:100%}.screen.on{display:block}.hidden{display:none!important}
+.scroll{height:100%;overflow:auto;padding-bottom:84px}
 .btn{width:100%;height:44px;border:0;border-radius:10px;background:var(--gold);color:#000;font-weight:700}
 .btn.ghost{background:var(--elev);color:var(--fg);border:1px solid var(--line)}
 .modal{position:absolute;inset:0;background:rgba(0,0,0,.72);z-index:80;display:flex;align-items:flex-end}
 .modal.hidden{display:none}
 .sheet{background:var(--surface);border-radius:18px 18px 0 0;width:100%;max-height:82%;overflow:auto;padding:18px 16px 28px}
-.copy-box{background:var(--elev);border:1px solid var(--line);border-radius:10px;padding:10px;word-break:break-all;margin:8px 0}
-.ccy-line{font-size:11px;color:var(--muted)}
-.subtle{color:var(--subtle)}
-.num{font-variant-numeric:tabular-nums}
-.club{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;align-items:center;gap:10px;color:inherit;margin-top:7px}
-.badge{width:38px;height:38px;border-radius:10px;display:grid;place-items:center;overflow:hidden;background:#0e1420;color:var(--gold);border:1px solid var(--line);flex-shrink:0}
-.badge img{width:100%;height:100%;object-fit:contain}
-.pill{font-size:11px;font-weight:700;padding:3px 8px;border-radius:999px}
-.pill.up{background:rgba(61,204,138,.12);color:var(--up)}.pill.down{background:rgba(229,115,115,.12);color:var(--down)}
-.leagues{display:flex;gap:6px;overflow:auto;padding-bottom:4px}
-.leagues button{white-space:nowrap;border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 11px;font-size:12px}
-.leagues button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
-.chart{height:132px;border-radius:12px;border:1px solid var(--line)}
-.chart svg{width:100%;height:100%;display:block}
-.pack-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}
-.pack-btn{background:var(--elev);border:1px solid var(--line);border-radius:10px;padding:8px 10px;text-align:left;color:var(--fg);font:inherit;font-size:12px}
-.grow{flex:1;min-width:0}
-.note{font-size:12px;color:var(--muted);margin-top:8px}
 .raffle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
 .rcard{height:112px;perspective:700px;cursor:pointer}
 .rcard .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s}
 .rcard.open .inner{transform:rotateY(180deg)}
-.rcard .face{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;backface-visibility:hidden;-webkit-backface-visibility:hidden}
-.rcard .back{background:linear-gradient(160deg,#1a2230,#8a6d1b 70%,#d4af37);color:#0b0c10;font-weight:800}
-.rcard .front{background:var(--elev);border:1px solid var(--line);transform:rotateY(180deg);padding:8px;text-align:center}
-.rcard .front b{color:var(--gold)}
-.rcard.win .front{border-color:var(--gold)}
+.rcard .face{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;backface-visibility:hidden}
+.rcard .back{background:linear-gradient(160deg,#1a2230,#d4af37);color:#0b0c10;font-weight:800}
+.rcard .front{background:var(--elev);border:1px solid var(--line);transform:rotateY(180deg);text-align:center;padding:8px}
 .chat-log{height:250px;overflow:auto;background:var(--elev);border:1px solid var(--line);border-radius:12px;padding:10px;margin:8px 0}
-.bubble{max-width:82%;padding:8px 10px;border-radius:12px;margin:6px 0;font-size:13px;line-height:1.35}
+.bubble{max-width:82%;padding:8px 10px;border-radius:12px;margin:6px 0;font-size:13px}
 .bubble.me{margin-left:auto;background:var(--gold);color:var(--ink)}
 .bubble.ag{background:#10161f;border:1px solid var(--line)}
-.bubble .who{font-size:10px;opacity:.75;margin-bottom:2px;font-weight:700}
 .agent-pills{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
 .agent-pills button{border:1px solid var(--line);background:var(--elev);color:var(--muted);border-radius:999px;padding:5px 9px;font-size:11px}
-.agent-pills button.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.agent-pills button.on{background:var(--gold);color:var(--ink)}
 .chat-send{display:flex;gap:8px}
-.chat-send input{flex:1;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--elev);color:var(--fg);padding:0 12px;font:inherit}
-</style>
-</head>
+.chat-send input{flex:1;height:42px;border-radius:10px;border:1px solid var(--line);background:var(--elev);color:var(--fg);padding:0 12px}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#0b0c10}
+.tabs button{background:0;border:0;color:var(--subtle);min-height:58px;font-size:10px}
+.tabs button.on{color:var(--gold)}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.grid4 button{background:var(--elev);border:1px solid var(--line);border-radius:12px;padding:10px 2px;color:var(--fg)}
+.top{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.pad{padding:14px 16px}.note{font-size:12px;color:var(--muted)}.subtle{color:var(--subtle)}.ccy-line{font-size:11px;color:var(--muted)}
+.fb-wrap{padding:14px 22px}.fb-word{color:var(--fb);font-size:34px;font-weight:800}
+.fb-input,.fb-select{width:100%;height:46px;border-radius:8px;border:1px solid #dddfe2;padding:0 12px;margin-bottom:12px}
+.fb-login{width:100%;height:46px;border:0;border-radius:8px;background:var(--fb);color:#fff;font-weight:800}
+.fb-create{width:72%;margin:0 auto;display:block;height:42px;border:0;border-radius:8px;background:var(--fbGreen);color:#fff;font-weight:800}
+.club{width:100%;text-align:left;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px;display:flex;gap:10px;color:inherit;margin-top:7px}
+.leagues{display:flex;gap:6px;overflow:auto}.leagues button{border:1px solid var(--line);background:var(--surface);color:var(--muted);border-radius:999px;padding:6px 11px}
+.leagues button.on{background:var(--gold);color:var(--ink)}
+.copy-box{background:var(--elev);border:1px solid var(--line);border-radius:10px;padding:10px;word-break:break-all;margin:8px 0}
+</style></head>
 <body>
 <div class="stage auth" id="stage">
 <section id="login" class="screen on"><div class="scroll"><div class="fb-wrap">
 <select id="langSelect" class="fb-lang"><option value="en">English</option><option value="lg">Luganda</option><option value="sw">Kiswahili</option></select>
 <div class="fb-hero"><img id="logoHero" alt="Own Club"/><div class="fb-word">own club</div><div class="fb-sub">Share Market</div></div>
-<form id="loginForm">
-<div class="phone-row"><select id="loginCode" class="fb-select"><option value="+256" selected>+256 UG</option><option value="+965">+965 KW</option><option value="+966">+966 SA</option><option value="+1">+1 US</option></select>
+<form id="loginForm"><div class="phone-row"><select id="loginCode" class="fb-select"><option value="+256" selected>+256 UG</option><option value="+965">+965 KW</option></select>
 <input class="fb-input" id="loginId" placeholder="Mobile number or email" required/></div>
 <input class="fb-input" id="loginPass" type="password" placeholder="Password" required/>
 <button class="fb-login" id="tabLogin">Log In</button>
 <button class="fb-forgot" type="button" id="btnForgot">Forgot Password?</button>
-<div class="fb-or"><i></i><span>OR</span><i></i></div>
-<button class="fb-create" type="button" id="tabSignup">Create New Account</button>
-</form>
+<button class="fb-create" type="button" id="tabSignup">Create New Account</button></form>
 <form id="signupForm" class="hidden">
-<div class="fb-title">Create Account</div><div class="fb-easy">It's quick and easy.</div>
 <input class="fb-input" id="suName" placeholder="Full Name" required/>
-<div class="phone-row"><select id="suCode" class="fb-select" onchange="onCountryCode()"><option value="+256" data-ccy="UGX" data-rate="3700" selected>+256 UG</option><option value="+965" data-ccy="KWD" data-rate="0.31">+965 KW</option></select>
-<input class="fb-input" id="suPhone" placeholder="Mobile number" required/></div>
-<input class="fb-input" id="suEmail" type="email" placeholder="Email address" required/>
-<p class="fb-hint" id="ccyHint">Currency: UGX</p>
-<input class="fb-input" id="suPass" type="password" placeholder="New Password" required/>
+<select id="suCode" class="fb-select" onchange="onCountryCode()"><option value="+256" data-ccy="UGX" data-rate="3700" selected>+256 UG</option></select>
+<input class="fb-input" id="suPhone" placeholder="Mobile number" required/>
+<input class="fb-input" id="suEmail" type="email" required/>
+<p id="ccyHint">Currency: UGX</p>
+<input class="fb-input" id="suPass" type="password" required/>
 <input class="fb-input" id="suInvite" value="IMXT2Y0M8D"/>
-<button class="fb-create" type="submit" style="width:100%;height:46px">Sign Up</button>
-<button class="fb-back" type="button" id="backLogin">Already have an account?</button>
-</form>
-<div class="fb-err" id="authErr"></div>
-</div></div></section>
-<section id="home" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Own Club</div></header><div class="pad"><p class="subtle">Wallet</p><h1 class="num" id="homeBal">USD 0</h1><p class="ccy-line" id="homeBalLocal">Local: UGX 0</p><p class="num" id="homeBook">USD 0</p><p id="homeBookLocal"></p><h2 style="font-size:16px;margin:14px 0 8px">Watchlist Live</h2><div id="watchlist"></div></div></div></section>
-<section id="market" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Live Market</div></header><div class="pad"><div class="leagues" id="leagues"></div><div id="marketList"></div></div></div></section>
-<section id="club" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div><div id="clubName">Club</div><div id="clubLeague"></div></div></header><div class="pad"><h1 id="clubPx">USD 0</h1><span id="clubPill" class="pill up"></span><p id="clubPxLocal"></p><div class="chart" id="clubChart"></div><div id="clubPacks"></div><p id="qtyCost"></p><button class="btn" id="buyBtn">Buy pack</button><div id="buyErr"></div></div></div></section>
-<section id="shares" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Shares</div></header><div class="pad"><p id="holdVal">USD 0</p><p id="holdValLocal"></p><div id="holdList"></div></div></div></section>
-<section id="team" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Team</div></header><div class="pad"><p id="myCode">IMXT2Y0M8D</p><div class="copy-box" id="inviteLink"></div><button class="btn" id="btnCopyLink">Copy invite link</button><button class="btn ghost" id="btnShare">Share</button></div></div></section>
-<section id="account" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/><div>Account</div></header><div class="pad"><span id="accInit">A</span> <b id="accName">Member</b> <span id="accSub"></span><p id="accBal">USD 0</p><p id="accBalLocal"></p><p id="divBal">USD 0</p><p id="divBalLocal"></p><button class="btn" id="btnWithdrawDiv">Withdraw Dividend</button><button class="btn ghost" id="btnCreditWallet">Credit to Wallet</button><div class="grid4" id="accGrid"><button type="button" data-act="deposit">Deposit</button><button type="button" data-act="withdraw">Withdraw</button><button type="button" data-act="bill">Bill</button><button type="button" data-act="invite">Invite</button><button type="button" data-act="team">My team</button><button type="button" data-act="vip">VIP Task</button><button type="button" data-act="reward">Reward</button><button type="button" data-act="raffle">Raffle</button><button type="button" data-act="manager">Manager</button><button type="button" data-act="settings">Settings</button><button type="button" data-act="salary">Salary</button><button type="button" data-act="support">Support</button></div><img class="logoBig" alt="" style="width:96px;height:96px;border-radius:50%"/><button class="btn ghost" id="signOut">Sign out</button></div></div></section>
+<button class="fb-create" type="submit">Sign Up</button>
+<button type="button" id="backLogin">Already have an account?</button>
+</form><div id="authErr"></div></div></div></section>
+<section id="home" class="screen"><div class="scroll"><header class="top"><img class="logoTop" alt=""/></header><div class="pad"><p id="homeBal">USD 0</p><p id="homeBalLocal"></p><p id="homeBook"></p><p id="homeBookLocal"></p><div id="watchlist"></div></div></div></section>
+<section id="market" class="screen"><div class="scroll"><div class="pad"><div class="leagues" id="leagues"></div><div id="marketList"></div></div></div></section>
+<section id="club" class="screen"><div class="scroll"><div class="pad"><div id="clubName">Club</div><div id="clubLeague"></div><h1 id="clubPx">USD 0</h1><span id="clubPill"></span><p id="clubPxLocal"></p><div id="clubChart"></div><div id="clubPacks"></div><p id="qtyCost"></p><button class="btn" id="buyBtn">Buy pack</button><div id="buyErr"></div></div></div></section>
+<section id="shares" class="screen"><div class="scroll"><div class="pad"><p id="holdVal"></p><p id="holdValLocal"></p><div id="holdList"></div></div></div></section>
+<section id="team" class="screen"><div class="scroll"><div class="pad"><p id="myCode"></p><div class="copy-box" id="inviteLink"></div><button class="btn" id="btnCopyLink">Copy invite link</button><button class="btn ghost" id="btnShare">Share</button></div></div></section>
+<section id="account" class="screen"><div class="scroll"><div class="pad"><span id="accInit">A</span><b id="accName">Member</b><span id="accSub"></span><p id="accBal"></p><p id="accBalLocal"></p><p id="divBal"></p><p id="divBalLocal"></p><button class="btn" id="btnWithdrawDiv">Withdraw Dividend</button><button class="btn ghost" id="btnCreditWallet">Credit to Wallet</button><div class="grid4" id="accGrid"><button type="button" data-act="deposit">Deposit</button><button type="button" data-act="withdraw">Withdraw</button><button type="button" data-act="bill">Bill</button><button type="button" data-act="invite">Invite</button><button type="button" data-act="team">My team</button><button type="button" data-act="vip">VIP Task</button><button type="button" data-act="reward">Reward</button><button type="button" data-act="raffle">Raffle</button><button type="button" data-act="manager">Manager</button><button type="button" data-act="settings">Settings</button><button type="button" data-act="salary">Salary</button><button type="button" data-act="support">Support</button></div><img class="logoBig" alt=""/><button class="btn ghost" id="signOut">Sign out</button></div></div></section>
 <nav class="tabs" id="dock"><button data-go="home">Home</button><button data-go="market">Market</button><button data-go="shares">Shares</button><button data-go="team">Team</button><button data-go="account">Account</button></nav>
 </div>
-<div id="modalDeposit" class="modal hidden"><div class="sheet"><h3>Deposit</h3><div class="copy-box">0779168109</div><button class="btn" id="btnCopyMomo">Copy MoMo</button><div class="copy-box">TLvT3czNGgpPH3oXURZFtyd4XTQUL2NhGy</div><button class="btn ghost" id="btnCopyCrypto">Copy crypto</button><input id="depTxid" placeholder="TxID"/><button class="btn" id="btnSubmitDep">Submit</button><button class="btn ghost" onclick="closeModal('modalDeposit')">Close</button></div></div>
-<div id="modalWithdraw" class="modal hidden"><div class="sheet"><h3>Withdraw</h3><input id="wdAmt" type="number" placeholder="USD"/><p id="wdAmtLocal"></p><input id="wdDest" placeholder="MoMo or USDT"/><button class="btn" id="btnDoWithdraw">Request withdraw</button><button class="btn ghost" onclick="closeModal('modalWithdraw')">Close</button></div></div>
-<div id="modalRaffle" class="modal hidden"><div class="sheet">
-  <h3>Raffle · Play a card</h3>
-  <p class="note" id="raffleNote">Buy a share pack to earn one random card play. Winning is by chance.</p>
-  <p class="ccy-line" id="raffleChances">Chances: 0</p>
-  <div class="raffle-grid" id="raffleGrid"></div>
-  <p class="note" id="raffleResult"></p>
-  <button class="btn" type="button" id="btnPlayRaffle" style="margin-top:10px;height:40px">Deal new cards</button>
-  <button class="btn ghost" type="button" onclick="closeModal('modalRaffle')" style="margin-top:8px;height:40px">Close</button>
-</div></div>
-<div id="modalSupport" class="modal hidden"><div class="sheet">
-  <h3>Support chat</h3>
-  <p class="note" id="supportWho">Connecting you to the on-duty agent.</p>
-  <div class="agent-pills" id="agentPills"></div>
-  <div class="chat-log" id="chatLog"></div>
-  <div class="chat-send">
-    <input id="chatInput" placeholder="Type a message"/>
-    <button class="btn" type="button" id="btnChatSend" style="width:88px;height:42px">Send</button>
-  </div>
-  <button class="btn ghost" type="button" onclick="closeModal('modalSupport')" style="margin-top:8px;height:40px">Close</button>
-</div></div>
-<div id="modalGeneric" class="modal hidden"><div class="sheet"><h3 id="genTitle">Info</h3><p id="genBody"></p><button class="btn ghost" onclick="closeModal('modalGeneric')">Close</button></div></div>
+<div id="modalDeposit" class="modal hidden"><div class="sheet"><h3>Deposit</h3><div class="copy-box">0779168109</div><button class="btn" id="btnCopyMomo">Copy MoMo</button><div class="copy-box">TLvT3czNGgpPH3oXURZFtyd4XTQUL2NhGy</div><button class="btn ghost" id="btnCopyCrypto">Copy crypto</button><input id="depTxid"/><button class="btn" id="btnSubmitDep">Submit</button></div></div>
+<div id="modalWithdraw" class="modal hidden"><div class="sheet"><h3>Withdraw</h3><input id="wdAmt" type="number"/><p id="wdAmtLocal"></p><input id="wdDest"/><button class="btn" id="btnDoWithdraw">Request withdraw</button></div></div>
+<div id="modalRaffle" class="modal hidden"><div class="sheet"><h3>Raffle</h3><p class="note" id="raffleNote">Buy a pack, then flip one card. Winning is by chance.</p><p id="raffleChances">Chances: 0</p><div class="raffle-grid" id="raffleGrid"></div><p id="raffleResult"></p><button class="btn" id="btnPlayRaffle">Deal new cards</button></div></div>
+<div id="modalSupport" class="modal hidden"><div class="sheet"><h3>Support chat</h3><p class="note" id="supportWho">On-duty agent</p><div class="agent-pills" id="agentPills"></div><div class="chat-log" id="chatLog"></div><div class="chat-send"><input id="chatInput" placeholder="Type a message"/><button class="btn" id="btnChatSend">Send</button></div></div></div>
+<div id="modalGeneric" class="modal hidden"><div class="sheet"><h3 id="genTitle">Info</h3><p id="genBody"></p></div></div>
 <script src="/static/oc-app.js?v=lock9"></script>
-</body>
-</html>
+<script src="/static/oc-extra.js?v=lock9"></script>
+</body></html>
