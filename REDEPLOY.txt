@@ -1,1 +1,1 @@
-REDEPLOY 2026-08-22-20-55 logo-gap-fonts-v37
+deploy 2026-08-30 15:00 +03 locked-fb-login

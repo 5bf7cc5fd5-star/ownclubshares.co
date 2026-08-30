@@ -1,20 +1,17 @@
 {
-  "balance": 100000000.0,
-  "balance_usd": 100000000.0,
+  "balance_usd": 100000000,
+  "balance": 100000000,
   "currency": "USD",
   "initialized": true,
-  "as_of": "2026-08-22T22:00:00+03:00",
-  "updated_at": "2026-08-22T22:00:00+03:00",
-  "notes": "Company pool snapshot 22 Aug 2026 10pm",
+  "as_of": "2026-08-30T15:00:00+03:00",
+  "updated_at": "2026-08-30T15:00:00+03:00",
   "ledger": [
     {
-      "id": "pl_open100m",
-      "at": "2026-08-22 22:00:00",
-      "type": "opening",
-      "amount": 100000000.0,
-      "balance_before": 0.0,
-      "balance_after": 100000000.0,
-      "note": "Company pool opening / restore 100,000,000 USD as of 22 Aug 2026 10pm"
+      "at": "2026-08-30 15:00:00",
+      "type": "snapshot",
+      "amount": 0,
+      "balance_after": 100000000,
+      "note": "Company pool set to 100,000,000 USD"
     }
   ]
 }
