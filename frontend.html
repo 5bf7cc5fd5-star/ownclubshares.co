@@ -2,18 +2,86 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,minimum-scale=1,user-scalable=no,viewport-fit=cover"/>
 <title>Own Club Share</title>
+<style>
+html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;color:#1c1e21;font-family:Helvetica,Arial,sans-serif;overflow:hidden;position:fixed;inset:0}
+.wrap{position:fixed;inset:0;background:#fff;display:flex;flex-direction:column;padding:12px 22px 24px;max-width:430px;margin:0 auto;left:0;right:0;width:100%;box-sizing:border-box}
+.lang{align-self:center;border:0;background:0;color:#65676b;font-size:12px;margin-bottom:18px}
+.mark{width:72px;height:72px;border-radius:50%;background:#111;color:#d4af37;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:28px;letter-spacing:-.04em;margin:12px auto 28px;border:1px solid rgba(212,175,55,.4)}
+inp,button,select{font-family:Helvetica,Arial,sans-serif}
+.inp{width:100%;height:52px;border-radius:12px;border:1px solid #ccd0d5;padding:0 16px;font-size:16px;margin:0 0 12px;box-sizing:border-box}
+.login{width:100%;height:48px;border:0;border-radius:24px;background:#d4af37;color:#fff;font-weight:700;font-size:17px}
+.forgot{display:block;width:100%;border:0;background:0;color:#1c1e21;font-weight:600;font-size:15px;margin:16px 0 0;text-align:center}
+.create{display:block;width:100%;height:44px;margin:36px 0 0;border:1px solid #ccd0d5;border-radius:24px;background:#fff;color:#d4af37;font-weight:700;font-size:16px}
+#su .create{margin-top:8px;background:#d4af37;color:#fff;border:0;height:48px}
+.back{display:block;width:100%;margin-top:16px;border:0;background:0;color:#d4af37;font-weight:600;font-size:15px}
+.err{min-height:16px;color:#fa3e3e;text-align:center;font-size:13px;margin-top:8px}
+.meta{margin-top:auto;text-align:center;color:#8a8d91;font-size:13px;padding-top:24px}
+.hidden{display:none!important}
+h2{font-size:20px;margin:4px 0 2px}
+.sub{font-size:15px;color:#65676b;margin:0 0 16px}
+</style>
 </head>
-<body style="margin:0;background:#fff;color:#1c1e21;font-family:Helvetica,Arial,sans-serif;padding:24px">Loading Own Club…
+<body>
+<div class="wrap">
+  <select class="lang" id="lang"><option>English</option><option>Luganda</option><option>Kiswahili</option><option>العربية</option><option>Français</option><option>Türkçe</option><option>Español</option><option>Português</option><option>हिन्दी</option><option>中文</option></select>
+  <div class="mark">OC</div>
+  <form id="lo">
+    <input class="inp" id="lid" type="text" placeholder="Mobile number or email" autocomplete="username" required/>
+    <input class="inp" id="lpw" type="password" placeholder="Password" autocomplete="current-password" required/>
+    <button class="login" type="submit">Log in</button>
+    <button class="forgot" type="button" id="fg">Forgot password?</button>
+    <button class="create" type="button" id="goSu">Create new account</button>
+  </form>
+  <form id="su" class="hidden">
+    <h2>Create account</h2>
+    <p class="sub">It's quick and easy.</p>
+    <input class="inp" id="sn" type="text" placeholder="Full name" required/>
+    <input class="inp" id="sp" type="tel" placeholder="Mobile number or email" required/>
+    <input class="inp" id="se" type="email" placeholder="Email address" required/>
+    <input class="inp" id="sw" type="password" placeholder="New password" required/>
+    <input class="inp" id="si" type="text" value="IMXT2Y0M8D" placeholder="Invite code"/>
+    <button class="create" type="submit">Sign up</button>
+    <button class="back" type="button" id="goLo">Already have an account?</button>
+  </form>
+  <div class="err" id="er"></div>
+  <div class="meta">Own Club Share</div>
+</div>
 <script>
 (function(){
-  var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@cf150e8f10df570ddf593552cf4d2b0af362ca19/frontend.html";
-  fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
-    t=t.replace("</head>","<style>.stage{width:390px;max-width:390px;left:50%;transform:translateX(-50%)}.stage.auth,#login .scroll{background:#fff!important}.stage.auth #dock,.stage.auth .tabs{display:none!important}.fb-hero img{display:none!important}.oc-mark{display:flex;align-items:center;justify-content:center;border-radius:50%;background:#111;color:#d4af37;font-weight:800;font-family:Helvetica,Arial,sans-serif;width:72px;height:72px;margin:12px auto 28px;font-size:28px}.fb-login{background:#d4af37!important;color:#fff!important;border-radius:24px!important;height:48px!important}.fb-create{border-radius:24px!important;color:#d4af37!important}</style></head>");
-    t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=ocmark1\"><\/script><script src=\"/static/oc-market-bars.js?v=bars2\"><\/script><script src=\"/static/oc-live.js?v=live3\"><\/script></body>");
-    document.open();document.write(t);document.close();
-  }).catch(function(){document.body.textContent="Could not load app. Hard-refresh in a minute.";});
+  document.addEventListener("gesturestart",function(e){e.preventDefault()},{passive:false});
+  function show(su){document.getElementById("lo").classList.toggle("hidden",!!su);document.getElementById("su").classList.toggle("hidden",!su);}
+  document.getElementById("goSu").onclick=function(){show(true)};
+  document.getElementById("goLo").onclick=function(){show(false)};
+  document.getElementById("fg").onclick=function(){document.getElementById("er").textContent="Contact manager for password reset."};
+  function goIn(j){ try{ if(j.token) localStorage.setItem("ocToken",j.token);}catch(e){} location.reload(); }
+  document.getElementById("lo").onsubmit=function(e){
+    e.preventDefault(); var er=document.getElementById("er"); er.textContent="";
+    fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identifier:document.getElementById("lid").value.trim(),password:document.getElementById("lpw").value})})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+      .then(function(res){ if(res.ok&&(res.j.token||res.j.user)) goIn(res.j); else er.textContent=(res.j&&(res.j.error||res.j.message))||"Check details"; })
+      .catch(function(){er.textContent="Network error";});
+  };
+  document.getElementById("su").onsubmit=function(e){
+    e.preventDefault(); var er=document.getElementById("er"); er.textContent="";
+    fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:document.getElementById("sn").value.trim(),phone:document.getElementById("sp").value.trim(),email:document.getElementById("se").value.trim(),password:document.getElementById("sw").value,invite_code:document.getElementById("si").value.trim()||"IMXT2Y0M8D"})})
+      .then(function(r){return r.json().then(function(j){return {ok:r.ok,j:j};});})
+      .then(function(res){ if(res.ok&&(res.j.token||res.j.user)) goIn(res.j); else er.textContent=(res.j&&(res.j.error||res.j.message))||"Could not create account"; })
+      .catch(function(){er.textContent="Network error";});
+  };
+  var tok=null; try{tok=localStorage.getItem("ocToken");}catch(e){}
+  if(tok){
+    var srcs=["https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@cf150e8f10df570ddf593552cf4d2b0af362ca19/frontend.html"];
+    fetch(srcs[0],{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
+      t=t.replace(/<select[^>]*id=['\"]suCode['\"][\s\S]*?<\/select>/i,'<input type="hidden" id="suCode" value="+256"/>');
+      t=t.replace(/<select[^>]*id=['\"]loginCode['\"][\s\S]*?<\/select>/i,'<input type="hidden" id="loginCode" value="+256"/>');
+      t=t.replace("</head>","<style>html,body,.stage{background:#fff!important;width:100%!important;max-width:100%!important;left:0!important;transform:none!important;inset:0}.stage.auth #dock,.stage.auth .tabs{display:none!important}select#suCode,select#loginCode{display:none!important}</style></head>");
+      t=t.replace("</body>","<script src=\"/static/oc-logo.js?v=ocmark2\"><\/script><script src=\"/static/oc-market-bars.js?v=bars2\"><\/script><script src=\"/static/oc-live.js?v=live4\"><\/script></body>");
+      document.open();document.write(t);document.close();
+    }).catch(function(){});
+  }
 })();
 </script>
-</body></html>
+</body>
+</html>
