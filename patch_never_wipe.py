@@ -5,11 +5,10 @@ os.environ["RESET_CUSTOMERS"] = "0"
 p = Path(__file__).resolve().parent / "server.py"
 t = p.read_text(encoding="utf-8", errors="replace")
 changed = False
-# neutralize wipe body call sites
 if "def wipe_customer_accounts" in t and "NEVER WIPE MEMBERS" not in t:
     t = t.replace(
         "def wipe_customer_accounts():",
-        "def wipe_customer_accounts():\n    print('[boot] wipe disabled — members kept')\n    return\n    # NEVER WIPE MEMBERS",
+        "def wipe_customer_accounts():\n    print('[boot] wipe disabled \u2014 members kept')\n    return\n    # NEVER WIPE MEMBERS",
         1,
     )
     changed = True
