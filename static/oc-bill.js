@@ -20,17 +20,37 @@ function paintBill(box){
     box.onclick=function(e){var b=e.target.closest("[data-can]");if(!b)return;fetch("/api/withdraw/cancel",{method:"POST",headers:H(),body:JSON.stringify({id:b.getAttribute("data-can")})}).finally(function(){paintBill(box);});};
   });
 }
-document.addEventListener("click",function(e){
-  var b=e.target.closest("#accGrid [data-act=bill],button[data-act=bill]");
-  if(b) setTimeout(function(){var box=document.getElementById("dBB");if(box) paintBill(box);},80);
-},true);
+function hideOwnerPay(){
+  document.querySelectorAll(".copyb, p, div, b").forEach(function(el){
+    var t=el.textContent||"";
+    if(/0779168109|TLvT3cz|MoMo|Mobile Money|USDT TRC20 TLv/i.test(t) && el.id!=="dDB"){
+      if(el.closest && el.closest("#dDB, #dD")) el.style.display="none";
+    }
+  });
+  var box=document.getElementById("dDB");
+  if(!box || box.dataset.crypto) return;
+  box.dataset.crypto="1";
+  box.innerHTML='<p style="color:#9aa3ad;font-size:13px">Deposit by <b style="color:#d4af37">Crypto USDT TRC20</b> only. Paste your TxID after you send. Admin credits the wallet.</p><select class="inp" id="depM"><option value="crypto" selected>Crypto USDT TRC20</option></select><input class="inp" id="depA" placeholder="Amount"><input class="inp" id="depT" placeholder="Paste crypto TxID"><button class="btn" type="button" id="depG">Submit crypto deposit</button>';
+  var g=document.getElementById("depG");
+  if(g) g.onclick=function(){
+    var tx=(document.getElementById("depT")||{}).value||"";
+    if(!String(tx).trim()){alert("Paste crypto TxID");return;}
+    fetch("/api/deposit",{method:"POST",headers:H(),body:JSON.stringify({txid:String(tx).trim(),method:"crypto",amount:(document.getElementById("depA")||{}).value||""})}).finally(function(){alert("Crypto deposit submitted");var d=document.getElementById("dD");if(d)d.classList.add("hidden");});
+  };
+}
 function fixWd(){
   document.querySelectorAll(".wd-note").forEach(function(n){
     n.innerHTML="<b>Note:</b><br><br>Withdrawals are subject to 10% service charge.<br><br>Your withdrawal will arrive instantly.<br><br>There must be at least 1 day interval between each withdrawal application day.<br><br>On the day you are eligible to apply, you may submit an unlimited number of withdrawal applications.";
   });
   var amt=document.getElementById("wdAmt");
   if(amt) amt.oninput=function(){var a=parseFloat(this.value||0)||0;var el=document.getElementById("wdNetAmt");if(el)el.textContent="UGX "+Math.round(a*0.90).toLocaleString();};
+  hideOwnerPay();
 }
+document.addEventListener("click",function(e){
+  var b=e.target.closest("#accGrid [data-act=bill],button[data-act=bill]");
+  if(b) setTimeout(function(){var box=document.getElementById("dBB");if(box) paintBill(box);},80);
+  if(e.target.closest("[data-act=deposit]")) setTimeout(hideOwnerPay,60);
+},true);
 new MutationObserver(fixWd).observe(document.documentElement,{childList:true,subtree:true});
 document.addEventListener("click",function(){setTimeout(fixWd,40);},true);
 })();
