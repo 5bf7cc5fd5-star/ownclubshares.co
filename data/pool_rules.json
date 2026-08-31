@@ -1,0 +1,16 @@
+{
+  "pool_usd": 100000000,
+  "deposit": [
+    "Mobile Money (MTN / Airtel) and Crypto USDT TRC20 are both accepted.",
+    "A deposit stays pending until admin confirms the payment.",
+    "When confirmed the same amount is credited to the member wallet.",
+    "Confirmed deposits are written on the company pool ledger.",
+    "Company MoMo number and crypto wallet stay in the background."
+  ],
+  "credit": [
+    "Company pool starts at 100,000,000 USD.",
+    "Member wallets are credited from confirmed deposits.",
+    "Withdrawals take 10% service charge and are paid from the member wallet.",
+    "Member files are merged on every boot so existing logins stay valid."
+  ]
+}
