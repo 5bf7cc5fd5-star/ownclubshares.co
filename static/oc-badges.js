@@ -16,8 +16,17 @@ function apply(){
     var x=FIX[c.n]; if(!x) return;
     c.b=x[0]; c.b2=x[1];
   });
+  document.querySelectorAll("img.cbadge").forEach(function(img){
+    var x=FIX[img.getAttribute("alt")||""];
+    if(!x) return;
+    if(img.getAttribute("src")!==x[0]) img.src=x[0];
+    img.setAttribute("data-fb",x[1]);
+    img.onerror=function(){ if(this.dataset.fb&&this.src!==this.dataset.fb) this.src=this.dataset.fb; };
+  });
 }
 apply();
 var _g=window.go;
-window.go=function(id){apply(); if(typeof _g==="function") _g(id);};
+window.go=function(id){apply(); if(typeof _g==="function") _g(id); setTimeout(apply,50); setTimeout(apply,300);};
+setTimeout(apply,200);
+setTimeout(apply,800);
 })();
