@@ -21,20 +21,21 @@ var BADGE={
 };
 if(!document.getElementById("ocShareCss")){
   var s=document.createElement("style");s.id="ocShareCss";
-  s.textContent=".ccard{background:#0b1220;border:1px solid rgba(212,175,55,.28);border-radius:14px;padding:12px;margin:10px 0}.chead{display:flex;align-items:center;gap:10px;margin-bottom:10px}.cbadge{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#071018;border:1px solid rgba(212,175,55,.25);padding:3px}.chead b{font-size:15px}.ptable{width:100%;border-collapse:collapse;font-size:12px}.ptable th{color:#c4b07a;font-weight:600;text-align:left;padding:6px 4px;border-bottom:1px solid rgba(212,175,55,.2)}.ptable td{padding:7px 4px;border-bottom:1px solid rgba(255,255,255,.06);color:#f4f1ea}.ptable .day{color:#3dcc8a;font-weight:700}.pk{width:100%;height:28px;border:0;border-radius:8px;background:#d4af37;color:#111;font-weight:800;font-size:11px}.dash{border:1px solid #d4af37;border-radius:18px;padding:16px 14px;margin-bottom:14px;background:#0d0c08}.dash-hi{color:#e6c56a;font-size:13px}.dash-title{color:#f0d060;font-size:20px;font-weight:800;margin:4px 0 14px}.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dcell{border:1px solid #d4af37;border-radius:14px;padding:12px 10px}.dcell span{display:block;color:#c4b07a;font-size:12px;margin-bottom:8px}.dcell b{font-size:18px;color:#f6e27a}.dcell b.earn{color:#3dcc8a}.dcell b.bal{color:#f0a030}.club img.cbadge{width:24px;height:24px;margin-right:8px;vertical-align:middle}";
+  s.textContent=".ccard{background:#0b1220;border:1px solid rgba(212,175,55,.28);border-radius:14px;padding:12px;margin:10px 0}.chead{display:flex;align-items:center;gap:10px;margin-bottom:10px}.cbadge{width:42px;height:42px;border-radius:50%;object-fit:contain;background:#071018;border:1px solid rgba(212,175,55,.25);padding:3px}.chead b{font-size:15px}.prule{color:#c4b07a;font-size:11px;line-height:1.45;margin:8px 0 0}.ptable{width:100%;border-collapse:collapse;font-size:11px}.ptable th{color:#c4b07a;font-weight:600;text-align:left;padding:6px 3px;border-bottom:1px solid rgba(212,175,55,.2)}.ptable td{padding:7px 3px;border-bottom:1px solid rgba(255,255,255,.06);color:#f4f1ea}.ptable .day{color:#3dcc8a;font-weight:700}.pk{width:100%;height:28px;border:0;border-radius:8px;background:#d4af37;color:#111;font-weight:800;font-size:11px}.dash{border:1px solid #d4af37;border-radius:18px;padding:16px 14px;margin-bottom:14px;background:#0d0c08}.dash-hi{color:#e6c56a;font-size:13px}.dash-title{color:#f0d060;font-size:20px;font-weight:800;margin:4px 0 14px}.dash-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.dcell{border:1px solid #d4af37;border-radius:14px;padding:12px 10px}.dcell span{display:block;color:#c4b07a;font-size:12px;margin-bottom:8px}.dcell b{font-size:18px;color:#f6e27a}.dcell b.earn{color:#3dcc8a}.dcell b.bal{color:#f0a030}.club img.cbadge{width:24px;height:24px;margin-right:8px;vertical-align:middle}";
   document.head.appendChild(s);
 }
 function money(n){return Number(n||0).toLocaleString();}
-function badge(name){var src=BADGE[name]||("https://ui-avatars.com/api/?name="+encodeURIComponent(name)+"&background=0B1E33&color=F0D060&size=64&bold=true");return '<img class="cbadge" src="'+src+'" alt="'+name+' badge" onerror="this.src=\'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Soccerball.svg/64px-Soccerball.svg.png\'">';}
+function badge(name){var src=BADGE[name]||("https://ui-avatars.com/api/?name="+encodeURIComponent(name)+"&background=0B1E33&color=F0D060&size=64&bold=true");return '<img class="cbadge" src="'+src+'" alt="'+name+' badge">';}
 function paint(){
   var box=document.getElementById("holdList"); if(!box) return;
   var clubs=window.CLUBS||[]; if(!clubs.length) return;
   box.innerHTML=clubs.map(function(c){
     var rows=PACKS.map(function(pk){
-      return '<tr><td>UGX '+money(pk.p)+'</td><td>'+pk.d+' days</td><td class="day">'+money(pk.w)+'</td><td>'+money(pk.t)+'</td><td><button type="button" class="pk" data-club="'+c.n+'" data-p="'+pk.p+'" data-d="'+pk.d+'" data-w="'+pk.w+'">Buy</button></td></tr>';
+      return '<tr><td>UGX '+money(pk.p)+'</td><td>'+pk.d+'d</td><td class="day">'+money(pk.w)+'</td><td>'+money(pk.t)+'</td><td>'+money(pk.p)+'</td><td><button type="button" class="pk" data-club="'+c.n+'" data-p="'+pk.p+'" data-d="'+pk.d+'" data-w="'+pk.w+'">Buy</button></td></tr>';
     }).join("");
     return '<div class="ccard"><div class="chead">'+badge(c.n)+'<div><b>'+c.n+'</b><div style="color:#8aa;font-size:11px">'+(c.l||"")+'</div></div></div>'+
-      '<table class="ptable"><thead><tr><th>Price</th><th>Cycle</th><th>Daily</th><th>After lock</th><th></th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+      '<table class="ptable"><thead><tr><th>Price</th><th>Cycle</th><th>Daily</th><th>After lock</th><th>Deposit back</th><th></th></tr></thead><tbody>'+rows+'</tbody></table>'+
+      '<div class="prule">During the lock you take the Daily amount. When the cycle ends you can also withdraw the Price you paid to buy this pack.</div></div>';
   }).join("");
 }
 function markRows(id){
@@ -42,9 +43,8 @@ function markRows(id){
   box.querySelectorAll(".club").forEach(function(btn){
     if(btn.querySelector(".cbadge")) return;
     var b=btn.querySelector("b"); if(!b) return;
-    var name=b.textContent.trim();
     var span=btn.querySelector("span");
-    if(span) span.insertAdjacentHTML("afterbegin", badge(name));
+    if(span) span.insertAdjacentHTML("afterbegin", badge(b.textContent.trim()));
   });
 }
 function paintHome(){
@@ -56,7 +56,7 @@ function paintHome(){
   fill(0,0,0,shown);
   var lab=pad.querySelector("div"); if(lab&&/WALLET/i.test(lab.textContent||"")) lab.style.display="none";
   var hb=document.getElementById("homeBal"); if(hb) hb.style.display="none";
-  fetch("/api/me",{headers:H()}).then(function(r){return r.json();}).then(function(j){var u=j.user||j||{};var ms=u.machines||[];var inv=0,earn=0;ms.forEach(function(m){inv+=Number(m.price||m.amount||0);earn+=Number(m.daily||0)*Number(m.days||7);});fill(ms.length,inv,earn,u.balance||shown);}).catch(function(){});
+  fetch("/api/me",{headers:H()}).then(function(r){return r.json();}).then(function(j){var u=j.user||j||{};var ms=u.machines||[];var inv=0,earn=0;ms.forEach(function(m){inv+=Number(m.price||m.amount||0);earn+=Number(m.daily||0)*Number(m.days||m.weeks*7||7);});fill(ms.length,inv,earn,u.balance||shown);}).catch(function(){});
   markRows("watchlist");
 }
 function H(){var h={"Content-Type":"application/json"};try{var t=localStorage.getItem("ocToken");if(t)h.Authorization="Bearer "+t;}catch(e){}return h;}
@@ -64,8 +64,9 @@ document.addEventListener("click",function(e){
   var buy=e.target.closest("#holdList .pk");
   if(!buy) return;
   e.preventDefault(); e.stopPropagation();
-  fetch("/api/purchase",{method:"POST",headers:H(),body:JSON.stringify({name:buy.getAttribute("data-club"),price:+buy.getAttribute("data-p"),days:+buy.getAttribute("data-d"),daily:+buy.getAttribute("data-w"),weeks:Math.round(+buy.getAttribute("data-d")/7)})})
-    .then(function(r){return r.json();}).then(function(j){alert(j.message||j.error||"Pack locked for "+buy.getAttribute("data-club"));}).catch(function(){alert("Pack selected.");});
+  var price=+buy.getAttribute("data-p"), days=+buy.getAttribute("data-d"), club=buy.getAttribute("data-club");
+  fetch("/api/purchase",{method:"POST",headers:H(),body:JSON.stringify({name:club,club:club,price:price,days:days,daily:+buy.getAttribute("data-w"),weeks:Math.round(days/7),return_principal:true})})
+    .then(function(r){return r.json();}).then(function(j){alert((j.message||j.error||"Pack locked")+"\nDaily withdrawal during lock.\nAfter "+days+" days you can also withdraw your UGX "+money(price)+" deposit.");}).catch(function(){alert("Pack locked. After the cycle you can withdraw the deposit too.");});
 },true);
 var _go=window.go;
 window.go=function(id){
