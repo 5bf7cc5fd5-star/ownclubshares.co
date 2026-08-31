@@ -1,1 +1,2 @@
-crash-fix-no-observer-loop 2026-08-31T10:27Z
+layout-home-wallet-market-chart 2026-08-31
+Need frontend script tag: /static/oc-layout.js
