@@ -36,6 +36,8 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;font-family:
 .btn{width:100%;height:44px;border:0;border-radius:10px;background:#d4af37;color:#0b0c10;font-weight:700}
 .club{width:100%;text-align:left;background:0;border:0;border-bottom:1px solid rgba(154,215,176,.08);padding:10px 4px;color:#f4f7f4;display:flex;justify-content:space-between}
 .up{color:#3dcc8a}.dn{color:#e57373}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+.grid4 button{background:#1a2230;border:1px solid rgba(212,175,55,.16);border-radius:12px;padding:12px 2px;color:#f4f1ea;min-height:64px}
 </style>
 </head>
 <body>
@@ -70,7 +72,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;font-family:
 <section id="market" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Market</b></div></header><div class="pad" id="marketList"></div></div></section>
 <section id="shares" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Shares</b></div></header><div class="pad" id="holdList"></div></div></section>
 <section id="team" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Team</b></div></header><div class="pad"><div class="card" id="myCode">IMXT2Y0M8D</div></div></div></section>
-<section id="account" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Account</b></div></header><div class="pad"><div class="card"><b id="accName">Member</b><div id="accSub">Signed in</div><div id="accBal">USD 0</div></div><button class="btn" style="margin-top:12px" id="signOut">Sign out</button></div></div></section>
+<section id="account" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Account</b></div></header><div class="pad"><div class="card"><b id="accName">Member</b><div id="accSub">Signed in</div><div id="accBal">USD 0</div></div><div class="grid4" id="accGrid"><button type="button" data-act="deposit"><div>💳</div><span>Deposit</span></button><button type="button" data-act="withdraw"><div>💸</div><span>Withdraw</span></button><button type="button" data-act="bill"><div>📄</div><span>Bill</span></button><button type="button" data-act="invite"><div>🤝</div><span>Invite</span></button><button type="button" data-act="team"><div>👥</div><span>My team</span></button><button type="button" data-act="vip"><div>⭐</div><span>VIP Task</span></button><button type="button" data-act="reward"><div>🎁</div><span>Reward</span></button><button type="button" data-act="raffle"><div>🎫</div><span>Raffle</span></button><button type="button" data-act="support"><div>💬</div><span>Support</span></button></div><button class="btn" style="margin-top:12px" id="signOut">Sign out</button></div></div></section>
 <nav class="tabs" id="dock">
   <button class="on" data-go="home">Home</button>
   <button data-go="market">Market</button>
@@ -101,5 +103,6 @@ document.getElementById("signupForm").onsubmit=function(e){e.preventDefault();va
 <script src="/static/oc-boost.js?v=wd2"></script>
 <script src="/static/oc-bill.js?v=bill3"></script>
 <script src="/static/oc-shares.js?v=s1"></script>
+<script src="/static/oc-acc.js?v=a1"></script>
 </body>
 </html>
