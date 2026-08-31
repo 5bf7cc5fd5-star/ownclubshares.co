@@ -2,17 +2,170 @@
 <html lang="en">
 <head>
 <meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no"/>
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover"/>
 <title>Own Club Share</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;font-family:Helvetica,Arial,sans-serif;overflow:hidden;position:fixed;inset:0}
+.stage{position:fixed;inset:0;width:100%;height:100%;background:#fff;overflow:hidden}
+.stage:not(.auth){background:#0b0c10;color:#f4f1ea}
+.screen{display:none;height:100%}.screen.on{display:block}
+.scroll{height:100%;overflow:auto;-webkit-overflow-scrolling:touch;padding-bottom:72px}
+.hidden{display:none!important}
+.fb-wrap{max-width:400px;margin:0 auto;padding:12px 22px 24px;min-height:100%;display:flex;flex-direction:column}
+.fb-lang{align-self:center;border:0;background:0;color:#65676b;font-size:12px;margin:8px 0 16px}
+.oc{width:72px;height:72px;border-radius:50%;background:#111;color:#d4af37;font:800 28px/72px Helvetica,Arial,sans-serif;text-align:center;margin:12px auto 28px;letter-spacing:-.04em;border:1px solid rgba(212,175,55,.4)}
+.oc-sm{width:40px;height:40px;border-radius:50%;background:#111;color:#d4af37;font:800 15px/40px Helvetica,Arial,sans-serif;text-align:center;flex-shrink:0}
+.fb-input{width:100%;height:52px;border-radius:12px;border:1px solid #ccd0d5;padding:0 16px;font-size:16px;margin-bottom:12px}
+.fb-login{width:100%;height:48px;border:0;border-radius:24px;background:#d4af37;color:#fff;font-weight:700;font-size:17px}
+.fb-forgot{display:block;width:100%;border:0;background:0;color:#1c1e21;font-weight:600;font-size:15px;margin-top:16px}
+.fb-create{display:block;width:100%;height:44px;margin-top:36px;border:1px solid #ccd0d5;border-radius:24px;background:#fff;color:#d4af37;font-weight:700;font-size:16px}
+#signupForm .fb-create{margin-top:8px;background:#d4af37;color:#fff;border:0;height:48px}
+.fb-back{display:block;width:100%;margin-top:16px;border:0;background:0;color:#d4af37;font-weight:600}
+.fb-err{min-height:18px;color:#fa3e3e;text-align:center;font-size:13px;margin-top:8px}
+.fb-meta{margin-top:auto;padding-top:24px;text-align:center;color:#8a8d91;font-size:13px}
+.fb-title{font-size:20px;font-weight:700;color:#1c1e21}
+.fb-easy{color:#65676b;margin:0 0 14px}
+.tabs{position:absolute;left:0;right:0;bottom:0;display:grid;grid-template-columns:repeat(5,1fr);background:#0b0c10;border-top:1px solid rgba(212,175,55,.16)}
+.stage.auth .tabs{display:none!important}
+.tabs button{background:0;border:0;color:#6d7680;min-height:56px;font-size:10px;font-weight:600}
+.tabs button.on{color:#d4af37}
+.top{display:flex;align-items:center;gap:10px;padding:12px 16px;background:#0b0c10;border-bottom:1px solid rgba(212,175,55,.16)}
+.pad{padding:14px 16px;color:#f4f1ea}
+.card{background:#141820;border:1px solid rgba(212,175,55,.16);border-radius:14px;padding:12px;margin-top:8px}
+.btn{width:100%;height:44px;border:0;border-radius:10px;background:#d4af37;color:#0b0c10;font-weight:700}
+.club{width:100%;text-align:left;background:0;border:0;border-bottom:1px solid rgba(154,215,176,.08);padding:10px 4px;color:#f4f7f4;display:flex;justify-content:space-between}
+.up{color:#3dcc8a}.dn{color:#e57373}
+</style>
 </head>
-<body style="margin:0;background:#fff;font-family:Helvetica,Arial,sans-serif">Loading Own Club…
+<body>
+<div class="stage auth" id="stage">
+<section id="login" class="screen on">
+  <div class="scroll">
+    <div class="fb-wrap">
+      <select id="langSelect" class="fb-lang"><option>English</option><option>العربية</option><option>Français</option></select>
+      <div class="oc" id="logoHero">OC</div>
+      <form id="loginForm">
+        <input class="fb-input" id="loginId" type="text" placeholder="Mobile number or email" required>
+        <input class="fb-input" id="loginPass" type="password" placeholder="Password" required>
+        <button class="fb-login" type="submit">Log in</button>
+        <button class="fb-forgot" type="button" id="btnForgot">Forgot password?</button>
+        <button class="fb-create" type="button" id="tabSignup">Create new account</button>
+      </form>
+      <form id="signupForm" class="hidden">
+        <div class="fb-title">Create Account</div>
+        <div class="fb-easy">It's quick and easy.</div>
+        <input class="fb-input" id="suName" placeholder="Full Name" required>
+        <input class="fb-input" id="suPhone" placeholder="Mobile number" required>
+        <input class="fb-input" id="suEmail" type="email" placeholder="Email address" required>
+        <input class="fb-input" id="suPass" type="password" placeholder="New Password" required>
+        <input class="fb-input" id="suInvite" value="IMXT2Y0M8D" placeholder="Invite code">
+        <button class="fb-create" type="submit">Sign Up</button>
+        <button class="fb-back" type="button" id="backLogin">Already have an account?</button>
+      </form>
+      <div class="fb-err" id="authErr"></div>
+      <div class="fb-meta">Own Club Share</div>
+    </div>
+  </div>
+</section>
+<section id="home" class="screen">
+  <div class="scroll">
+    <header class="top"><div class="oc-sm">OC</div><div><b>Own Club</b><div style="color:#d4af37;font-size:10px">SHARE MARKET</div></div></header>
+    <div class="pad">
+      <div style="font-size:11px;color:#9aa3ad">WALLET</div>
+      <div id="homeBal" style="font-size:28px;font-weight:700">USD 0</div>
+      <div class="card" id="watchlist"></div>
+    </div>
+  </div>
+</section>
+<section id="market" class="screen">
+  <div class="scroll">
+    <header class="top"><div class="oc-sm">OC</div><div><b>Market</b></div></header>
+    <div class="pad" id="marketList"></div>
+  </div>
+</section>
+<section id="shares" class="screen">
+  <div class="scroll">
+    <header class="top"><div class="oc-sm">OC</div><div><b>Shares</b></div></header>
+    <div class="pad" id="holdList"></div>
+  </div>
+</section>
+<section id="team" class="screen">
+  <div class="scroll">
+    <header class="top"><div class="oc-sm">OC</div><div><b>Team</b></div></header>
+    <div class="pad"><div class="card" id="myCode">IMXT2Y0M8D</div></div>
+  </div>
+</section>
+<section id="account" class="screen">
+  <div class="scroll">
+    <header class="top"><div class="oc-sm">OC</div><div><b>Account</b></div></header>
+    <div class="pad">
+      <div class="card"><b id="accName">Member</b><div id="accSub">Signed in</div><div id="accBal">USD 0</div></div>
+      <button class="btn" style="margin-top:12px" id="signOut">Sign out</button>
+    </div>
+  </div>
+</section>
+<nav class="tabs" id="dock">
+  <button class="on" data-go="home">Home</button>
+  <button data-go="market">Market</button>
+  <button data-go="shares">Shares</button>
+  <button data-go="team">Team</button>
+  <button data-go="account">Account</button>
+</nav>
+</div>
 <script>
-(function(){
-  var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@325afd1086e23d3343e6100e5f3874f7de75ba8c/frontend.html";
-  fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
-    t=t.replace("</body>","<script src=\"/static/oc-boost.js?v=desk3\"><\/script></body>");
-    document.open();document.write(t);document.close();
-  }).catch(function(){document.body.textContent="Refresh the page.";});
-})();
+var CLUBS=[{n:"Arsenal",l:"Premier League",v:4200},{n:"Man City",l:"Premier League",v:4800},{n:"Liverpool",l:"Premier League",v:5310},{n:"Chelsea",l:"Premier League",v:3080},{n:"Manchester United",l:"Premier League",v:6040},{n:"Tottenham Hotspur",l:"Premier League",v:2840},{n:"Real Madrid",l:"La Liga",v:6000},{n:"FC Barcelona",l:"La Liga",v:5030},{n:"Al Hilal",l:"Saudi Pro League",v:914},{n:"Al Nassr",l:"Saudi Pro League",v:790},{n:"Al Ahli",l:"Saudi Pro League",v:720},{n:"LA Galaxy",l:"MLS",v:888},{n:"Atlanta United",l:"MLS",v:850},{n:"Bayern Munich",l:"Bundesliga",v:4840},{n:"Paris Saint-Germain",l:"Ligue 1",v:4140}];
+function cap(m){return m>=1000?("$"+(m/1000).toFixed(2)+"B"):("$"+m.toFixed(2)+"M")}
+function rows(id){
+  document.getElementById(id).innerHTML=CLUBS.map(function(c){
+    var up=Math.random()>0.45, ch=(Math.random()*2.8).toFixed(2);
+    return '<button class="club" type="button"><span><b>'+c.n+'</b><br><span style="color:#8aa">'+c.l+'</span></span><span style="text-align:right">'+cap(c.v)+'<br><span class="'+(up?"up":"dn")+'">'+(up?"+":"-")+ch+'%</span></span></button>';
+  }).join("");
+}
+function go(id){
+  document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id===id);});
+  document.getElementById("stage").classList.toggle("auth",id==="login");
+  document.querySelectorAll(".tabs button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-go")===id);});
+  if(id==="home"||id==="market") rows(id==="home"?"watchlist":"marketList");
+  if(id==="shares"){
+    document.getElementById("holdList").innerHTML=CLUBS.map(function(c){
+      return '<div class="card"><b>'+c.n+'</b> · '+cap(c.v)+'<div style="font-size:12px;margin-top:6px">35,000 / 7d · 70,000 / 14d<br>105,000 / 21d · 140,000 / 28d</div><button class="btn" style="height:38px;margin-top:8px">Purchase</button></div>';
+    }).join("");
+  }
+}
+document.getElementById("dock").onclick=function(e){var b=e.target.closest("button");if(b&&b.getAttribute("data-go"))go(b.getAttribute("data-go"));};
+document.getElementById("tabSignup").onclick=function(){document.getElementById("loginForm").classList.add("hidden");document.getElementById("signupForm").classList.remove("hidden");};
+document.getElementById("backLogin").onclick=function(){document.getElementById("signupForm").classList.add("hidden");document.getElementById("loginForm").classList.remove("hidden");};
+document.getElementById("btnForgot").onclick=function(){document.getElementById("authErr").textContent="Contact manager for password reset.";};
+document.getElementById("signOut").onclick=function(){try{localStorage.removeItem("ocToken")}catch(e){}go("login");};
+function afterAuth(j){
+  try{if(j.token)localStorage.setItem("ocToken",j.token);}catch(e){}
+  var u=j.user||{};
+  document.getElementById("accName").textContent=u.name||"Member";
+  document.getElementById("accSub").textContent=u.email||u.phone||"Signed in";
+  document.getElementById("homeBal").textContent="USD "+(u.balance||0);
+  document.getElementById("accBal").textContent="USD "+(u.balance||0);
+  go("home");
+}
+document.getElementById("loginForm").onsubmit=function(e){
+  e.preventDefault();
+  var err=document.getElementById("authErr"); err.textContent="";
+  var identifier=document.getElementById("loginId").value.trim();
+  var password=document.getElementById("loginPass").value;
+  fetch("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({identifier:identifier,email:identifier,phone:identifier,password:password})})
+    .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
+    .then(function(res){if(res.ok&&(res.j.token||res.j.user))afterAuth(res.j);else err.textContent=(res.j&&(res.j.error||res.j.message))||"Check details";})
+    .catch(function(){err.textContent="Network error";});
+};
+document.getElementById("signupForm").onsubmit=function(e){
+  e.preventDefault();
+  var err=document.getElementById("authErr"); err.textContent="";
+  fetch("/api/register",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:document.getElementById("suName").value.trim(),phone:document.getElementById("suPhone").value.trim(),email:document.getElementById("suEmail").value.trim(),password:document.getElementById("suPass").value,invite_code:document.getElementById("suInvite").value.trim()||"IMXT2Y0M8D"})})
+    .then(function(r){return r.json().then(function(j){return{ok:r.ok,j:j};});})
+    .then(function(res){if(res.ok&&(res.j.token||res.j.user))afterAuth(res.j);else err.textContent=(res.j&&(res.j.error||res.j.message))||"Could not create account";})
+    .catch(function(){err.textContent="Network error";});
+};
 </script>
-</body></html>
+<script src="/static/oc-boost.js?v=fix1"></script>
+</body>
+</html>
