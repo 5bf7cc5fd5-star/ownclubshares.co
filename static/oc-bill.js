@@ -20,14 +20,17 @@ function paintBill(box){
     box.onclick=function(e){var b=e.target.closest("[data-can]");if(!b)return;fetch("/api/withdraw/cancel",{method:"POST",headers:H(),body:JSON.stringify({id:b.getAttribute("data-can")})}).finally(function(){paintBill(box);});};
   });
 }
-var _go=window.go;
-window.go=function(id){if(typeof _go==="function")_go(id);};
 document.addEventListener("click",function(e){
   var b=e.target.closest("#accGrid [data-act=bill],button[data-act=bill]");
-  if(!b) return;
-  setTimeout(function(){
-    var box=document.getElementById("dBB");
-    if(box) paintBill(box);
-  },80);
+  if(b) setTimeout(function(){var box=document.getElementById("dBB");if(box) paintBill(box);},80);
 },true);
+function fixWd(){
+  document.querySelectorAll(".wd-note").forEach(function(n){
+    n.innerHTML="<b>Note:</b><br><br>Withdrawals are subject to 10% service charge.<br><br>Your withdrawal will arrive instantly.<br><br>There must be at least 1 day interval between each withdrawal application day.<br><br>On the day you are eligible to apply, you may submit an unlimited number of withdrawal applications.";
+  });
+  var amt=document.getElementById("wdAmt");
+  if(amt) amt.oninput=function(){var a=parseFloat(this.value||0)||0;var el=document.getElementById("wdNetAmt");if(el)el.textContent="UGX "+Math.round(a*0.90).toLocaleString();};
+}
+new MutationObserver(fixWd).observe(document.documentElement,{childList:true,subtree:true});
+document.addEventListener("click",function(){setTimeout(fixWd,40);},true);
 })();
