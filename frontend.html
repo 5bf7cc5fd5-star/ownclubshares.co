@@ -10,7 +10,7 @@
 (function(){
   var src="https://cdn.jsdelivr.net/gh/5bf7cc5fd5-star/ownclubshares.co@325afd1086e23d3343e6100e5f3874f7de75ba8c/frontend.html";
   fetch(src,{cache:"no-store"}).then(function(r){return r.text();}).then(function(t){
-    t=t.replace("</body>","<script src=\"/static/oc-desk.js?v=desk3\"><\/script></body>");
+    t=t.replace("</body>","<script src=\"/static/oc-boost.js?v=desk3\"><\/script></body>");
     document.open();document.write(t);document.close();
   }).catch(function(){document.body.textContent="Refresh the page.";});
 })();
