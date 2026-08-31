@@ -1,87 +1,25 @@
 (function(){
-  if(window.__ocBoost) return; window.__ocBoost=1;
-  var PACKS=[[35000,7,5000],[70000,14,7500],[105000,21,10000],[140000,28,12500]];
-  var BADGE={"Arsenal":"https://a.espncdn.com/i/teamlogos/soccer/500/359.png","Man City":"https://a.espncdn.com/i/teamlogos/soccer/500/382.png","Liverpool":"https://a.espncdn.com/i/teamlogos/soccer/500/364.png","Chelsea":"https://a.espncdn.com/i/teamlogos/soccer/500/363.png","Manchester United":"https://a.espncdn.com/i/teamlogos/soccer/500/360.png","Man United":"https://a.espncdn.com/i/teamlogos/soccer/500/360.png","Tottenham Hotspur":"https://a.espncdn.com/i/teamlogos/soccer/500/367.png","Tottenham":"https://a.espncdn.com/i/teamlogos/soccer/500/367.png","Real Madrid":"https://a.espncdn.com/i/teamlogos/soccer/500/86.png","FC Barcelona":"https://a.espncdn.com/i/teamlogos/soccer/500/83.png","Barcelona":"https://a.espncdn.com/i/teamlogos/soccer/500/83.png","Al Hilal":"https://a.espncdn.com/i/teamlogos/soccer/500/929.png","Al Nassr":"https://a.espncdn.com/i/teamlogos/soccer/500/2509.png","Al Ahli":"https://a.espncdn.com/i/teamlogos/soccer/500/983.png","Bayern Munich":"https://a.espncdn.com/i/teamlogos/soccer/500/132.png","LA Galaxy":"https://a.espncdn.com/i/teamlogos/soccer/500/187.png","Atlanta United":"https://a.espncdn.com/i/teamlogos/soccer/500/202.png","Paris Saint-Germain":"https://a.espncdn.com/i/teamlogos/soccer/500/160.png","Paris SG":"https://a.espncdn.com/i/teamlogos/soccer/500/160.png"};
-  var selected=null,current=null,busy=false;
-  function chances(){try{return parseInt(localStorage.getItem("ocRaffle")||"0",10)||0;}catch(e){return 0;}}
-  function setCh(n){try{localStorage.setItem("ocRaffle",String(Math.max(0,n)));}catch(e){} var el=document.getElementById("raffleChances"); if(el)el.textContent="Chances: "+Math.max(0,n);}
-  function css(){
-    if(document.getElementById("ocBoostCss")) return;
-    var s=document.createElement("style"); s.id="ocBoostCss";
-    s.textContent=".badge{width:36px;height:36px;border-radius:50%;overflow:hidden;background:#07140e;display:grid;place-items:center;flex-shrink:0}.badge img{width:100%;height:100%;object-fit:contain}.pack-row{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:8px}.pack-btn{background:#1a2230;border:1px solid rgba(212,175,55,.16);border-radius:10px;padding:8px;text-align:left;color:#f4f1ea;font-size:12px}.pack-btn b{display:block;color:#d4af37}.pack-btn.on{border-color:#d4af37}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.grid4 button{background:#1a2230;border:1px solid rgba(212,175,55,.16);border-radius:12px;padding:10px 2px;color:#f4f1ea}.grid4 span{font-size:10px;display:block}.modalX{position:absolute;inset:0;background:rgba(0,0,0,.72);z-index:80;display:flex;align-items:flex-end}.modalX.hidden{display:none}.sheetX{background:#141820;border-radius:18px 18px 0 0;width:100%;padding:18px 16px 28px;color:#f4f1ea}.raffle-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.rcard{height:110px;perspective:700px}.rcard .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .55s}.rcard.open .inner{transform:rotateY(180deg)}.rcard .face{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;backface-visibility:hidden}.rcard .back{background:linear-gradient(160deg,#1a2230,#d4af37);font-weight:800;color:#111}.rcard .front{background:#1a2230;transform:rotateY(180deg);color:#d4af37}";
-    document.head.appendChild(s);
-  }
-  function ensureModals(){
-    if(document.getElementById("modalRaffle")) return;
-    var wrap=document.createElement("div");
-    wrap.innerHTML='<div id="modalRaffle" class="modalX hidden"><div class="sheetX"><h3>Raffle cards</h3><p id="raffleChances">Chances: 0</p><div class="raffle-grid" id="raffleGrid"></div><p id="raffleResult"></p><button class="btn" type="button" id="raffleClose">Close</button></div></div><div id="modalGeneric" class="modalX hidden"><div class="sheetX"><h3 id="genTitle">Info</h3><p id="genBody"></p><button class="btn" type="button" id="genClose">OK</button></div></div>';
-    document.body.appendChild(wrap);
-    document.getElementById("raffleClose").onclick=function(){document.getElementById("modalRaffle").classList.add("hidden");};
-    document.getElementById("genClose").onclick=function(){document.getElementById("modalGeneric").classList.add("hidden");};
-  }
-  function deal(){
-    var prizes=[{u:0,l:"Try again"},{u:0,l:"Try again"},{u:3000,l:"Gift"},{u:5000,l:"Gift"},{u:15000,l:"Gift"},{u:105000,l:"Jackpot"}];
-    for(var i=prizes.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=prizes[i];prizes[i]=prizes[j];prizes[j]=t;}
-    document.getElementById("raffleGrid").innerHTML=prizes.map(function(p){return '<div class="rcard" data-u="'+p.u+'"><div class="inner"><div class="face back">OC</div><div class="face front"><b>'+(p.u?("UGX "+p.u.toLocaleString()):p.l)+'</b></div></div></div>';}).join("");
-  }
-  window.openRaffle=function(){ensureModals();setCh(chances());busy=false;deal();document.getElementById("raffleResult").textContent="";document.getElementById("modalRaffle").classList.remove("hidden");};
-  function play(card){
-    if(busy) return;
-    if(chances()<1){document.getElementById("raffleResult").textContent="Buy a share pack first.";return;}
-    busy=true; card.classList.add("open");
-    document.querySelectorAll("#raffleGrid .rcard").forEach(function(c){if(c!==card)setTimeout(function(){c.classList.add("open");},250);});
-    var u=+card.getAttribute("data-u");
-    document.getElementById("raffleResult").textContent=u>0?("You won UGX "+u.toLocaleString()):"No win this time.";
-    setCh(chances()-1);
-  }
-  function paintAccount(){
-    var acc=document.getElementById("account"); if(!acc) return;
-    var pad=acc.querySelector(".pad"); if(!pad||pad.querySelector("#accGrid")) return;
-    var grid=document.createElement("div"); grid.className="grid4"; grid.id="accGrid";
-    var items=[["deposit","\ud83d\udcb3","Deposit"],["withdraw","\ud83d\udcb8","Withdraw"],["bill","\ud83d\udcc4","Bill"],["invite","\ud83e\udd1d","Invite"],["team","\ud83d\udc65","My team"],["vip","\u2b50","VIP Task"],["reward","\ud83c\udf81","Reward"],["raffle","\ud83c\udfab","Raffle"],["manager","\ud83c\udfa7","Manager"],["settings","\u2699\ufe0f","Settings"],["wdiv","\ud83d\udcb0","Withdraw Dividend"],["credit","\ud83c\udfe6","Credit to Wallet"],["support","\ud83d\udcac","Support"]];
-    grid.innerHTML=items.map(function(a){return '<button type="button" data-act="'+a[0]+'"><div>'+a[1]+'</div><span>'+a[2]+'</span></button>';}).join("");
-    var so=pad.querySelector("#signOut"); if(so) pad.insertBefore(grid,so); else pad.appendChild(grid);
-    grid.onclick=function(e){
-      var b=e.target.closest("button[data-act]"); if(!b)return;
-      var act=b.getAttribute("data-act");
-      if(act==="raffle") openRaffle();
-      else if(act==="team"||act==="invite"){ if(typeof go==="function") go("team"); }
-      else { ensureModals(); document.getElementById("genTitle").textContent=b.textContent.trim(); document.getElementById("genBody").textContent="Use this desk or contact the manager."; document.getElementById("modalGeneric").classList.remove("hidden"); }
-    };
-  }
-  function paintShares(){
-    var box=document.getElementById("holdList"); if(!box) return;
-    box.querySelectorAll(".card").forEach(function(card,i){
-      var title=(card.querySelector("b")||{}).textContent||"";
-      var src=BADGE[title];
-      if(src && !card.querySelector(".badge")){
-        var row=document.createElement("div"); row.style.cssText="display:flex;align-items:center;gap:8px;margin-bottom:6px";
-        row.innerHTML='<span class="badge"><img src="'+src+'" alt=""></span>';
-        var b=card.querySelector("b"); card.insertBefore(row, card.firstChild); if(b) row.appendChild(b);
-      }
-      if(!card.querySelector(".pack-btn")){
-        var pr=document.createElement("div"); pr.className="pack-row";
-        pr.innerHTML=PACKS.map(function(p){return '<button type="button" class="pack-btn" data-p="'+p[0]+'" data-d="'+p[1]+'" data-w="'+p[2]+'"><b>'+p[0].toLocaleString()+'</b>'+p[1]+' days \u00b7 Daily '+p[2].toLocaleString()+'</button>';}).join("");
-        var buy=card.querySelector("button"); if(buy) card.insertBefore(pr,buy); else card.appendChild(pr);
-      }
-      var buy=card.querySelector("button.btn, button"); if(buy){ buy.classList.add("buy-club"); }
-    });
-  }
-  document.addEventListener("click",function(e){
-    var pb=e.target.closest(".pack-btn");
-    if(pb){ selected={p:+pb.getAttribute("data-p"),d:+pb.getAttribute("data-d"),w:+pb.getAttribute("data-w")}; document.querySelectorAll(".pack-btn.on").forEach(function(x){x.classList.remove("on");}); pb.classList.add("on"); current=pb.closest(".card"); }
-    var buy=e.target.closest("#holdList .btn, #holdList .buy-club");
-    if(buy){
-      e.preventDefault(); e.stopPropagation();
-      if(!selected){ var first=buy.parentNode.querySelector(".pack-btn"); if(first) first.click(); }
-      if(!selected){ alert("Select a lock pack first"); return; }
-      var name=((current&&current.querySelector("b"))||{}).textContent||"Club";
-      var token=null; try{token=localStorage.getItem("ocToken");}catch(ex){}
-      var headers={"Content-Type":"application/json"}; if(token) headers.Authorization="Bearer "+token;
-      fetch("/api/purchase",{method:"POST",headers:headers,body:JSON.stringify({name:name,price:selected.p,days:selected.d,daily:selected.w,weeks:Math.round(selected.d/7)})}).finally(function(){ setCh(chances()+1); openRaffle(); });
-    }
-    var card=e.target.closest("#raffleGrid .rcard"); if(card) play(card);
-  }, true);
-  var _go=window.go; window.go=function(id){ if(typeof _go==="function") _go(id); if(id==="shares") setTimeout(paintShares,40); if(id==="account") setTimeout(paintAccount,40); };
-  css(); ensureModals(); setTimeout(function(){paintShares();paintAccount();},500);
+if(window.__ocDesk)return;window.__ocDesk=1;
+function H(){var h={"Content-Type":"application/json"};try{var t=localStorage.getItem("ocToken");if(t)h.Authorization="Bearer "+t;}catch(e){}return h;}
+function ch(){try{return parseInt(localStorage.getItem("ocRaffle")||"0",10)||0;}catch(e){return 0;}}
+function setCh(n){try{localStorage.setItem("ocRaffle",String(Math.max(0,n)));}catch(e){}var el=document.getElementById("raffleChances");if(el)el.textContent="Chances: "+Math.max(0,n);}
+var sel=null,cur=null,busy=false;
+if(!document.getElementById("ocDcss")){var s=document.createElement("style");s.id="ocDcss";s.textContent=".desk{position:absolute;inset:0;background:rgba(0,0,0,.72);z-index:90;display:flex;align-items:flex-end}.desk.hidden{display:none}.sheet{background:#141820;border-radius:18px 18px 0 0;width:100%;max-height:88%;overflow:auto;padding:18px 16px 28px;color:#f4f1ea}.gold-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.gcard{height:118px;perspective:800px}.gcard .inner{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:.6s}.gcard.open .inner{transform:rotateY(180deg)}.gcard .face{position:absolute;inset:0;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-direction:column;backface-visibility:hidden;font-weight:800}.gcard .back{background:linear-gradient(160deg,#7a5a12,#f0d060 45%,#d4af37);color:#111;border:1px solid #f6e27a}.gcard .front{background:#1a2230;border:1px solid #d4af37;transform:rotateY(180deg);color:#d4af37}.copyb{background:#1a2230;border:1px solid rgba(212,175,55,.2);border-radius:10px;padding:10px;word-break:break-all;margin:8px 0}.inp{width:100%;height:44px;border-radius:10px;border:1px solid rgba(212,175,55,.2);background:#1a2230;color:#fff;padding:0 12px;margin:6px 0}.btn{width:100%;height:42px;border:0;border-radius:10px;background:#d4af37;color:#111;font-weight:700;margin-top:8px}.btn.ghost{background:#1a2230;color:#f4f1ea;border:1px solid rgba(212,175,55,.2)}.lvl{background:#1a2230;border:1px solid rgba(212,175,55,.16);border-radius:10px;padding:10px;margin-top:8px}.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}.grid4 button{background:#1a2230;border:1px solid rgba(212,175,55,.16);border-radius:12px;padding:10px 2px;color:#f4f1ea}.pack-btn.on{border-color:#d4af37}";document.head.appendChild(s);}
+function code(){var e=document.getElementById("myCode");return (e&&e.textContent)?e.textContent.trim():"IMXT2Y0M8D";}
+function url(){return "https://ownclubshares.co/app?ref="+encodeURIComponent(code());}
+function sheet(id,t,b){var el=document.getElementById(id);if(!el){el=document.createElement("div");el.id=id;el.className="desk hidden";el.innerHTML='<div class="sheet"><h3 id="'+id+'T"></h3><div id="'+id+'B"></div><button class="btn ghost" type="button" data-x="'+id+'">Close</button></div>';document.body.appendChild(el);el.onclick=function(e){if(e.target.getAttribute("data-x")===id)el.classList.add("hidden");};}document.getElementById(id+"T").textContent=t;document.getElementById(id+"B").innerHTML=b;el.classList.remove("hidden");}
+function raffle(){sheet("dR","Raffle · Gold cards",'<p style="color:#d4af37" id="raffleChances">Chances: '+ch()+'</p><p style="color:#9aa3ad;font-size:13px">Buy a share pack, then tap any gold card. That card wins.</p><div class="gold-grid" id="raffleGrid"></div><p id="raffleResult"></p>');var p=[3000,5000,7000,15000,25000,105000];for(var i=p.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=p[i];p[i]=p[j];p[j]=t;}document.getElementById("raffleGrid").innerHTML=p.map(function(u){return '<div class="gcard" data-u="'+u+'"><div class="inner"><div class="face back">OC</div><div class="face front"><b>WIN</b><span>UGX '+u.toLocaleString()+'</span></div></div></div>';}).join("");busy=false;}
+function invite(){var u=url();sheet("dI","Invite",'<p style="color:#9aa3ad;font-size:13px">Anyone who joins with your link is your Level 1. Anyone they invite is your Level 2.</p><div class="copyb"><b>Code</b><br>'+code()+'</div><div class="copyb">'+u+'</div><button class="btn" type="button" id="cInv">Copy invite link</button>');document.getElementById("cInv").onclick=function(){try{navigator.clipboard.writeText(u);alert("Copied");}catch(e){alert(u);}};}
+function team(){sheet("dT","My team","<p>Loading…</p>");fetch("/api/me/referrals",{headers:H()}).then(function(r){return r.json();}).then(function(j){var L=j.levels||{};document.getElementById("dTB").innerHTML='<div class="lvl"><b>Level 1</b> — '+((L["1"]&&L["1"].members)||0)+' people who used your code</div><div class="lvl"><b>Level 2</b> — '+((L["2"]&&L["2"].members)||0)+' people invited by your Level 1</div>';}).catch(function(){document.getElementById("dTB").innerHTML='<div class="lvl">Level 1 = joined through you. Level 2 = joined through your Level 1.</div>';});}
+function reward(){sheet("dW","Reward","<p>Loading…</p>");fetch("/api/me/referrals",{headers:H()}).then(function(r){return r.json();}).then(function(j){document.getElementById("dWB").innerHTML='<p>When someone you invited buys a share pack you get <b>25%</b> of that pack.</p><div class="lvl"><b>Earned</b> · '+(j.earnings||0)+'</div>';}).catch(function(){document.getElementById("dWB").innerHTML='<p>25% of the share pack bought by anyone who joined with your code.</p>';});}
+function vip(){sheet("dV","VIP Task","<p>Loading…</p>");fetch("/api/me/referrals",{headers:H()}).then(function(r){return r.json();}).then(function(j){var n=(j.levels&&j.levels["1"]&&j.levels["1"].members)||0;var lv=n>=15?4:n>=9?3:n>=5?2:n>=2?1:0;var pct=[0,25,30,35,40][lv];document.getElementById("dVB").innerHTML='<div class="lvl"><b>Your Level 1</b> · '+n+'</div><div class="lvl"><b>VIP '+lv+'</b> · '+pct+'% weekly of available lock</div><div class="lvl">2 members = 25% · 5 = 30% · 9 = 35% · 15 = 40%</div>';}).catch(function(){document.getElementById("dVB").innerHTML='<div class="lvl">2=25% · 5=30% · 9=35% · 15=40% weekly of lock</div>';});}
+function bill(){sheet("dB","Bill","<p>Loading…</p>");fetch("/api/me",{headers:H()}).then(function(r){return r.json();}).then(function(j){var txs=(j.user&&j.user.transactions)||[];document.getElementById("dBB").innerHTML=txs.slice(0,40).map(function(t){return '<div class="lvl">'+(t.date||"")+' · '+(t.type||"")+' · '+(t.amount||0)+'</div>';}).join("")||'<div class="lvl">No movement yet.</div>';}).catch(function(){document.getElementById("dBB").innerHTML='<div class="lvl">Sign in to see deposits and withdrawals.</div>';});}
+function dep(){sheet("dD","Deposit",'<p>Pay Mobile Money or USDT TRC20, paste TxID.</p><div class="copyb">MoMo 0779168109</div><div class="copyb">USDT TRC20 TLvT3czNGgpPH3oXURZFtyd4XTQUL2NhGy</div><select class="inp" id="depM"><option value="momo">Mobile Money</option><option value="crypto">Crypto USDT TRC20</option></select><input class="inp" id="depA" placeholder="Amount"><input class="inp" id="depT" placeholder="Paste TxID"><button class="btn" type="button" id="depG">Submit deposit</button>');document.getElementById("depG").onclick=function(){var tx=document.getElementById("depT").value.trim();if(!tx){alert("Paste TxID");return;}fetch("/api/deposit",{method:"POST",headers:H(),body:JSON.stringify({txid:tx,method:document.getElementById("depM").value,amount:document.getElementById("depA").value})}).finally(function(){alert("Deposit submitted");document.getElementById("dD").classList.add("hidden");});};}
+function wd(){sheet("dX","Withdraw","<p>Loading…</p>");function draw(list){document.getElementById("dXB").innerHTML='<p>Pending → Admin. Cancel returns funds.</p><input class="inp" id="wa" placeholder="Amount"><input class="inp" id="wdest" placeholder="MoMo or USDT TRC20"><button class="btn" type="button" id="wg">Request withdraw</button><h4>Funds in withdrawal</h4>'+(list.map(function(w){return '<div class="lvl"><b>'+(w.amount||0)+'</b> · '+(w.status||"")+(String(w.status||"").toLowerCase()==="pending"?'<button class="btn ghost" type="button" data-can="'+w.id+'">Cancel</button>':'')+'</div>';}).join("")||'<div class="lvl">None pending.</div>');document.getElementById("wg").onclick=function(){var a=document.getElementById("wa").value,d=document.getElementById("wdest").value;if(!a||!d){alert("Enter amount and destination");return;}fetch("/api/withdraw",{method:"POST",headers:H(),body:JSON.stringify({amount:a,dest:d})}).finally(function(){alert("Submitted");wd();});};document.getElementById("dXB").onclick=function(e){var b=e.target.closest("[data-can]");if(!b)return;fetch("/api/withdraw/cancel",{method:"POST",headers:H(),body:JSON.stringify({id:b.getAttribute("data-can")})}).finally(function(){alert("Cancelled");wd();});};}fetch("/api/withdrawals/mine",{headers:H()}).then(function(r){return r.json();}).then(function(j){draw(j.withdrawals||j.items||(Array.isArray(j)?j:[]));}).catch(function(){draw([]);});}
+function sup(){sheet("dS","Support",'<p>Message Own Club support.</p><div id="sl" style="min-height:120px;max-height:200px;overflow:auto;background:#1a2230;border-radius:10px;padding:10px"></div><input class="inp" id="si" placeholder="Type a message"><button class="btn" type="button" id="ss">Send</button>');document.getElementById("ss").onclick=function(){var t=document.getElementById("si").value.trim();if(!t)return;document.getElementById("si").value="";document.getElementById("sl").innerHTML+="<div><b>You</b><br>"+t+"</div>";fetch("/api/support/chat",{method:"POST",headers:H(),body:JSON.stringify({text:t})}).then(function(r){return r.json();}).then(function(j){document.getElementById("sl").innerHTML+="<div><b>Support</b><br>"+(j.reply||j.message||"Received.")+"</div>";}).catch(function(){document.getElementById("sl").innerHTML+="<div><b>Support</b><br>Received.</div>";});};}
+function acc(){var pad=document.querySelector("#account .pad");if(!pad)return;var g=pad.querySelector("#accGrid");if(!g){g=document.createElement("div");g.className="grid4";g.id="accGrid";g.innerHTML=[["deposit","💳","Deposit"],["withdraw","💸","Withdraw"],["bill","📄","Bill"],["invite","🤝","Invite"],["team","👥","My team"],["vip","⭐","VIP Task"],["reward","🎁","Reward"],["raffle","🎫","Raffle"],["support","💬","Support"],["settings","⚙️","Settings"]].map(function(a){return '<button type="button" data-act="'+a[0]+'"><div>'+a[1]+'</div><span>'+a[2]+'</span></button>';}).join("");var so=pad.querySelector("#signOut");if(so)pad.insertBefore(g,so);else pad.appendChild(g);}g.querySelectorAll("button").forEach(function(b){if(b.getAttribute("data-act")==="manager"||/manager/i.test(b.textContent||"")){b.setAttribute("data-act","support");b.innerHTML="<div>💬</div><span>Support</span>";}});g.onclick=function(e){var b=e.target.closest("button[data-act]");if(!b)return;var a=b.getAttribute("data-act");if(a==="deposit")dep();else if(a==="withdraw")wd();else if(a==="bill")bill();else if(a==="invite")invite();else if(a==="team")team();else if(a==="vip")vip();else if(a==="reward")reward();else if(a==="raffle")raffle();else if(a==="support"||a==="manager")sup();};}
+document.addEventListener("click",function(e){var buy=e.target.closest("#holdList .btn,#holdList .buy-club");if(buy){e.preventDefault();setCh(ch()+1);raffle();}var g=e.target.closest("#raffleGrid .gcard");if(g){if(busy)return;if(ch()<1){var r=document.getElementById("raffleResult");if(r)r.textContent="Purchase a share pack first.";return;}busy=true;g.classList.add("open");var u=+g.getAttribute("data-u");var rr=document.getElementById("raffleResult");if(rr)rr.textContent="You won UGX "+u.toLocaleString();setCh(ch()-1);}},true);
+var _g=window.go;window.go=function(id){if(typeof _g==="function")_g(id);if(id==="account")setTimeout(acc,40);};
+setTimeout(acc,400);
+try{var u=new URL(location.href);var ref=u.searchParams.get("ref");if(ref){var inv=document.getElementById("suInvite");if(inv)inv.value=ref;}}catch(e){}
 })();
