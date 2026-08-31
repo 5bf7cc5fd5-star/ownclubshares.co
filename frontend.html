@@ -48,7 +48,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;font-family:
 <form id="loginForm"><input class="fb-input" id="loginId" placeholder="Mobile number or email" required><input class="fb-input" id="loginPass" type="password" placeholder="Password" required><button class="fb-login" type="submit">Log in</button><button class="fb-forgot" type="button" id="btnForgot">Forgot password?</button><button class="fb-create" type="button" id="tabSignup">Create new account</button></form>
 <form id="signupForm" class="hidden"><div class="fb-title">Create Account</div><div class="fb-easy">It's quick and easy.</div><input class="fb-input" id="suName" placeholder="Full Name" required><input class="fb-input" id="suPhone" placeholder="Mobile number" required><input class="fb-input" id="suEmail" type="email" placeholder="Email address" required><input class="fb-input" id="suPass" type="password" placeholder="New Password" required><input class="fb-input" id="suInvite" value="IMXT2Y0M8D" placeholder="Invite code"><button class="fb-create" type="submit">Sign Up</button><button class="fb-back" type="button" id="backLogin">Already have an account?</button></form>
 <div class="fb-err" id="authErr"></div><div class="fb-meta">Own Club Share</div></div></div></section>
-<section id="home" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Own Club</b><div style="color:#d4af37;font-size:10px">SHARE MARKET</div></div></header><div class="pad"><div id="homeBal" style="font-size:28px;font-weight:700">USD 0</div><div class="card" id="watchlist"></div></div></div></section>
+<section id="home" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Own Club</b><div style="color:#d4af37;font-size:10px">SHARE MARKET</div></div></header><div class="pad"><div id="homeBal">USD 0</div><div class="card" id="watchlist"></div></div></div></section>
 <section id="market" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Market</b></div></header><div class="pad" id="marketList"></div></div></section>
 <section id="shares" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Shares</b></div></header><div class="pad" id="holdList"></div></div></section>
 <section id="team" class="screen"><div class="scroll"><header class="top"><div class="oc-sm">OC</div><div><b>Team</b></div></header><div class="pad"><div class="card" id="myCode">IMXT2Y0M8D</div></div></div></section>
@@ -56,10 +56,7 @@ html,body{margin:0;padding:0;width:100%;height:100%;background:#fff;font-family:
 <nav class="tabs" id="dock"><button class="on" data-go="home">Home</button><button data-go="market">Market</button><button data-go="shares">Shares</button><button data-go="team">Team</button><button data-go="account">Account</button></nav>
 </div>
 <script>
-var CLUBS=[{n:"Arsenal",l:"Premier League",v:4200},{n:"Man City",l:"Premier League",v:4800},{n:"Liverpool",l:"Premier League",v:5310},{n:"Chelsea",l:"Premier League",v:3080},{n:"Manchester United",l:"Premier League",v:6040},{n:"Tottenham Hotspur",l:"Premier League",v:2840},{n:"Real Madrid",l:"La Liga",v:6000},{n:"FC Barcelona",l:"La Liga",v:5030},{n:"Al Hilal",l:"Saudi Pro League",v:914},{n:"Al Nassr",l:"Saudi Pro League",v:790},{n:"Al Ahli",l:"Saudi Pro League",v:720},{n:"LA Galaxy",l:"MLS",v:888},{n:"Atlanta United",l:"MLS",v:850},{n:"Bayern Munich",l:"Bundesliga",v:4840},{n:"Paris Saint-Germain",l:"Ligue 1",v:4140}];
-function cap(m){return m>=1000?("$"+(m/1000).toFixed(2)+"B"):("$"+m.toFixed(2)+"M")}
-function rows(id){document.getElementById(id).innerHTML=CLUBS.map(function(c){var up=Math.random()>0.45,ch=(Math.random()*2.8).toFixed(2);return '<button class="club" type="button"><span><b>'+c.n+'</b><br><span style="color:#8aa">'+c.l+'</span></span><span style="text-align:right">'+cap(c.v)+'<br><span class="'+(up?"up":"dn")+'">'+(up?"+":"-")+ch+'%</span></span></button>';}).join("");}
-function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id===id);});document.getElementById("stage").classList.toggle("auth",id==="login");document.querySelectorAll(".tabs button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-go")===id);});if(id==="home"||id==="market") rows(id==="home"?"watchlist":"marketList");}
+function go(id){document.querySelectorAll(".screen").forEach(function(s){s.classList.toggle("on",s.id===id);});document.getElementById("stage").classList.toggle("auth",id==="login");document.querySelectorAll(".tabs button").forEach(function(b){b.classList.toggle("on",b.getAttribute("data-go")===id);});}
 document.getElementById("dock").onclick=function(e){var b=e.target.closest("button");if(b&&b.getAttribute("data-go"))go(b.getAttribute("data-go"));};
 document.getElementById("tabSignup").onclick=function(){document.getElementById("loginForm").classList.add("hidden");document.getElementById("signupForm").classList.remove("hidden");};
 document.getElementById("backLogin").onclick=function(){document.getElementById("signupForm").classList.add("hidden");document.getElementById("loginForm").classList.remove("hidden");};
@@ -76,5 +73,6 @@ document.getElementById("signupForm").onsubmit=function(e){e.preventDefault();va
 <script src="/static/oc-badges.js?v=bd1"></script>
 <script src="/static/oc-leagues.js?v=lg1"></script>
 <script src="/static/oc-acc.js?v=a1"></script>
+<script src="/static/oc-layout.js?v=l2"></script>
 </body>
 </html>
